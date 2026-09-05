@@ -4,3 +4,5 @@
 *.jpg binary
 *.zip binary
 docs/evidence/lab-targeted-retest-2026-08-30.json -text
+# Preserve the exact publicly downloaded checksum bytes, including their CRLF.
+release/*.sha256 -text whitespace=-blank-at-eof,cr-at-eol
