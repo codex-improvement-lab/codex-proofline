@@ -21,12 +21,12 @@ The source freeze is a dated checkpoint. Final external observations and downloa
 
 ## External publication gate
 
-- [ ] Exact source commit passes six hosted Windows/macOS × Node 20/22/24 jobs, including actual npm dry run and installed-package smoke.
-- [ ] Tag `v0.1.0` identifies the checked source commit.
-- [ ] GitHub prerelease contains source ZIP, installable TGZ and matching SHA-256 sidecars.
-- [ ] Publicly downloaded assets match the release hashes.
+- [x] Exact source commit passes six hosted Windows/macOS × Node 20/22/24 jobs, including actual npm dry run and installed-package smoke.
+- [x] Tag `v0.1.0` identifies the checked source commit.
+- [x] GitHub prerelease contains source ZIP, installable TGZ and matching SHA-256 sidecars.
+- [x] Publicly downloaded assets match the release hashes.
 
-These external boxes are pending in the pre-publication source snapshot. Their completed evidence is written to the publication record after the platform actions run.
+These boxes were pending in the tagged pre-publication source snapshot. Their completed evidence is now in the publication record, with the exact hosted run and anonymously downloaded asset hashes.
 
 ## Explicitly outside this preview's completed claims
 

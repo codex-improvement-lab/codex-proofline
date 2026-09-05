@@ -1,0 +1,394 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "external-github-actions",
+  "sourceCommit": "45eaebd580026a3fc2a56c1e072bf50234041d67",
+  "runId": 33951067749,
+  "url": "https://github.com/codex-improvement-lab/codex-proofline/actions/runs/33951067749",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 101265800765,
+      "name": "test (windows-latest, 24)",
+      "conclusion": "success",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/actions/runs/33951067749/job/101265800765",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci --ignore-scripts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run lint",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo:goal-delta",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run release:check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm pack --dry-run",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install and exercise the packed CLI and bundled examples",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 101265800862,
+      "name": "test (macos-latest, 20)",
+      "conclusion": "success",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/actions/runs/33951067749/job/101265800862",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci --ignore-scripts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run lint",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo:goal-delta",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run release:check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm pack --dry-run",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install and exercise the packed CLI and bundled examples",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 101265800892,
+      "name": "test (windows-latest, 20)",
+      "conclusion": "success",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/actions/runs/33951067749/job/101265800892",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci --ignore-scripts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run lint",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo:goal-delta",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run release:check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm pack --dry-run",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install and exercise the packed CLI and bundled examples",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 101265800897,
+      "name": "test (macos-latest, 24)",
+      "conclusion": "success",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/actions/runs/33951067749/job/101265800897",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci --ignore-scripts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run lint",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo:goal-delta",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run release:check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm pack --dry-run",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install and exercise the packed CLI and bundled examples",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 101265800907,
+      "name": "test (macos-latest, 22)",
+      "conclusion": "success",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/actions/runs/33951067749/job/101265800907",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci --ignore-scripts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run lint",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo:goal-delta",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run release:check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm pack --dry-run",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install and exercise the packed CLI and bundled examples",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 101265800920,
+      "name": "test (windows-latest, 22)",
+      "conclusion": "success",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/actions/runs/33951067749/job/101265800920",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci --ignore-scripts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run lint",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run demo:goal-delta",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run release:check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm pack --dry-run",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install and exercise the packed CLI and bundled examples",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

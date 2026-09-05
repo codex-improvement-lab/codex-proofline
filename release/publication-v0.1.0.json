@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "product": "codex-proofline",
+  "version": "0.1.0",
+  "releaseKind": "github-prerelease",
+  "sourceCommit": "45eaebd580026a3fc2a56c1e072bf50234041d67",
+  "tag": "v0.1.0",
+  "releaseUrl": "https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.1.0",
+  "publishedAt": "2026-09-05T06:56:41Z",
+  "verifiedAt": "2026-09-05T06:58:10.859931+00:00",
+  "candidate": {
+    "schemaVersion": 1,
+    "product": "codex-proofline",
+    "gateVersion": 2,
+    "scope": "runtime-gate-tests-v1",
+    "id": "codex-proofline-macos-rc-ad3e11f0f5645bbf",
+    "contentSha256": "ad3e11f0f5645bbf3c5665116e304cdd020c2a2960d702a3630a976b89d199ca",
+    "contentFiles": 44,
+    "installedVersion": "0.1.0+codex.macos-ad3e11f0f5645bbf",
+    "status": "awaiting-full-real-mac-rerun",
+    "previousMacEvidenceImported": false,
+    "generatedOn": "2026-09-05",
+    "evidenceClass": "source-derived-candidate-identity-not-macos-execution"
+  },
+  "ciRunUrl": "https://github.com/codex-improvement-lab/codex-proofline/actions/runs/33951067749",
+  "ciJobsPassed": 6,
+  "localTestsPassed": 42,
+  "browserChecksPassed": 13,
+  "reproduciblePackageBytes": true,
+  "packagedFileCount": 96,
+  "installedPackageSmoke": "passed",
+  "assets": [
+    {
+      "id": 545485437,
+      "name": "codex-proofline-0.1.0-source.zip",
+      "bytes": 902664,
+      "sha256": "b8cb91dde17582ffed82a8ff42abb6f0fda16965a10dad2dee21e0f2c9d9d2d7",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.1.0/codex-proofline-0.1.0-source.zip",
+      "anonymousDownloadVerified": true
+    },
+    {
+      "id": 545485473,
+      "name": "codex-proofline-0.1.0-source.zip.sha256",
+      "bytes": 100,
+      "sha256": "b0ad11e6dc80d8627d5f82207b3abf6b80b59a95bbab298475fa0c03f3bc4c71",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.1.0/codex-proofline-0.1.0-source.zip.sha256",
+      "anonymousDownloadVerified": true
+    },
+    {
+      "id": 545485516,
+      "name": "codex-proofline-0.1.0.tgz",
+      "bytes": 821643,
+      "sha256": "7b8a0a186dda7581ec42eee664c503c1fd15e38c6f90ec7a0a1976ce45f00b6b",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.1.0/codex-proofline-0.1.0.tgz",
+      "anonymousDownloadVerified": true
+    },
+    {
+      "id": 545485535,
+      "name": "codex-proofline-0.1.0.tgz.sha256",
+      "bytes": 93,
+      "sha256": "79abc06d332c73190ca956de324c26d8a719ef48e134ec2598cc38376ad0ce53",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.1.0/codex-proofline-0.1.0.tgz.sha256",
+      "anonymousDownloadVerified": true
+    }
+  ],
+  "claimBoundary": {
+    "physicalMacCurrentFullGate": "pending",
+    "priorMacEvidenceImported": false,
+    "realUserValidation": "not-observed",
+    "productionValidation": "not-observed",
+    "npmRegistryPublication": false
+  }
+}

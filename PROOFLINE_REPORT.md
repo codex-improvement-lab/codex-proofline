@@ -1,5 +1,7 @@
 # Proofline · Codex Proofline 0.1.0 release candidate
 
+Post-publication local snapshot. Hosted CI supports the exact tagged source commit; file receipts bind the retained API result bytes. See [the publication record](release/PUBLICATION.md). The stronger current physical-Mac gate remains pending and is separate from this public preview's release gate.
+
 Pre-publication local snapshot. Later exact-commit hosted CI and distribution results are recorded in [the publication record](release/PUBLICATION.md). The remaining physical-Mac gate is separate from this public preview's release gate.
 
 > **EVIDENCE GAPS** · 6/8 acceptance criteria verified · 6/9 proof lines verified

@@ -5,6 +5,19 @@ Release date: 2026-09-05.
 Repository: [codex-improvement-lab/codex-proofline](https://github.com/codex-improvement-lab/codex-proofline).
 Distribution: [GitHub prerelease v0.1.0](https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.1.0), source ZIP and installable TGZ with SHA-256 sidecars.
 
+Published at `2026-09-05T06:56:41Z`. Tag `v0.1.0` identifies source commit `45eaebd580026a3fc2a56c1e072bf50234041d67`. The public release and all four attached files were retrieved without authentication; sizes and SHA-256 values matched. See the [machine-readable publication receipt](publication-v0.1.0.json).
+
+## Observed hosted CI and assets
+
+[GitHub Actions run 33951067749](https://github.com/codex-improvement-lab/codex-proofline/actions/runs/33951067749) passed all six Windows/macOS × Node 20/22/24 jobs for that exact source commit. Each job passed the core suite, demo regeneration, release gate, actual npm dry run, and installation of the packed CLI. [Job and step evidence](ci-v0.1.0.json).
+
+| Asset | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `codex-proofline-0.1.0-source.zip` | 902664 | `b8cb91dde17582ffed82a8ff42abb6f0fda16965a10dad2dee21e0f2c9d9d2d7` |
+| `codex-proofline-0.1.0.tgz` | 821643 | `7b8a0a186dda7581ec42eee664c503c1fd15e38c6f90ec7a0a1976ce45f00b6b` |
+
+The installable package contains 96 files. Two packs from the same clean source clone were byte-identical. Its installed command shim returned `0.1.0`; the installed CLI loop and all bundled scenario projections passed.
+
 ## Release content
 
 - Dependency-free Node.js 20+ CLI and five-state acceptance-to-evidence reports.
