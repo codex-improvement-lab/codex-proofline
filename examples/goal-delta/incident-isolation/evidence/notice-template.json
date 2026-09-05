@@ -1,0 +1,5 @@
+{
+  "requiredFields": ["impact", "startTime", "affectedRegions", "workaround", "nextUpdate"],
+  "missingFields": []
+}
+

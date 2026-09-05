@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "proofline-goal-dependencies/1",
+  "evidence": [
+    { "id": "AC-WEB/viewport-matrix", "dependsOn": ["WEB-01"] },
+    { "id": "AC-LEGACY/xml-v1-export", "dependsOn": ["LEGACY-01"] },
+    { "id": "AC-PACKAGE/package-digests", "dependsOn": ["SIGN-01"] }
+  ]
+}
+

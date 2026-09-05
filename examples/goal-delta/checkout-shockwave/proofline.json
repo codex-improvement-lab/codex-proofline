@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "project": "High-volume checkout cutover",
+  "defaultFreshnessHours": 24,
+  "ledger": "evidence.jsonl",
+  "completionPolicy": "warn",
+  "criteria": [
+    {
+      "id": "AC-PAYMENT",
+      "statement": "Payment retry safety is demonstrated against the cutover build.",
+      "proof": [
+        { "id": "authorization-safety", "kind": "file", "label": "Retry and timeout authorization suite", "path": "evidence/authorization-safety.json" }
+      ]
+    },
+    {
+      "id": "AC-PERFORMANCE",
+      "statement": "The cutover build holds its latency and burst-recovery envelope.",
+      "proof": [
+        { "id": "latency-envelope", "kind": "file", "label": "Sustained checkout latency envelope", "path": "evidence/latency-envelope.json" },
+        { "id": "burst-recovery", "kind": "file", "label": "Burst recovery rehearsal", "path": "evidence/burst-recovery.json" }
+      ]
+    },
+    {
+      "id": "AC-ROLLBACK",
+      "statement": "The operator can restore the prior release without payment-ledger drift.",
+      "proof": [
+        { "id": "rollback-drill", "kind": "file", "label": "Rollback drill receipt", "path": "evidence/rollback-drill.json" }
+      ]
+    }
+  ]
+}
+

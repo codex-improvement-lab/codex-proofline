@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "project": "Regional incident response contract",
+  "defaultFreshnessHours": 24,
+  "ledger": "evidence.jsonl",
+  "completionPolicy": "warn",
+  "criteria": [
+    {
+      "id": "AC-PAGING",
+      "statement": "On-call acknowledgement is rehearsed against the current response contract.",
+      "proof": [
+        { "id": "ack-rehearsal", "kind": "file", "label": "Primary and secondary acknowledgement rehearsal", "path": "evidence/ack-rehearsal.json" }
+      ]
+    },
+    {
+      "id": "AC-RESTORE",
+      "statement": "Regional restore can complete inside the recovery window.",
+      "proof": [
+        { "id": "restore-drill", "kind": "file", "label": "Regional restore drill", "path": "evidence/restore-drill.json" }
+      ]
+    },
+    {
+      "id": "AC-NOTICE",
+      "statement": "The customer notice template contains the required incident fields.",
+      "proof": [
+        { "id": "notice-template", "kind": "file", "label": "Customer notice field audit", "path": "evidence/notice-template.json" }
+      ]
+    },
+    {
+      "id": "AC-AUDIT",
+      "statement": "The incident timeline is exportable for review.",
+      "proof": [
+        { "id": "timeline-export", "kind": "file", "label": "Incident timeline export audit", "path": "evidence/timeline-export.json" }
+      ]
+    }
+  ]
+}
+

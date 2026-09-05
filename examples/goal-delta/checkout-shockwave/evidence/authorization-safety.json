@@ -1,0 +1,6 @@
+{
+  "cases": 1842,
+  "duplicateCaptures": 0,
+  "branches": ["retry", "timeout", "late-response", "idempotency-replay"]
+}
+

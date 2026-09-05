@@ -1,0 +1,112 @@
+{
+  "scope": "Windows CUA browser automation using synthetic example inputs; viewport emulation is not physical-device evidence",
+  "observedAt": "2026-09-05T06:41:30.618Z",
+  "views": [
+    {
+      "name": "proof-mobile",
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "name": "proof-desktop",
+      "width": 1280,
+      "height": 720,
+      "overflow": false
+    },
+    {
+      "height": 720,
+      "overflow": false,
+      "width": 1280,
+      "name": "goal-delta-desktop"
+    },
+    {
+      "height": 844,
+      "overflow": false,
+      "width": 390,
+      "name": "goal-delta-mobile"
+    }
+  ],
+  "checks": [
+    {
+      "name": "gap-initially-hidden-mobile",
+      "pass": true
+    },
+    {
+      "name": "stale-filter-mobile",
+      "pass": true
+    },
+    {
+      "name": "gap-open-mobile",
+      "pass": true,
+      "status": "stale"
+    },
+    {
+      "name": "gap-keyboard-next-mobile",
+      "pass": true
+    },
+    {
+      "name": "gap-exit-hides-mobile",
+      "pass": true
+    },
+    {
+      "name": "gap-escape-hides-mobile",
+      "pass": true
+    },
+    {
+      "name": "gap-initially-hidden-desktop",
+      "pass": true
+    },
+    {
+      "name": "gap-keyboard-next-desktop",
+      "pass": true
+    },
+    {
+      "name": "gap-exit-hides-desktop",
+      "pass": true
+    },
+    {
+      "name": "gap-escape-hides-desktop",
+      "pass": true
+    },
+    {
+      "name": "readiness-unchanged",
+      "pass": true
+    },
+    {
+      "name": "goal-delta-traces-exactly-two-dependent-proof-lines",
+      "pass": true
+    },
+    {
+      "name": "goal-delta-escape-clears-trace",
+      "pass": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "proof-desktop.jpg",
+      "bytes": 76175,
+      "sha256": "7825a45794f84371e88fa3ca15e6cd02ecff3c68c1faa2de372b3d3be4bbba8e"
+    },
+    {
+      "path": "proof-mobile.jpg",
+      "bytes": 41537,
+      "sha256": "9954e256f864e5e6c0fd9893d4d4ba65a2d259e6e85a070774aad1b0197a9151"
+    },
+    {
+      "path": "goal-delta-desktop.jpg",
+      "bytes": 59933,
+      "sha256": "eb9c29bad83390fedcd74f23509478d900ac9a515685457f63429ae0a9acd803"
+    },
+    {
+      "path": "goal-delta-trace.jpg",
+      "bytes": 66796,
+      "sha256": "ce88e07952e5cb51a3402759da4b78ae4ffe441e4a8f4b3735f5ec107610f557"
+    },
+    {
+      "path": "goal-delta-mobile.jpg",
+      "bytes": 36994,
+      "sha256": "aecb53443e3d8a93ffd60c432f96aa61010cce51d7db3aa84c93aa321dd256d0"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "workprint-profile/0.1",
+  "profile": "goal-delta",
+  "title": "Goal Delta · Offline release acceptance contract",
+  "sourceRevision": "offline-release-2026.08..offline-release-2026.09",
+  "sources": [
+    {
+      "id": "contract-before",
+      "label": "Offline release acceptance contract",
+      "revision": "offline-release-2026.08"
+    },
+    {
+      "id": "contract-after",
+      "label": "Offline release acceptance contract",
+      "revision": "offline-release-2026.09"
+    }
+  ],
+  "findings": [
+    {
+      "id": "goal-delta-A11Y-01",
+      "kind": "contract-change",
+      "verdict": "added",
+      "subject": "A11Y-01 · Complete the primary workflow without pointer input.",
+      "sourceRefs": [
+        "contract-after"
+      ],
+      "affectedEvidenceIds": []
+    },
+    {
+      "id": "goal-delta-LEGACY-01",
+      "kind": "contract-change",
+      "verdict": "removed",
+      "subject": "LEGACY-01 · Retain XML v1 export compatibility.",
+      "sourceRefs": [
+        "contract-before"
+      ],
+      "affectedEvidenceIds": [
+        "AC-LEGACY/xml-v1-export"
+      ]
+    },
+    {
+      "id": "goal-delta-SIGN-01",
+      "kind": "contract-change",
+      "verdict": "unchanged",
+      "subject": "SIGN-01 · Keep the offline package inventory inspectable.",
+      "sourceRefs": [
+        "contract-before",
+        "contract-after"
+      ],
+      "affectedEvidenceIds": []
+    },
+    {
+      "id": "goal-delta-WEB-01",
+      "kind": "contract-change",
+      "verdict": "unchanged",
+      "subject": "WEB-01 · Support the documented desktop and mobile widths.",
+      "sourceRefs": [
+        "contract-before",
+        "contract-after"
+      ],
+      "affectedEvidenceIds": []
+    }
+  ],
+  "summary": {
+    "headline": "2 contract changes make 1 previously verified proof line stale.",
+    "counts": {
+      "added": 1,
+      "removed": 1,
+      "changed": 0,
+      "unchanged": 2,
+      "affectedEvidence": 1,
+      "newlyStaleEvidence": 1,
+      "usableEvidence": 2,
+      "rerunEvidence": 0,
+      "retireEvidence": 1,
+      "uncoveredAddedItems": 1
+    }
+  }
+}

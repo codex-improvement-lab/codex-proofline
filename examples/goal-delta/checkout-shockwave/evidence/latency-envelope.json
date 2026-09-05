@@ -1,0 +1,8 @@
+{
+  "requestsPerSecond": 400,
+  "p50Milliseconds": 440,
+  "p95Milliseconds": 1220,
+  "p99Milliseconds": 1710,
+  "sampleMinutes": 45
+}
+

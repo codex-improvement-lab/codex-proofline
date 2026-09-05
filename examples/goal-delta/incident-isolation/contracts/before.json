@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "proofline-goal-contract/1",
+  "title": "Regional incident response contract",
+  "revision": "incident-response-r17",
+  "items": [
+    { "id": "PAGE-01", "goal": "Acknowledge a regional severity-one page.", "acceptance": "Primary or secondary on-call acknowledges within five minutes." },
+    { "id": "RESTORE-01", "goal": "Restore the regional control plane.", "acceptance": "The restore drill completes within 25 minutes with no unreconciled writes." },
+    { "id": "NOTICE-01", "goal": "Publish a complete customer incident notice.", "acceptance": "The template includes impact, start time, affected regions, workaround, and next update." },
+    { "id": "AUDIT-01", "goal": "Retain an inspectable response timeline.", "acceptance": "Every page, acknowledgement, mitigation, and recovery event appears in the export." }
+  ]
+}
+

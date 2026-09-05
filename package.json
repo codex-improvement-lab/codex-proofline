@@ -1,0 +1,66 @@
+{
+  "name": "codex-proofline",
+  "version": "0.1.0",
+  "description": "Acceptance-to-evidence proof graphs for agent-built software.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codex-improvement-lab/codex-proofline.git"
+  },
+  "homepage": "https://github.com/codex-improvement-lab/codex-proofline#readme",
+  "bugs": {
+    "url": "https://github.com/codex-improvement-lab/codex-proofline/issues"
+  },
+  "type": "module",
+  "bin": {
+    "proofline": "./bin/proofline.js"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    ".codex-plugin/",
+    "assets/",
+    "bin/",
+    "docs/",
+    "docs/MACOS_HANDOFF.md",
+    "docs/evidence/macos-replacement-candidate.json",
+    "examples/",
+    "hooks/",
+    "schema/",
+    "scripts/macos-activation.mjs",
+    "scripts/macos-contract.mjs",
+    "scripts/macos-readiness.mjs",
+    "scripts/macos-readiness.sh",
+    "scripts/proofline-stop.mjs",
+    "skills/",
+    "src/",
+    "CHANGELOG.md",
+    "LICENSE",
+    "PROOFLINE_REPORT.md",
+    "README.md",
+    "RELEASE_NOTES.md",
+    "release/PUBLICATION.md",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "demo": "node ./bin/proofline.js report --manifest ./examples/release-readiness/proofline.json --format html --output ./examples/release-readiness/proofline-report.html --at 2026-09-05T00:00:00.000Z",
+    "demo:goal-delta": "node ./scripts/build-goal-delta-examples.mjs",
+    "lint": "node ./scripts/lint.mjs",
+    "test": "node --test --test-reporter=spec",
+    "release:check": "node ./scripts/release-check.mjs",
+    "macos:implementation-check": "node ./scripts/macos-readiness.mjs --implementation-check --output ./.proofline/tmp/macos-readiness-implementation.json",
+    "macos:gate": "sh ./scripts/macos-readiness.sh --output ./docs/evidence/macos-readiness.json",
+    "check": "npm run lint && npm test && npm run release:check"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "acceptance-criteria",
+    "evidence",
+    "release",
+    "codex",
+    "verification"
+  ],
+  "license": "MIT"
+}

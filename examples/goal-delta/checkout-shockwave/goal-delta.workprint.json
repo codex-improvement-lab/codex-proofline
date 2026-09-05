@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "workprint-profile/0.1",
+  "profile": "goal-delta",
+  "title": "Goal Delta · Checkout cutover acceptance contract",
+  "sourceRevision": "checkout-cutover-v3.2..checkout-cutover-v3.3",
+  "sources": [
+    {
+      "id": "contract-before",
+      "label": "Checkout cutover acceptance contract",
+      "revision": "checkout-cutover-v3.2"
+    },
+    {
+      "id": "contract-after",
+      "label": "Checkout cutover acceptance contract",
+      "revision": "checkout-cutover-v3.3"
+    }
+  ],
+  "findings": [
+    {
+      "id": "goal-delta-OPS-01",
+      "kind": "contract-change",
+      "verdict": "unchanged",
+      "subject": "OPS-01 · Rollback the cutover inside one operator window.",
+      "sourceRefs": [
+        "contract-before",
+        "contract-after"
+      ],
+      "affectedEvidenceIds": []
+    },
+    {
+      "id": "goal-delta-PAY-01",
+      "kind": "contract-change",
+      "verdict": "unchanged",
+      "subject": "PAY-01 · Authorize payment retries without duplicate capture.",
+      "sourceRefs": [
+        "contract-before",
+        "contract-after"
+      ],
+      "affectedEvidenceIds": []
+    },
+    {
+      "id": "goal-delta-PERF-01",
+      "kind": "contract-change",
+      "verdict": "changed",
+      "subject": "PERF-01 · Keep checkout responsive at launch traffic.",
+      "sourceRefs": [
+        "contract-before",
+        "contract-after"
+      ],
+      "affectedEvidenceIds": [
+        "AC-PERFORMANCE/burst-recovery",
+        "AC-PERFORMANCE/latency-envelope"
+      ]
+    }
+  ],
+  "summary": {
+    "headline": "1 contract change makes 2 previously verified proof lines stale.",
+    "counts": {
+      "added": 0,
+      "removed": 0,
+      "changed": 1,
+      "unchanged": 2,
+      "affectedEvidence": 2,
+      "newlyStaleEvidence": 2,
+      "usableEvidence": 2,
+      "rerunEvidence": 2,
+      "retireEvidence": 0,
+      "uncoveredAddedItems": 0
+    }
+  }
+}

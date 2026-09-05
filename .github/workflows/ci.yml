@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+        node: [20, 22, 24]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run lint
+      - run: npm test
+      - run: npm run demo
+      - run: npm run demo:goal-delta
+      - run: npm run release:check
+      - run: npm pack --dry-run
+      - name: Install and exercise the packed CLI and bundled examples
+        shell: bash
+        run: |
+          mkdir -p .proofline/tmp/package
+          npm pack --pack-destination .proofline/tmp/package
+          npm install --ignore-scripts --no-audit --no-fund --prefix .proofline/tmp/installed ./.proofline/tmp/package/codex-proofline-0.1.0.tgz
+          node scripts/package-smoke.mjs .proofline/tmp/installed/node_modules/codex-proofline

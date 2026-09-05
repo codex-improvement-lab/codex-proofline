@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "proofline-goal-dependencies/1",
+  "evidence": [
+    { "id": "AC-PAYMENT/authorization-safety", "dependsOn": ["PAY-01"] },
+    { "id": "AC-PERFORMANCE/latency-envelope", "dependsOn": ["PERF-01"] },
+    { "id": "AC-PERFORMANCE/burst-recovery", "dependsOn": ["PERF-01"] },
+    { "id": "AC-ROLLBACK/rollback-drill", "dependsOn": ["OPS-01"] }
+  ]
+}
+

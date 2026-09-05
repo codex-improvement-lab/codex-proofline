@@ -1,0 +1,36 @@
+#!/bin/sh
+# Codex Improvement Lab staged-secret gate.
+# Prefer Gitleaks when installed; otherwise use a dependency-free high-confidence scan.
+
+set -u
+
+if command -v gitleaks >/dev/null 2>&1; then
+  exec gitleaks git --pre-commit --staged --no-banner --redact=100 .
+fi
+
+PATTERN='(sk-(proj-|ant-)?[A-Za-z0-9_-]{20,}|sk_(live|test)_[A-Za-z0-9]{16,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|(AKIA|ASIA)[A-Z0-9]{16}|AIza[0-9A-Za-z_-]{35}|xox[baprs]-[A-Za-z0-9-]{10,}|[Bb]earer[[:space:]]+[A-Za-z0-9._~+/-]{20,}|-----BEGIN (RSA |EC |OPENSSH |DSA |PGP )?PRIVATE KEY-----|(api[-_]?key|client[-_]?secret|access[-_]?token|auth[-_]?token|password)[[:space:]]*[:=][[:space:]]*[^[:space:],;]{20,})'
+
+FILES=$(git diff --cached --name-only --diff-filter=ACMR)
+[ -n "$FILES" ] || exit 0
+
+status=0
+old_ifs=$IFS
+IFS='
+'
+for path in $FILES; do
+  [ -n "$path" ] || continue
+  if git show ":$path" 2>/dev/null | LC_ALL=C grep -Eaiq "$PATTERN"; then
+    printf '%s
+' "Potential secret pattern in staged file: $path" >&2
+    status=1
+  fi
+done
+IFS=$old_ifs
+
+if [ "$status" -ne 0 ]; then
+  printf '%s
+' "Commit blocked. Remove the credential, or construct synthetic test fixtures at runtime." >&2
+fi
+
+exit "$status"
+

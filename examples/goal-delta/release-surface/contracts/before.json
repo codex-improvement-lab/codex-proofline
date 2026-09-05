@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "proofline-goal-contract/1",
+  "title": "Offline release acceptance contract",
+  "revision": "offline-release-2026.08",
+  "items": [
+    { "id": "WEB-01", "goal": "Support the documented desktop and mobile widths.", "acceptance": "The primary workflow has no horizontal overflow at 1440x900 and 390x844." },
+    { "id": "LEGACY-01", "goal": "Retain XML v1 export compatibility.", "acceptance": "The exported fixture matches the v1 element and attribute inventory." },
+    { "id": "SIGN-01", "goal": "Keep the offline package inventory inspectable.", "acceptance": "Every packaged file has a matching SHA-256 digest entry." }
+  ]
+}
+

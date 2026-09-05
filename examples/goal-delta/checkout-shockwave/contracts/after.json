@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "proofline-goal-contract/1",
+  "title": "Checkout cutover acceptance contract",
+  "revision": "checkout-cutover-v3.3",
+  "items": [
+    { "id": "PAY-01", "goal": "Authorize payment retries without duplicate capture.", "acceptance": "The retry and timeout suite records zero duplicate captures across at least 1,500 cases." },
+    { "id": "PERF-01", "goal": "Keep checkout responsive at launch traffic.", "acceptance": "p95 confirmation latency is at most 950 ms at 700 requests per second, and a 2x burst recovers within 35 seconds." },
+    { "id": "OPS-01", "goal": "Rollback the cutover inside one operator window.", "acceptance": "The prior release is restored within 12 minutes with zero payment-ledger drift." }
+  ]
+}
+

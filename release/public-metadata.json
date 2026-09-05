@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "observedOn": "2026-09-05",
+  "maintainer": "Elias S.W.",
+  "githubLogin": "eliasruntime",
+  "organization": "codex-improvement-lab",
+  "repository": "https://github.com/codex-improvement-lab/codex-proofline",
+  "securityReporting": "https://github.com/codex-improvement-lab/codex-proofline/security/advisories/new",
+  "authorization": "Owner explicitly requested completion and publication of Proofline in the current task.",
+  "identityEvidence": "Authenticated GitHub API user matched eliasruntime; local Git author matched the maintainer and public noreply address."
+}

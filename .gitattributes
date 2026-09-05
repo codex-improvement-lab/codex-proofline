@@ -1,0 +1,6 @@
+* text=auto eol=lf whitespace=-blank-at-eof
+*.cmd text eol=lf
+*.png binary
+*.jpg binary
+*.zip binary
+docs/evidence/lab-targeted-retest-2026-08-30.json -text

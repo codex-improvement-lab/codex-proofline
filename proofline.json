@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "project": "Codex Proofline 0.1.0 release candidate",
+  "defaultFreshnessHours": 168,
+  "completionPolicy": "warn",
+  "criteria": [
+    {
+      "id": "AC-01",
+      "statement": "The automated core suite passes against the current source inputs on Windows.",
+      "proof": [
+        {
+          "id": "windows-tests",
+          "kind": "command",
+          "label": "Node test suite",
+          "environment": "Windows 11 Home build 26200 / Node 24.19.0 / automated",
+          "inputs": ["src", "test", "test-support", "package.json", "package-lock.json"],
+          "freshnessHours": 168,
+          "expect": { "exitCode": 0 }
+        }
+      ]
+    },
+    {
+      "id": "AC-02",
+      "statement": "The local release-file gate passes against current package and documentation inputs.",
+      "proof": [
+        {
+          "id": "release-gate",
+          "kind": "command",
+          "label": "Release file gate",
+          "environment": "Windows 11 Home build 26200 / Node 24.19.0 / automated",
+          "inputs": [
+            ".codex-plugin",
+            "assets",
+            "docs",
+            "hooks",
+            "skills",
+            "scripts/release-check.mjs",
+            "CONTRIBUTING.md",
+            "README.md",
+            "RELEASE_CHECKLIST.md",
+            "SECURITY.md",
+            "package.json"
+          ],
+          "freshnessHours": 168,
+          "expect": { "exitCode": 0 }
+        }
+      ]
+    },
+    {
+      "id": "AC-03",
+      "statement": "The npm-compatible package can be packed locally with the release allowlist.",
+      "proof": [
+        {
+          "id": "package-pack",
+          "kind": "command",
+          "label": "Actual pnpm package creation",
+          "environment": "Windows 11 Home build 26200 / pnpm 11.19.0 / automated",
+          "inputs": [
+            ".codex-plugin",
+            "assets",
+            "bin",
+            "hooks",
+            "schema",
+            "scripts",
+            "skills",
+            "src",
+            "package.json",
+            "package-lock.json",
+            "README.md",
+            "CHANGELOG.md",
+            "docs/MACOS_HANDOFF.md",
+            "LICENSE"
+          ],
+          "freshnessHours": 168,
+          "expect": { "exitCode": 0 }
+        }
+      ]
+    },
+    {
+      "id": "AC-04",
+      "statement": "The desktop proof graph has current automated Windows visual evidence.",
+      "proof": [
+        {
+          "id": "windows-visual",
+          "kind": "screenshot",
+          "label": "Desktop proof graph",
+          "path": "docs/evidence/publication-2026-09-05/proof-desktop.jpg",
+          "environment": "Windows 11 build 26200 / CUA browser / automated viewport",
+          "freshnessHours": 168
+        }
+      ]
+    },
+    {
+      "id": "AC-05",
+      "statement": "The local marketplace, fresh-task Skill/Stop hook, and core workflow pass on a real Mac.",
+      "proof": [
+        {
+          "id": "macos-gate",
+          "kind": "command",
+          "label": "Real-Mac readiness gate",
+          "environment": "macOS / local host / automated readiness gate",
+          "inputs": [
+            ".codex-plugin",
+            "bin",
+            "hooks",
+            "scripts",
+            "skills",
+            "src",
+            "test",
+            "test-support",
+            "package.json",
+            "package-lock.json"
+          ],
+          "freshnessHours": 168,
+          "expect": { "exitCode": 0 }
+        },
+        {
+          "id": "macos-evidence",
+          "kind": "file",
+          "label": "Redacted real-Mac gate receipt",
+          "path": "docs/evidence/macos-readiness.json",
+          "freshnessHours": 168
+        }
+      ]
+    },
+    {
+      "id": "AC-06",
+      "statement": "The declared GitHub Actions Windows and macOS matrix has an observed external run.",
+      "proof": [
+        {
+          "id": "github-actions",
+          "kind": "file",
+          "label": "External CI matrix result",
+          "path": "release/ci-v0.1.0.json",
+          "environment": "GitHub Actions / windows-latest + macos-latest / external CI",
+          "freshnessHours": 168
+        }
+      ]
+    },
+    {
+      "id": "AC-07",
+      "statement": "Public maintainer identity and repository metadata are owner-confirmed.",
+      "proof": [
+        {
+          "id": "public-metadata",
+          "kind": "file",
+          "label": "Confirmed public metadata",
+          "path": "release/public-metadata.json",
+          "freshnessHours": 8760
+        }
+      ]
+    },
+    {
+      "id": "AC-08",
+      "statement": "The non-macOS implementation probe exercises marketplace lifecycle, spaced paths, contracts, reports, hook logic, cleanup, and evidence redaction without satisfying the real-Mac gate.",
+      "proof": [
+        {
+          "id": "windows-macos-implementation-check",
+          "kind": "command",
+          "label": "Windows Mac-gate implementation check",
+          "environment": "Windows 11 Home build 26200 / Codex CLI 0.145.0 / non-macOS implementation check",
+          "inputs": [
+            ".codex-plugin",
+            "bin",
+            "hooks",
+            "scripts",
+            "skills",
+            "src",
+            "test",
+            "test-support",
+            "package.json",
+            "package-lock.json"
+          ],
+          "freshnessHours": 168,
+          "expect": { "exitCode": 0 }
+        }
+      ]
+    }
+  ]
+}

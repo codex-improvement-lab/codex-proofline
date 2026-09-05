@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "workprint-profile/0.1",
+  "profile": "goal-delta",
+  "title": "Goal Delta · Regional incident response contract",
+  "sourceRevision": "incident-response-r17..incident-response-r18",
+  "sources": [
+    {
+      "id": "contract-before",
+      "label": "Regional incident response contract",
+      "revision": "incident-response-r17"
+    },
+    {
+      "id": "contract-after",
+      "label": "Regional incident response contract",
+      "revision": "incident-response-r18"
+    }
+  ],
+  "findings": [
+    {
+      "id": "goal-delta-AUDIT-01",
+      "kind": "contract-change",
+      "verdict": "unchanged",
+      "subject": "AUDIT-01 · Retain an inspectable response timeline.",
+      "sourceRefs": [
+        "contract-before",
+        "contract-after"
+      ],
+      "affectedEvidenceIds": []
+    },
+    {
+      "id": "goal-delta-NOTICE-01",
+      "kind": "contract-change",
+      "verdict": "unchanged",
+      "subject": "NOTICE-01 · Publish a complete customer incident notice.",
+      "sourceRefs": [
+        "contract-before",
+        "contract-after"
+      ],
+      "affectedEvidenceIds": []
+    },
+    {
+      "id": "goal-delta-PAGE-01",
+      "kind": "contract-change",
+      "verdict": "changed",
+      "subject": "PAGE-01 · Acknowledge a regional severity-one page.",
+      "sourceRefs": [
+        "contract-before",
+        "contract-after"
+      ],
+      "affectedEvidenceIds": [
+        "AC-PAGING/ack-rehearsal"
+      ]
+    },
+    {
+      "id": "goal-delta-RESTORE-01",
+      "kind": "contract-change",
+      "verdict": "unchanged",
+      "subject": "RESTORE-01 · Restore the regional control plane.",
+      "sourceRefs": [
+        "contract-before",
+        "contract-after"
+      ],
+      "affectedEvidenceIds": []
+    }
+  ],
+  "summary": {
+    "headline": "1 contract change makes 1 previously verified proof line stale.",
+    "counts": {
+      "added": 0,
+      "removed": 0,
+      "changed": 1,
+      "unchanged": 3,
+      "affectedEvidence": 1,
+      "newlyStaleEvidence": 1,
+      "usableEvidence": 3,
+      "rerunEvidence": 1,
+      "retireEvidence": 0,
+      "uncoveredAddedItems": 0
+    }
+  }
+}

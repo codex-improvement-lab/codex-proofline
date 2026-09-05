@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Proofline · Northstar v1.4 release</title>
+  <style>
+    :root {
+      --ink: #f1f4e8;
+      --muted: #929b91;
+      --base: #0b0d0c;
+      --panel: #111512;
+      --panel-2: #171c18;
+      --line: #29312b;
+      --verified: #b7f34a;
+      --missing: #8c9690;
+      --stale: #ffbd59;
+      --declared-only: #be8cff;
+      --failed: #ff6b66;
+      --shadow: 0 24px 80px rgba(0, 0, 0, .35);
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--base); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 88% 6%, rgba(183, 243, 74, .10), transparent 24rem),
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+        var(--base);
+      background-size: auto, 34px 34px, 34px 34px, auto;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(100deg, rgba(255,255,255,.018), transparent 22%, transparent 78%, rgba(183,243,74,.022));
+    }
+    .shell { width: min(1320px, calc(100% - 40px)); margin: 0 auto; padding: 32px 0 72px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 760; letter-spacing: -.02em; }
+    .mark { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid var(--verified); color: var(--verified); transform: rotate(45deg); }
+    .mark span { transform: rotate(-45deg); font-size: 14px; }
+    .generated { color: var(--muted); font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; text-align: right; }
+    .hero { display: grid; grid-template-columns: 1.45fr .55fr; gap: 28px; align-items: end; padding: 92px 0 48px; border-bottom: 1px solid var(--line); }
+    .kicker { margin: 0 0 18px; color: var(--verified); font: 700 12px/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 900px; font-size: clamp(46px, 7vw, 96px); line-height: .91; letter-spacing: -.068em; font-weight: 760; }
+    h1 em { color: var(--muted); font-style: normal; }
+    .hero-copy { margin: 24px 0 0; max-width: 680px; color: #b8c0b9; font-size: 18px; line-height: 1.55; }
+    .score { padding: 26px; background: rgba(17,21,18,.84); border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .score__label { color: var(--muted); font: 700 11px/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .14em; text-transform: uppercase; }
+    .score__number { margin-top: 12px; font-size: 74px; line-height: 1; letter-spacing: -.07em; }
+    .score__number span { color: var(--muted); font-size: 30px; }
+    .meter { height: 7px; margin-top: 22px; background: #232923; overflow: hidden; }
+    .meter span { display: block; width: 33%; height: 100%; background: var(--verified); box-shadow: 0 0 24px rgba(183,243,74,.55); }
+    .score__state { display: flex; justify-content: space-between; margin-top: 12px; color: var(--stale); font: 700 12px/1 ui-monospace, SFMono-Regular, Consolas, monospace; text-transform: uppercase; }
+    .toolbar { position: sticky; top: 0; z-index: 10; display: flex; gap: 9px; align-items: center; flex-wrap: wrap; padding: 18px 0; background: rgba(11,13,12,.91); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+    .toolbar__label { margin-right: 6px; color: var(--muted); font: 700 11px/1 ui-monospace, SFMono-Regular, Consolas, monospace; text-transform: uppercase; letter-spacing: .12em; }
+    button { color: inherit; font: inherit; }
+    .filter { display: flex; gap: 7px; align-items: center; padding: 8px 11px; background: transparent; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); cursor: pointer; font-size: 12px; }
+    .filter b { color: var(--ink); font-weight: 700; }
+    .filter:hover, .filter.active { border-color: #59645c; background: var(--panel-2); color: var(--ink); }
+    .filter-all { margin-left: auto; }
+    .gap-tour { display: flex; gap: 8px; align-items: center; padding: 9px 13px; border: 1px solid var(--failed); background: rgba(255,107,102,.08); color: #ffd1cf; cursor: pointer; font: 700 11px/1 ui-monospace, SFMono-Regular, Consolas, monospace; text-transform: uppercase; letter-spacing: .06em; }
+    .gap-tour:hover { background: rgba(255,107,102,.16); box-shadow: 0 0 28px rgba(255,107,102,.12); }
+    .gap-tour:disabled { border-color: var(--line); color: var(--muted); background: transparent; cursor: default; }
+    .gap-tour__pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--failed); box-shadow: 0 0 0 0 rgba(255,107,102,.4); animation: gap-pulse 1.5s ease infinite; }
+    .gap-tour:disabled .gap-tour__pulse { background: var(--verified); animation: none; }
+    .gap-tour kbd, .gap-inspector kbd { padding: 3px 5px; border: 1px solid currentColor; background: transparent; color: inherit; font: 700 9px/1 ui-monospace, SFMono-Regular, Consolas, monospace; opacity: .72; }
+    main { padding-top: 22px; }
+    .criterion-row { display: grid; grid-template-columns: minmax(260px, .78fr) 54px minmax(420px, 1.55fr); gap: 0; align-items: stretch; margin: 20px 0; }
+    .criterion-row.is-hidden { display: none; }
+    .criterion-card, .proof-card { position: relative; background: rgba(17,21,18,.92); border: 1px solid var(--line); }
+    .criterion-card { display: flex; min-height: 218px; flex-direction: column; padding: 24px; overflow: hidden; }
+    .criterion-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--status); }
+    .criterion-card__eyebrow, .kind, dt { color: var(--muted); font: 700 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .criterion-card__id { margin-top: 30px; color: var(--status); font: 700 12px/1 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .criterion-card h2 { margin: 12px 0 30px; font-size: 24px; line-height: 1.22; letter-spacing: -.035em; }
+    .criterion-card__footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; color: var(--muted); font-size: 12px; }
+    .connector { position: relative; min-height: 100%; }
+    .connector::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; border-top: 1px solid #465048; }
+    .connector span { position: absolute; top: calc(50% - 4px); right: -1px; width: 8px; height: 8px; background: var(--verified); border-radius: 50%; box-shadow: 0 0 0 5px rgba(183,243,74,.08); }
+    .proof-stack { display: grid; gap: 10px; }
+    .proof-card { --status: var(--missing); padding: 19px 20px; border-left: 3px solid var(--status); }
+    .proof-card { transition: opacity 180ms ease, transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
+    body.gap-tour-active .proof-card:not(.is-tour-target) { opacity: .24; }
+    .proof-card.is-tour-target { z-index: 2; border-color: var(--status); box-shadow: 0 0 0 1px var(--status), 0 18px 60px rgba(0,0,0,.52), -8px 0 28px color-mix(in srgb, var(--status) 18%, transparent); transform: translateX(-5px); }
+    .proof-card__topline { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .status-pill { display: inline-flex; align-items: center; gap: 6px; color: var(--status); font: 700 10px/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .proof-card h3 { margin: 14px 0 5px; font-size: 16px; letter-spacing: -.015em; }
+    .reason { margin: 0; color: #a9b1aa; font-size: 13px; line-height: 1.45; }
+    .command { display: flex; gap: 10px; margin-top: 14px; padding: 10px 12px; overflow: auto; background: #090b0a; border: 1px solid #202620; color: #d8ded5; font: 12px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .command span { color: var(--verified); }
+    dl { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 10px; margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line); }
+    dl div { min-width: 0; }
+    dd { margin: 5px 0 0; color: #c4cbc4; font: 11px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; overflow-wrap: anywhere; }
+    .status-verified { --status: var(--verified); }
+    .status-missing { --status: var(--missing); }
+    .status-stale { --status: var(--stale); }
+    .status-declared-only { --status: var(--declared-only); }
+    .status-failed { --status: var(--failed); }
+    .notice { margin-top: 42px; padding: 20px 22px; border: 1px solid var(--line); background: rgba(17,21,18,.82); color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .notice strong { color: var(--ink); }
+    .gap-inspector { --gap-color: var(--failed); position: fixed; z-index: 40; right: 22px; bottom: 22px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: end; width: min(580px, calc(100vw - 44px)); padding: 17px 18px; border: 1px solid var(--gap-color); background: rgba(11,13,12,.96); box-shadow: 0 24px 80px rgba(0,0,0,.6); backdrop-filter: blur(18px); }
+    .gap-inspector[hidden] { display: none; }
+    .gap-inspector[data-status="missing"] { --gap-color: var(--missing); }
+    .gap-inspector[data-status="stale"] { --gap-color: var(--stale); }
+    .gap-inspector[data-status="declared-only"] { --gap-color: var(--declared-only); }
+    .gap-inspector[data-status="failed"] { --gap-color: var(--failed); }
+    .gap-inspector::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--gap-color); box-shadow: 0 0 24px color-mix(in srgb, var(--gap-color) 55%, transparent); }
+    .gap-inspector__copy { min-width: 0; }
+    .gap-inspector__copy > span { color: var(--gap-color); font: 700 10px/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .14em; text-transform: uppercase; }
+    .gap-inspector strong { display: block; margin-top: 8px; font-size: 16px; }
+    .gap-inspector p { margin: 6px 0 0; color: #b7beb7; font-size: 12px; line-height: 1.5; }
+    .gap-inspector__actions { display: flex; gap: 7px; align-items: center; }
+    .gap-inspector button { min-height: 34px; padding: 0 10px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; font: 700 10px/1 ui-monospace, SFMono-Regular, Consolas, monospace; text-transform: uppercase; }
+    .gap-inspector #gap-next { display: inline-flex; gap: 7px; align-items: center; border-color: var(--gap-color); color: var(--ink); }
+    .gap-inspector #gap-next:hover { background: color-mix(in srgb, var(--gap-color) 14%, transparent); }
+    @keyframes gap-pulse { 50% { box-shadow: 0 0 0 7px rgba(255,107,102,0); } }
+    footer { display: flex; justify-content: space-between; gap: 20px; padding-top: 24px; color: #687169; font: 11px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 64px; }
+      .score { max-width: 360px; }
+      .criterion-row { grid-template-columns: 1fr; gap: 10px; }
+      .connector { display: none; }
+      dl { grid-template-columns: 1fr; }
+      .filter-all { margin-left: 0; }
+    }
+    @media (max-width: 540px) {
+      .shell { width: min(100% - 24px, 1320px); padding-top: 20px; }
+      header { align-items: flex-start; }
+      .hero { padding-top: 48px; }
+      h1 { font-size: 48px; }
+      .hero-copy { font-size: 15px; }
+      .generated { max-width: 180px; }
+      .criterion-card { min-height: 190px; }
+      .gap-inspector { grid-template-columns: 1fr; }
+      footer { flex-direction: column; }
+    }
+    @media print {
+      body { background: #fff; color: #111; }
+      .shell { width: 100%; padding: 20px; }
+      .toolbar { display: none; }
+      .gap-inspector { display: none; }
+      .criterion-card, .proof-card, .score, .notice { break-inside: avoid; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand"><span class="mark" aria-hidden="true"><span>PL</span></span> Codex Proofline</div>
+      <div class="generated">proofline.json<br>2026-09-05T06:50:17.609Z</div>
+    </header>
+    <section class="hero">
+      <div>
+        <p class="kicker">Acceptance → evidence</p>
+        <h1>Proof, <em>not promises.</em></h1>
+        <p class="hero-copy">Northstar v1.4 release connects every acceptance criterion to observed commands, files, screenshots, environments, and timestamps—then makes the gaps impossible to miss.</p>
+      </div>
+      <aside class="score" aria-label="Readiness score">
+        <div class="score__label">Acceptance readiness</div>
+        <div class="score__number">2<span>/6</span></div>
+        <div class="meter"><span></span></div>
+        <div class="score__state"><span>Evidence gaps</span><span>33%</span></div>
+      </aside>
+    </section>
+    <nav class="toolbar" aria-label="Filter proof lines">
+      <span class="toolbar__label">Proof lines</span>
+      <button class="filter" data-filter="verified" type="button"><span>✓</span>Verified <b>2</b></button>
+<button class="filter" data-filter="missing" type="button"><span>○</span>Missing <b>1</b></button>
+<button class="filter" data-filter="stale" type="button"><span>◷</span>Stale <b>1</b></button>
+<button class="filter" data-filter="declared-only" type="button"><span>!</span>Declared only <b>1</b></button>
+<button class="filter" data-filter="failed" type="button"><span>×</span>Failed <b>1</b></button>
+      <button class="gap-tour" id="gap-tour" type="button" aria-keyshortcuts="G" ><span class="gap-tour__pulse"></span>Inspect next gap <b>4</b><kbd aria-hidden="true">G</kbd></button>
+      <button class="filter filter-all active" data-filter="all" type="button">Show all <b>6</b></button>
+    </nav>
+    <main>
+      <section class="criterion-row" data-status="verified">
+      <article class="criterion-card status-verified">
+        <div class="criterion-card__eyebrow">Acceptance criterion</div>
+        <div class="criterion-card__id">AC-01</div>
+        <h2>The automated release checks pass on the observed environment.</h2>
+        <div class="criterion-card__footer">
+          <span class="status-pill"><span aria-hidden="true">✓</span> Verified</span>
+          <span>1/1 proof lines</span>
+        </div>
+      </article>
+      <div class="connector" aria-hidden="true"><span></span></div>
+      <div class="proof-stack">
+        <article class="proof-card status-verified" data-status="verified" data-proof-label="Release check suite" data-proof-reason="Observed evidence is present, current, and passing.">
+      <div class="proof-card__topline">
+        <span class="kind">command</span>
+        <span class="status-pill"><span aria-hidden="true">✓</span> Verified</span>
+      </div>
+      <h3>Release check suite</h3>
+      <p class="reason">Observed evidence is present, current, and passing.</p>
+      <div class="command"><span>$</span><code>.\fixtures\pass.cmd</code></div>
+      <dl>
+        <div><dt>Evidence time</dt><dd>observed 13d ago · 2026-08-22T09:09:32.263Z</dd></div>
+        <div><dt>Environment</dt><dd>Windows 11 / local command shim / automated</dd></div>
+        <div><dt>Receipt</dt><dd>exit 0 · 28ms · stdout bbd577e8f7d9 · inputs aa8a226ddd08 · receipt 9281dfe51a5a</dd></div>
+      </dl>
+    </article>
+      </div>
+    </section>
+<section class="criterion-row" data-status="verified">
+      <article class="criterion-card status-verified">
+        <div class="criterion-card__eyebrow">Acceptance criterion</div>
+        <div class="criterion-card__id">AC-02</div>
+        <h2>The release note artifact matches the captured receipt.</h2>
+        <div class="criterion-card__footer">
+          <span class="status-pill"><span aria-hidden="true">✓</span> Verified</span>
+          <span>1/1 proof lines</span>
+        </div>
+      </article>
+      <div class="connector" aria-hidden="true"><span></span></div>
+      <div class="proof-stack">
+        <article class="proof-card status-verified" data-status="verified" data-proof-label="Release note artifact" data-proof-reason="Observed evidence is present, current, and passing.">
+      <div class="proof-card__topline">
+        <span class="kind">file</span>
+        <span class="status-pill"><span aria-hidden="true">✓</span> Verified</span>
+      </div>
+      <h3>Release note artifact</h3>
+      <p class="reason">Observed evidence is present, current, and passing.</p>
+
+      <dl>
+        <div><dt>Evidence time</dt><dd>observed 13d ago · 2026-08-22T09:04:18.430Z</dd></div>
+        <div><dt>Environment</dt><dd>win32 10.0.26200</dd></div>
+        <div><dt>Receipt</dt><dd>release/notes.md · 167 bytes · file d16f8271ff42 · receipt f4bc05f55749</dd></div>
+      </dl>
+    </article>
+      </div>
+    </section>
+<section class="criterion-row" data-status="stale">
+      <article class="criterion-card status-stale">
+        <div class="criterion-card__eyebrow">Acceptance criterion</div>
+        <div class="criterion-card__id">AC-03</div>
+        <h2>The primary workflow has current Windows visual evidence.</h2>
+        <div class="criterion-card__footer">
+          <span class="status-pill"><span aria-hidden="true">◷</span> Stale</span>
+          <span>0/1 proof lines</span>
+        </div>
+      </article>
+      <div class="connector" aria-hidden="true"><span></span></div>
+      <div class="proof-stack">
+        <article class="proof-card status-stale" data-status="stale" data-proof-label="Windows overview" data-proof-reason="Evidence is older than 24h.">
+      <div class="proof-card__topline">
+        <span class="kind">screenshot</span>
+        <span class="status-pill"><span aria-hidden="true">◷</span> Stale</span>
+      </div>
+      <h3>Windows overview</h3>
+      <p class="reason">Evidence is older than 24h.</p>
+
+      <dl>
+        <div><dt>Evidence time</dt><dd>observed 597d ago · 2025-01-15T12:00:00.000Z · logged 2026-08-22T09:16:57.036Z</dd></div>
+        <div><dt>Environment</dt><dd>Windows 11 / Chromium / automated browser</dd></div>
+        <div><dt>Receipt</dt><dd>evidence/product-overview.png · 75212 bytes · file ed4938f4b841 · receipt f403a91060b7</dd></div>
+      </dl>
+    </article>
+      </div>
+    </section>
+<section class="criterion-row" data-status="declared-only">
+      <article class="criterion-card status-declared-only">
+        <div class="criterion-card__eyebrow">Acceptance criterion</div>
+        <div class="criterion-card__id">AC-04</div>
+        <h2>The release flow is verified on a physical macOS device.</h2>
+        <div class="criterion-card__footer">
+          <span class="status-pill"><span aria-hidden="true">!</span> Declared only</span>
+          <span>0/1 proof lines</span>
+        </div>
+      </article>
+      <div class="connector" aria-hidden="true"><span></span></div>
+      <div class="proof-stack">
+        <article class="proof-card status-declared-only" data-status="declared-only" data-proof-label="Physical macOS release flow" data-proof-reason="Declared, not observed: Awaiting physical macOS device validation; Windows automation is not a substitute.">
+      <div class="proof-card__topline">
+        <span class="kind">screenshot</span>
+        <span class="status-pill"><span aria-hidden="true">!</span> Declared only</span>
+      </div>
+      <h3>Physical macOS release flow</h3>
+      <p class="reason">Declared, not observed: Awaiting physical macOS device validation; Windows automation is not a substitute.</p>
+
+      <dl>
+        <div><dt>Evidence time</dt><dd>declared 13d ago · 2026-08-22T09:04:19.286Z</dd></div>
+        <div><dt>Environment</dt><dd>—</dd></div>
+        <div><dt>Receipt</dt><dd>Awaiting physical macOS device validation; Windows automation is not a substitute.</dd></div>
+      </dl>
+    </article>
+      </div>
+    </section>
+<section class="criterion-row" data-status="failed">
+      <article class="criterion-card status-failed">
+        <div class="criterion-card__eyebrow">Acceptance criterion</div>
+        <div class="criterion-card__id">AC-05</div>
+        <h2>The packaging smoke test exits successfully.</h2>
+        <div class="criterion-card__footer">
+          <span class="status-pill"><span aria-hidden="true">×</span> Failed</span>
+          <span>0/1 proof lines</span>
+        </div>
+      </article>
+      <div class="connector" aria-hidden="true"><span></span></div>
+      <div class="proof-stack">
+        <article class="proof-card status-failed" data-status="failed" data-proof-label="Package smoke test" data-proof-reason="Command exited 2; expected exit 0.">
+      <div class="proof-card__topline">
+        <span class="kind">command</span>
+        <span class="status-pill"><span aria-hidden="true">×</span> Failed</span>
+      </div>
+      <h3>Package smoke test</h3>
+      <p class="reason">Command exited 2; expected exit 0.</p>
+      <div class="command"><span>$</span><code>.\fixtures\fail.cmd</code></div>
+      <dl>
+        <div><dt>Evidence time</dt><dd>observed 13d ago · 2026-08-22T09:09:32.736Z</dd></div>
+        <div><dt>Environment</dt><dd>Windows 11 / local command shim / automated</dd></div>
+        <div><dt>Receipt</dt><dd>exit 2 · 28ms · stdout e3b0c44298fc · inputs 824a5cb75d5b · receipt be60150b0c5a</dd></div>
+      </dl>
+    </article>
+      </div>
+    </section>
+<section class="criterion-row" data-status="missing">
+      <article class="criterion-card status-missing">
+        <div class="criterion-card__eyebrow">Acceptance criterion</div>
+        <div class="criterion-card__id">AC-06</div>
+        <h2>The pull request includes a reviewer-facing proof report.</h2>
+        <div class="criterion-card__footer">
+          <span class="status-pill"><span aria-hidden="true">○</span> Missing</span>
+          <span>0/1 proof lines</span>
+        </div>
+      </article>
+      <div class="connector" aria-hidden="true"><span></span></div>
+      <div class="proof-stack">
+        <article class="proof-card status-missing" data-status="missing" data-proof-label="PR proof report" data-proof-reason="No evidence has been recorded.">
+      <div class="proof-card__topline">
+        <span class="kind">file</span>
+        <span class="status-pill"><span aria-hidden="true">○</span> Missing</span>
+      </div>
+      <h3>PR proof report</h3>
+      <p class="reason">No evidence has been recorded.</p>
+
+      <dl>
+        <div><dt>Evidence time</dt><dd>—</dd></div>
+        <div><dt>Environment</dt><dd>—</dd></div>
+        <div><dt>Receipt</dt><dd>No receipt</dd></div>
+      </dl>
+    </article>
+      </div>
+    </section>
+      <aside class="notice"><strong>Evidence boundary.</strong> These are local, tamper-evident receipts—not cryptographic attestations. Screenshot receipts verify captured bytes, time, and a declared environment label; they do not independently prove visual correctness, physical-device use, external-platform state, or real-user validation.</aside>
+    </main>
+    <footer><span>PROOFLINE / LOCAL RECEIPT GRAPH</span><span>2/6 proof lines verified</span></footer>
+  </div>
+  <aside class="gap-inspector" id="gap-inspector" aria-live="polite" hidden>
+    <div class="gap-inspector__copy">
+      <span id="gap-index">Evidence gap</span>
+      <strong id="gap-title"></strong>
+      <p id="gap-reason"></p>
+    </div>
+    <div class="gap-inspector__actions">
+      <button id="gap-next" type="button">Next gap <kbd aria-hidden="true">G</kbd></button>
+      <button id="gap-close" type="button" aria-label="Close gap tour">Exit</button>
+    </div>
+  </aside>
+  <script>
+    const buttons = [...document.querySelectorAll('[data-filter]')];
+    const rows = [...document.querySelectorAll('.criterion-row')];
+    const gapCards = [...document.querySelectorAll('.proof-card')].filter(card => card.dataset.status !== 'verified');
+    const gapTour = document.querySelector('#gap-tour');
+    const gapInspector = document.querySelector('#gap-inspector');
+    const gapIndex = document.querySelector('#gap-index');
+    const gapTitle = document.querySelector('#gap-title');
+    const gapReason = document.querySelector('#gap-reason');
+    let activeGap = -1;
+
+    function stopGapTour() {
+      activeGap = -1;
+      document.body.classList.remove('gap-tour-active');
+      gapInspector.hidden = true;
+      delete gapInspector.dataset.status;
+      for (const card of gapCards) card.classList.remove('is-tour-target');
+    }
+
+    function showGap(index) {
+      if (!gapCards.length) return;
+      activeGap = (index + gapCards.length) % gapCards.length;
+      for (const item of buttons) item.classList.toggle('active', item.dataset.filter === 'all');
+      for (const row of rows) row.classList.remove('is-hidden');
+      for (const card of gapCards) card.classList.remove('is-tour-target');
+      const card = gapCards[activeGap];
+      card.classList.add('is-tour-target');
+      document.body.classList.add('gap-tour-active');
+      gapInspector.hidden = false;
+      gapInspector.dataset.status = card.dataset.status;
+      gapIndex.textContent = 'Evidence gap ' + (activeGap + 1) + ' / ' + gapCards.length + ' · ' + card.dataset.status;
+      gapTitle.textContent = card.dataset.proofLabel;
+      gapReason.textContent = card.dataset.proofReason;
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    gapTour?.addEventListener('click', () => showGap(activeGap + 1));
+    document.querySelector('#gap-next')?.addEventListener('click', () => showGap(activeGap + 1));
+    document.querySelector('#gap-close')?.addEventListener('click', stopGapTour);
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && activeGap >= 0) stopGapTour();
+      if (event.key.toLowerCase() === 'g' && !event.ctrlKey && !event.metaKey && !event.altKey) showGap(activeGap + 1);
+    });
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        stopGapTour();
+        const filter = button.dataset.filter;
+        for (const item of buttons) item.classList.toggle('active', item === button);
+        for (const row of rows) {
+          const matches = filter === 'all' || [...row.querySelectorAll('.proof-card')].some(card => card.dataset.status === filter);
+          row.classList.toggle('is-hidden', !matches);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "proofline-goal-dependencies/1",
+  "evidence": [
+    { "id": "AC-PAGING/ack-rehearsal", "dependsOn": ["PAGE-01"] },
+    { "id": "AC-RESTORE/restore-drill", "dependsOn": ["RESTORE-01"] },
+    { "id": "AC-NOTICE/notice-template", "dependsOn": ["NOTICE-01"] },
+    { "id": "AC-AUDIT/timeline-export", "dependsOn": ["AUDIT-01"] }
+  ]
+}
+

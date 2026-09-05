@@ -1,0 +1,25 @@
+node_modules/
+npm-debug.log*
+coverage/
+.DS_Store
+*.tgz
+.proofline/tmp/
+/.proofline/evidence.jsonl
+/release/*.zip
+/release/*.tgz
+
+# Local secrets and private credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+credentials.*.json
+service-account*.json
+.npmrc
+.pypirc
+.netrc

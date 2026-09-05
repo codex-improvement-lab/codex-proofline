@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "project": "Offline release surface revision",
+  "defaultFreshnessHours": 24,
+  "ledger": "evidence.jsonl",
+  "completionPolicy": "warn",
+  "criteria": [
+    {
+      "id": "AC-WEB",
+      "statement": "The release remains usable across supported responsive widths.",
+      "proof": [
+        { "id": "viewport-matrix", "kind": "file", "label": "Responsive viewport matrix", "path": "evidence/viewport-matrix.json" }
+      ]
+    },
+    {
+      "id": "AC-LEGACY",
+      "statement": "The legacy XML v1 export matches its compatibility fixture.",
+      "proof": [
+        { "id": "xml-v1-export", "kind": "file", "label": "Legacy XML v1 compatibility fixture", "path": "evidence/xml-v1-export.json" }
+      ]
+    },
+    {
+      "id": "AC-PACKAGE",
+      "statement": "The offline package inventory matches its digest list.",
+      "proof": [
+        { "id": "package-digests", "kind": "file", "label": "Offline package digest inventory", "path": "evidence/package-digests.json" }
+      ]
+    }
+  ]
+}
+

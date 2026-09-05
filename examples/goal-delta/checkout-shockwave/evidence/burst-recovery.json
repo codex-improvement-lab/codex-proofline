@@ -1,0 +1,7 @@
+{
+  "baselineRequestsPerSecond": 400,
+  "burstMultiplier": 2,
+  "recoverySeconds": 38,
+  "errorsDuringRecovery": 0
+}
+

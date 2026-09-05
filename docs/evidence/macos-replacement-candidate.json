@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "product": "codex-proofline",
+  "gateVersion": 2,
+  "scope": "runtime-gate-tests-v1",
+  "id": "codex-proofline-macos-rc-ad3e11f0f5645bbf",
+  "contentSha256": "ad3e11f0f5645bbf3c5665116e304cdd020c2a2960d702a3630a976b89d199ca",
+  "contentFiles": 44,
+  "installedVersion": "0.1.0+codex.macos-ad3e11f0f5645bbf",
+  "status": "awaiting-full-real-mac-rerun",
+  "previousMacEvidenceImported": false,
+  "generatedOn": "2026-09-05",
+  "evidenceClass": "source-derived-candidate-identity-not-macos-execution"
+}

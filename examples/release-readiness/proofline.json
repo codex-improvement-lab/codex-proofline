@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "project": "Northstar v1.4 release",
+  "defaultFreshnessHours": 168,
+  "completionPolicy": "warn",
+  "criteria": [
+    {
+      "id": "AC-01",
+      "statement": "The automated release checks pass on the observed environment.",
+      "proof": [
+        {
+          "id": "checks",
+          "kind": "command",
+          "label": "Release check suite",
+          "environment": "Windows 11 / local command shim / automated",
+          "inputs": ["fixtures/pass.cmd", "proofline.json"],
+          "freshnessHours": 87600,
+          "expect": { "exitCode": 0 }
+        }
+      ]
+    },
+    {
+      "id": "AC-02",
+      "statement": "The release note artifact matches the captured receipt.",
+      "proof": [
+        {
+          "id": "release-note",
+          "kind": "file",
+          "label": "Release note artifact",
+          "path": "release/notes.md",
+          "freshnessHours": 87600
+        }
+      ]
+    },
+    {
+      "id": "AC-03",
+      "statement": "The primary workflow has current Windows visual evidence.",
+      "proof": [
+        {
+          "id": "windows-overview",
+          "kind": "screenshot",
+          "label": "Windows overview",
+          "path": "evidence/product-overview.png",
+          "environment": "Windows 11 / Chromium / automated browser",
+          "freshnessHours": 24
+        }
+      ]
+    },
+    {
+      "id": "AC-04",
+      "statement": "The release flow is verified on a physical macOS device.",
+      "proof": [
+        {
+          "id": "macos-device",
+          "kind": "screenshot",
+          "label": "Physical macOS release flow",
+          "path": "evidence/macos-device.png",
+          "environment": "macOS / physical device",
+          "freshnessHours": 168
+        }
+      ]
+    },
+    {
+      "id": "AC-05",
+      "statement": "The packaging smoke test exits successfully.",
+      "proof": [
+        {
+          "id": "package-smoke",
+          "kind": "command",
+          "label": "Package smoke test",
+          "environment": "Windows 11 / local command shim / automated",
+          "inputs": ["fixtures/fail.cmd", "proofline.json"],
+          "freshnessHours": 87600,
+          "expect": { "exitCode": 0 }
+        }
+      ]
+    },
+    {
+      "id": "AC-06",
+      "statement": "The pull request includes a reviewer-facing proof report.",
+      "proof": [
+        {
+          "id": "pr-report",
+          "kind": "file",
+          "label": "PR proof report",
+          "path": "release/pr-proof.md",
+          "freshnessHours": 168
+        }
+      ]
+    }
+  ]
+}

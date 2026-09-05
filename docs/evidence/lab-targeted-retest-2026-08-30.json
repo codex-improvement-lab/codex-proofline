@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "user-supplied external targeted physical-Mac lab acceptance report",
+  "recordedOn": "2026-08-30",
+  "report": {
+    "file": "Codex-Improvement-Lab-macOS-targeted-retest-report-2026-08-30.md",
+    "bytes": 3292,
+    "lines": 46,
+    "sha256": "a3354a21d8df44255966bce9bd68980528337fbbff635fe2c00efccf84f60770",
+    "storedInThisRepository": false
+  },
+  "reviewedArchive": {
+    "file": "Codex-Improvement-Lab-macOS-targeted-retest-Intake-Proofline-2026-08-30.zip",
+    "sha256": "ccfebc7feccc878aa0fe13622957017a6b025536a88843be5b1e2e1f073599d2",
+    "manifest": "PASS",
+    "sourceSnapshotFilesReportedAndMatched": 123
+  },
+  "candidate": {
+    "id": "codex-proofline-macos-rc-9bdf7995a611f15e",
+    "contentSha256": "9bdf7995a611f15e6d012ce10da39075aea98ce7fc00516439056a1a6a99d746",
+    "sourceSnapshotSha256": "7a460bc356cbc2b77bc6e157bc36a5fb284ff166c6e2ec8e4b7906cc104556c5"
+  },
+  "result": {
+    "targetedLabAcceptance": "PASS",
+    "tests": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 1,
+      "skipReason": "Windows-only test skipped as expected on macOS"
+    },
+    "releaseFileGate": "28/28 pass",
+    "prooflineReportIncluded": true,
+    "standaloneFullMacosGateV2": "NOT_OBSERVED"
+  },
+  "claimCeiling": [
+    "This records a scoped physical-Mac lab acceptance PASS for the exact candidate and report identity.",
+    "The importer did not directly witness the Darwin run.",
+    "The report does not show the standalone installed-cache, fresh-task Skill, Stop-hook, and cleanup sequence required by Proofline gate v2.",
+    "It is not external CI, cryptographic attestation, real-user, production, publication, adoption, or market evidence."
+  ],
+  "externalActions": {
+    "commit": false,
+    "push": false,
+    "publish": false,
+    "upload": false
+  }
+}

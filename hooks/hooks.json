@@ -1,0 +1,18 @@
+{
+  "description": "Optional Proofline completion check. Review and trust before enabling.",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/proofline-stop.mjs\"",
+            "commandWindows": "node \"%PLUGIN_ROOT%\\scripts\\proofline-stop.mjs\"",
+            "timeout": 10,
+            "statusMessage": "Checking Proofline evidence"
+          }
+        ]
+      }
+    ]
+  }
+}
