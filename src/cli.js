@@ -12,6 +12,7 @@ import {
   loadGoalDependencies
 } from "./goal-delta.js";
 import { renderGoalDeltaHtml } from "./goal-delta-report.js";
+import { queryGoalDelta } from "./query.js";
 import { declareClaim, observeArtifact, observeCommand } from "./observe.js";
 import { renderHtmlReport, renderMarkdownReport } from "./report.js";
 import { serveReport } from "./server.js";
@@ -29,6 +30,7 @@ Usage:
   proofline check [--json]
   proofline report [--format markdown|html|json] [--output <path|->]
   proofline goal-delta --from <contract.json> --to <contract.json> --dependencies <dependencies.json> [--output <report.html>] [--profile-output <workprint.json>] [--at <ISO-8601>]
+  proofline goal-delta --from <contract.json> --to <contract.json> --dependencies <dependencies.json> --json [--gaps] [--affected] [--status <state>] [--item <id>] [--evidence <criterion/proof>]
   proofline serve [--host 127.0.0.1] [--port 4317]
 
 Common option (all commands except init):
@@ -51,9 +53,29 @@ const VALUE_OPTIONS = new Set([
   "to",
   "dependencies",
   "profile-output",
-  "at"
+  "at", "status", "item", "evidence"
 ]);
-const BOOLEAN_OPTIONS = new Set(["json", "help"]);
+const BOOLEAN_OPTIONS = new Set(["json", "help", "gaps", "affected"]);
+
+const COMMAND_OPTIONS = {
+  init: [],
+  run: ["manifest", "environment"],
+  capture: ["manifest", "environment", "note", "observed-at"],
+  claim: ["manifest", "note"],
+  status: ["manifest", "json", "at"],
+  check: ["manifest", "json", "at"],
+  report: ["manifest", "format", "output", "at"],
+  "goal-delta": ["manifest", "from", "to", "dependencies", "output", "profile-output", "at", "json", "status", "item", "evidence", "gaps", "affected"],
+  serve: ["manifest", "host", "port"]
+};
+function validateOptions(command, options) {
+  if (!COMMAND_OPTIONS[command]) throw new ProoflineError(`Unknown command: ${command}. Run proofline help.`);
+  for (const name of Object.keys(options)) {
+    if (name !== "help" && !COMMAND_OPTIONS[command].includes(name)) {
+      throw new ProoflineError(`${command} does not support --${name}.`);
+    }
+  }
+}
 
 function parseArguments(args) {
   const options = {};
@@ -65,6 +87,7 @@ function parseArguments(args) {
       continue;
     }
     const name = token.slice(2);
+    if (Object.hasOwn(options, name)) throw new ProoflineError(`Duplicate option: ${token}.`);
     if (BOOLEAN_OPTIONS.has(name)) {
       options[name] = true;
       continue;
@@ -202,6 +225,12 @@ async function writeReport(result, format, output) {
 }
 
 async function writeGoalDelta(context, options) {
+  if (options.json && (options.output || options["profile-output"])) {
+    throw new ProoflineError("goal-delta --json is a read-only stdout query; omit --output and --profile-output.");
+  }
+  if (!options.json && ["status", "item", "evidence", "gaps", "affected"].some(name => options[name])) {
+    throw new ProoflineError("goal-delta filters require --json.");
+  }
   for (const name of ["from", "to", "dependencies"]) {
     if (!options[name]) throw new ProoflineError(`goal-delta requires --${name} <path>.`);
   }
@@ -214,6 +243,10 @@ async function writeGoalDelta(context, options) {
   const now = new Date(options.at ? parseIsoDate(options.at, "at") : new Date().toISOString());
   const evaluation = await evaluateProject(context, { now });
   const delta = createGoalDelta({ evaluation, before, after, dependencies, now });
+  if (options.json) {
+    process.stdout.write(`${JSON.stringify(queryGoalDelta(delta, options), null, 2)}\n`);
+    return;
+  }
   const html = `${renderGoalDeltaHtml(delta)}\n`;
   const profile = `${JSON.stringify(createWorkprintProfile(delta), null, 2)}\n`;
   const output = options.output ?? "goal-delta-report.html";
@@ -230,7 +263,8 @@ async function writeGoalDelta(context, options) {
     const targetPath = path.resolve(target);
     await mkdir(path.dirname(targetPath), { recursive: true });
     await writeFile(targetPath, body, "utf8");
-    process.stdout.write(`Wrote ${label}: ${targetPath}\n`);
+    const diagnostics = output === "-" || profileOutput === "-" ? process.stderr : process.stdout;
+    diagnostics.write(`Wrote ${label}: ${targetPath}\n`);
   }
 }
 
@@ -249,6 +283,7 @@ export async function runCli(argv = process.argv.slice(2)) {
   if (command === "init") {
     const { positionals, options } = parseArguments(rest);
     if (options.help) return process.stdout.write(`${HELP}\n`);
+    validateOptions(command, options);
     if (positionals.length > 1) throw new ProoflineError("init accepts at most one directory.");
     await initialize(positionals[0]);
     return;
@@ -260,6 +295,7 @@ export async function runCli(argv = process.argv.slice(2)) {
       throw new ProoflineError("run requires -- followed by a command.");
     }
     const { positionals, options } = parseArguments(rest.slice(0, divider));
+    validateOptions(command, options);
     if (positionals.length !== 1) {
       throw new ProoflineError("run requires one <criterion/proof> reference.");
     }
@@ -294,7 +330,9 @@ export async function runCli(argv = process.argv.slice(2)) {
     process.stdout.write(`${HELP}\n`);
     return;
   }
+  validateOptions(command, options);
   const context = await loadManifest(options.manifest);
+  const clock = options.at ? { now: new Date(parseIsoDate(options.at, "at")) } : {};
 
   if (command === "goal-delta") {
     if (positionals.length !== 0) {
@@ -341,7 +379,7 @@ export async function runCli(argv = process.argv.slice(2)) {
 
   if (command === "status" || command === "check") {
     if (positionals.length !== 0) throw new ProoflineError(`${command} does not accept positional arguments.`);
-    const result = await evaluateProject(context);
+    const result = await evaluateProject(context, clock);
     if (options.json) process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     else printStatus(result);
     if (command === "check" && !result.ready) process.exitCode = 1;
@@ -350,7 +388,7 @@ export async function runCli(argv = process.argv.slice(2)) {
 
   if (command === "report") {
     if (positionals.length !== 0) throw new ProoflineError("report does not accept positional arguments.");
-    await writeReport(await evaluateProject(context), options.format ?? "markdown", options.output);
+    await writeReport(await evaluateProject(context, clock), options.format ?? "markdown", options.output);
     return;
   }
 

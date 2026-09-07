@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — Proofline mainline candidate
+
+- Add complete, read-only `goal-delta --json` queries with explicit base/target revisions, states, reasons and dependency filters. Reject unsupported, duplicate and conflicting options.
+- Keep stdout as one JSON document; queries do not generate HTML or Workprint files. Honor the existing `--at` clock for status/check/report as well as Goal Delta.
+
+
 All notable changes to Codex Proofline are documented here.
 
 ## [0.1.0] — 2026-09-05

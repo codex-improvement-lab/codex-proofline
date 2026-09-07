@@ -1,12 +1,57 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { createTestDirectory, manifest, removeTestDirectory, writeJson } from "../test-support/helpers.js";
 
 const BIN = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../bin/proofline.js");
+const GOAL_EXAMPLE = path.resolve(path.dirname(BIN), "../examples/goal-delta/checkout-shockwave");
+const goalArgs = () => ["goal-delta", "--manifest", path.join(GOAL_EXAMPLE, "proofline.json"),
+  "--from", path.join(GOAL_EXAMPLE, "contracts/before.json"), "--to", path.join(GOAL_EXAMPLE, "contracts/after.json"),
+  "--dependencies", path.join(GOAL_EXAMPLE, "dependencies.json"), "--at", "2026-08-30T08:00:00.000Z"];
+
+test("goal-delta JSON is a complete read-only document with target revision context", async (t) => {
+  const directory = await createTestDirectory("goal-json");
+  t.after(() => removeTestDirectory(directory));
+  const result = await invoke([...goalArgs(), "--json"], directory);
+  assert.equal(result.exitCode, 0, result.stderr);
+  const delta = JSON.parse(result.stdout);
+  assert.equal(delta.schemaVersion, "proofline-goal-delta/1");
+  assert.equal(delta.summary.beforeVerifiedEvidence, 4);
+  assert.equal(delta.summary.afterVerifiedEvidence, 2);
+  assert.equal(delta.evidence.filter(item => item.status === "stale").length, 2);
+  assert.equal(delta.query.targetRevision, delta.sources[1].revision);
+  assert.equal(delta.query.summaryScope, "complete-delta");
+  assert.deepEqual(await readdir(directory), []);
+});
+
+test("goal-delta JSON filters keep base state, dependencies and global counts", async (t) => {
+  const directory = await createTestDirectory("goal-json-filter");
+  t.after(() => removeTestDirectory(directory));
+  const result = await invoke([...goalArgs(), "--json", "--gaps", "--item", "PERF-01"], directory);
+  assert.equal(result.exitCode, 0, result.stderr);
+  const delta = JSON.parse(result.stdout);
+  assert.equal(delta.evidence.length, 2);
+  assert.equal(delta.findings.length, 1);
+  assert.ok(delta.evidence.every(item => item.baseStatus === "verified" && item.status === "stale" && item.dependsOn.includes("PERF-01")));
+  assert.equal(delta.summary.totalEvidence, 4);
+  assert.deepEqual(await readdir(directory), []);
+});
+
+test("goal-delta rejects unsupported or conflicting options before writing", async (t) => {
+  const directory = await createTestDirectory("goal-json-options");
+  t.after(() => removeTestDirectory(directory));
+  for (const tail of [["--json", "--output", "out.html"], ["--format", "html"], ["--json", "--status", "green"],
+    ["--gaps"], ["--json", "--item", "UNKNOWN"], ["--json", "--json"]]) {
+    const result = await invoke([...goalArgs(), ...tail], directory);
+    assert.equal(result.exitCode, 2, result.stdout);
+    assert.equal(result.stdout, "");
+    assert.notEqual(result.stderr, "");
+    assert.deepEqual(await readdir(directory), []);
+  }
+});
 
 function invoke(args, cwd) {
   return new Promise((resolve, reject) => {

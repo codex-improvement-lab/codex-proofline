@@ -53,6 +53,14 @@ The first screen answers three questions without reading a log:
 
 ## The complete loop
 
+The development candidate adds a read-only machine query:
+
+```sh
+proofline goal-delta --from before.json --to after.json --dependencies dependencies.json --json --gaps
+```
+
+Omit `--gaps` for the complete delta, or combine `--status <state>`, `--item <contract-id>`, `--evidence <criterion/proof>` and `--affected` to inspect a subset. The filters use AND semantics. `query` names both revisions and the returned count; `summary` always describes the complete delta. Each evidence row preserves `baseStatus`, target `status`, reasons and explicit dependencies. JSON stdout contains exactly one document and creates no files; `--output` and `--profile-output` belong to the report/export mode and conflict with `--json`. Unsupported and repeated options fail explicitly.
+
 Initialize a graph:
 
 ```sh

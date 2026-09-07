@@ -292,7 +292,7 @@ test("CLI writes an HTML report and deterministic Workprint profile from a verif
   assert.deepEqual(profile.findings[0].affectedEvidenceIds, ["AC-01/latency"]);
   assert.equal(profile.summary.counts.newlyStaleEvidence, 1);
 
-  const second = await invoke([...args.slice(0, -4), "--output", "delta-2.html", "--profile-output", "delta-2.workprint.json", "--at", CLOCK], directory);
+  const second = await invoke([...args.slice(0, -6), "--output", "delta-2.html", "--profile-output", "delta-2.workprint.json", "--at", CLOCK], directory);
   assert.equal(second.exitCode, 0, second.stderr);
   assert.equal(
     await readFile(path.join(directory, "delta.workprint.json"), "utf8"),
