@@ -4,6 +4,7 @@ import { existsSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import path from "node:path";
 import { appendRecord, environmentReceipt } from "./ledger.js";
+import { proofRevision } from "./goal-binding.js";
 import {
   fingerprintInputs,
   parseIsoDate,
@@ -54,7 +55,7 @@ function commandInvocation(command) {
   };
 }
 
-export async function observeCommand(context, target, command, { environment } = {}) {
+export async function observeCommand(context, target, command, { environment, goalBinding } = {}) {
   const inputReceipt = target.proof.inputs
     ? await fingerprintInputs(context.root, target.proof.inputs)
     : null;
@@ -99,6 +100,8 @@ export async function observeCommand(context, target, command, { environment } =
   const observedAt = new Date().toISOString();
   const record = {
     ...baseRecord(target.criterion.id, target.proof.id, "command", observedAt),
+    proofRevision: proofRevision(target.criterion, target.proof),
+    ...(goalBinding ? { goalBinding } : {}),
     command,
     result: {
       exitCode: result.exitCode,
@@ -120,7 +123,7 @@ export async function observeCommand(context, target, command, { environment } =
 export async function observeArtifact(
   context,
   target,
-  { environment, note, observedAt = new Date().toISOString() } = {}
+  { environment, note, observedAt = new Date().toISOString(), goalBinding } = {}
 ) {
   const absolutePath = resolveInside(
     context.root,
@@ -139,6 +142,8 @@ export async function observeArtifact(
       target.proof.kind,
       normalizedTime
     ),
+    proofRevision: proofRevision(target.criterion, target.proof),
+    ...(goalBinding ? { goalBinding } : {}),
     artifact: {
       path: toPosixPath(target.proof.path),
       bytes: artifactStat.size,

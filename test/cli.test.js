@@ -80,6 +80,98 @@ test("init creates a manifest and refuses to overwrite it", async (t) => {
   assert.match(second.stderr, /Refusing to overwrite/u);
 });
 
+test("init prefills only present conventional inputs; doctor exposes configuration omissions", async (t) => {
+  const directory = await createTestDirectory("doctor");
+  t.after(() => removeTestDirectory(directory));
+  await mkdir(path.join(directory, "src"));
+  await writeJson(path.join(directory, "package.json"), { scripts: { test: "node --test" } });
+  assert.equal((await invoke(["init"], directory)).exitCode, 0);
+  const initial = JSON.parse(await readFile(path.join(directory, "proofline.json"), "utf8"));
+  assert.deepEqual(initial.criteria[0].proof[0].inputs, ["src", "package.json"]);
+  let checked = await invoke(["doctor", "--json"], directory);
+  assert.equal(checked.exitCode, 1);
+  assert.deepEqual(JSON.parse(checked.stdout).issues.map(issue => issue.code), ["contract-not-configured"]);
+  const value = manifest();
+  await writeJson(path.join(directory, "proofline.json"), value);
+  checked = await invoke(["doctor", "--json"], directory);
+  assert.ok(JSON.parse(checked.stdout).issues.some(issue => issue.code === "untracked-command-inputs"));
+  value.criteria[0].proof[0].inputs = ["not-present", "."];
+  await writeJson(path.join(directory, "proofline.json"), value);
+  checked = await invoke(["doctor", "--json"], directory);
+  assert.ok(JSON.parse(checked.stdout).issues.some(issue => issue.code === "input-missing"));
+  assert.ok(JSON.parse(checked.stdout).issues.some(issue => issue.code === "input-includes-ledger"));
+});
+
+test("target queries require dependency-bound observations, preserve unrelated evidence and admit explicit reruns", async (t) => {
+  const directory = await createTestDirectory("bound-query");
+  t.after(() => removeTestDirectory(directory));
+  const value = manifest();
+  value.criteria[0].proof[0].inputs = ["src.txt"];
+  value.criteria.push({ id: "AC-02", statement: "Independent check.", proof: [{ ...value.criteria[0].proof[0] }] });
+  await writeJson(path.join(directory, "proofline.json"), value);
+  await writeFile(path.join(directory, "src.txt"), "source bytes", "utf8");
+  const before = { schemaVersion: "proofline-goal-contract/1", title: "Maintenance", revision: "r1", items: [
+    { id: "G1", goal: "Preserve all signals", acceptance: "Seven signals are represented." },
+    { id: "G2", goal: "Preserve privacy", acceptance: "No credential appears." }
+  ] };
+  const after = structuredClone(before);
+  after.revision = "r2";
+  after.items[0].acceptance = "Thirty signals and full text are represented.";
+  await writeJson(path.join(directory, "before.json"), before);
+  await writeJson(path.join(directory, "after.json"), after);
+  const dependencies = { schemaVersion: "proofline-goal-dependencies/1", evidence: [
+    { id: "AC-01/tests", dependsOn: ["G1"] }, { id: "AC-02/tests", dependsOn: ["G2"] }
+  ] };
+  await writeJson(path.join(directory, "deps.json"), dependencies);
+  const run = (ref, contract) => invoke(["run", ref, ...(contract ? ["--contract", contract, "--dependencies", "deps.json"] : []),
+    "--", process.execPath, "-e", "process.exit(0)"], directory);
+  const query = async (contract, extra = []) => {
+    const output = await invoke(["query", "--contract", contract, "--dependencies", "deps.json", ...extra], directory);
+    assert.equal(output.exitCode, 0, output.stderr);
+    return JSON.parse(output.stdout);
+  };
+  assert.equal((await run("AC-01/tests")).exitCode, 0);
+  let queried = await query("before.json");
+  assert.equal(queried.evidence[0].baseStatus, "verified");
+  assert.equal(queried.evidence[0].status, "stale");
+  assert.equal(queried.evidence[0].goalBinding.code, "contract-binding-missing");
+  assert.equal((await run("AC-01/tests", "before.json")).exitCode, 0);
+  assert.equal((await run("AC-02/tests", "before.json")).exitCode, 0);
+  queried = await query("after.json");
+  assert.deepEqual(queried.evidence.map(item => item.status), ["stale", "verified"]);
+  assert.equal(queried.query.targetRevision, "r2");
+  assert.equal(queried.evidence[1].goalBinding.observationRevision, "r1");
+  assert.equal(queried.evidence[1].inputTracking.mode, "tracked");
+  assert.equal(typeof queried.evidence[1].evidence.receipt, "string");
+  assert.doesNotMatch(JSON.stringify(queried), /process.exit|stdoutSha256|"command":/u);
+  assert.equal((await query("after.json", ["--gaps", "--item", "G1"])).evidence.length, 1);
+  assert.equal((await run("AC-01/tests", "after.json")).exitCode, 0);
+  assert.equal((await query("after.json", ["--gaps"])).evidence.length, 0);
+  const deltaRun = await invoke(["goal-delta", "--from", "before.json", "--to", "after.json", "--dependencies", "deps.json", "--json"], directory);
+  const delta = JSON.parse(deltaRun.stdout);
+  assert.equal(delta.evidence[0].status, "verified");
+  assert.equal(delta.evidence[0].action, null);
+  assert.equal(delta.evidence[0].impactedBy.length, 1);
+  value.criteria[0].statement = "A revised acceptance statement.";
+  await writeJson(path.join(directory, "proofline.json"), value);
+  assert.equal((await query("after.json")).evidence[0].baseStatus, "stale");
+});
+
+test("doctor reports unmapped requirements and rejects broken associations without executing", async (t) => {
+  const directory = await createTestDirectory("doctor-mapping");
+  t.after(() => removeTestDirectory(directory));
+  await writeJson(path.join(directory, "proofline.json"), manifest());
+  await writeJson(path.join(directory, "contract.json"), { schemaVersion: "proofline-goal-contract/1", title: "Task", revision: "r1",
+    items: ["G1", "G2"].map(id => ({ id, goal: id, acceptance: id })) });
+  await writeJson(path.join(directory, "deps.json"), { schemaVersion: "proofline-goal-dependencies/1", evidence: [{ id: "AC-01/tests", dependsOn: ["G1"] }] });
+  let result = JSON.parse((await invoke(["doctor", "--json", "--contract", "contract.json", "--dependencies", "deps.json"], directory)).stdout);
+  assert.ok(result.issues.some(item => item.code === "contract-item-unmapped" && item.itemId === "G2"));
+  await writeJson(path.join(directory, "deps.json"), { schemaVersion: "proofline-goal-dependencies/1", evidence: [] });
+  result = JSON.parse((await invoke(["doctor", "--json", "--contract", "contract.json", "--dependencies", "deps.json"], directory)).stdout);
+  assert.ok(result.issues.some(item => item.code === "invalid-contract-association"));
+  assert.ok(!(await readdir(directory)).includes(".proofline"));
+});
+
 test("run records command evidence and check gates readiness", async (t) => {
   const directory = await createTestDirectory("cli-run");
   t.after(() => removeTestDirectory(directory));

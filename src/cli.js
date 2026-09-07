@@ -12,7 +12,9 @@ import {
   loadGoalDependencies
 } from "./goal-delta.js";
 import { renderGoalDeltaHtml } from "./goal-delta-report.js";
-import { queryGoalDelta } from "./query.js";
+import { queryEvidence, queryGoalDelta } from "./query.js";
+import { checkConfiguration, discoverInputs } from "./doctor.js";
+import { bindGoal } from "./goal-binding.js";
 import { declareClaim, observeArtifact, observeCommand } from "./observe.js";
 import { renderHtmlReport, renderMarkdownReport } from "./report.js";
 import { serveReport } from "./server.js";
@@ -28,6 +30,8 @@ Usage:
   proofline claim <criterion/proof> --note <text>
   proofline status [--json]
   proofline check [--json]
+  proofline doctor [--json] [--contract <target.json> --dependencies <dependencies.json>]
+  proofline query [--contract <target.json> --dependencies <dependencies.json>] [--gaps] [--status <state>] [--item <id>] [--evidence <criterion/proof>]
   proofline report [--format markdown|html|json] [--output <path|->]
   proofline goal-delta --from <contract.json> --to <contract.json> --dependencies <dependencies.json> [--output <report.html>] [--profile-output <workprint.json>] [--at <ISO-8601>]
   proofline goal-delta --from <contract.json> --to <contract.json> --dependencies <dependencies.json> --json [--gaps] [--affected] [--status <state>] [--item <id>] [--evidence <criterion/proof>]
@@ -35,6 +39,7 @@ Usage:
 
 Common option (all commands except init):
   --manifest <path>   Manifest path (default: ./proofline.json)
+  run/capture may bind --contract <target.json> --dependencies <dependencies.json> explicitly.
 
 States:
   verified · missing · stale · declared-only · failed
@@ -53,17 +58,19 @@ const VALUE_OPTIONS = new Set([
   "to",
   "dependencies",
   "profile-output",
-  "at", "status", "item", "evidence"
+  "at", "status", "item", "evidence", "contract"
 ]);
 const BOOLEAN_OPTIONS = new Set(["json", "help", "gaps", "affected"]);
 
 const COMMAND_OPTIONS = {
   init: [],
-  run: ["manifest", "environment"],
-  capture: ["manifest", "environment", "note", "observed-at"],
+  run: ["manifest", "environment", "contract", "dependencies"],
+  capture: ["manifest", "environment", "note", "observed-at", "contract", "dependencies"],
   claim: ["manifest", "note"],
   status: ["manifest", "json", "at"],
   check: ["manifest", "json", "at"],
+  doctor: ["manifest", "json", "contract", "dependencies"],
+  query: ["manifest", "json", "contract", "dependencies", "at", "status", "item", "evidence", "gaps"],
   report: ["manifest", "format", "output", "at"],
   "goal-delta": ["manifest", "from", "to", "dependencies", "output", "profile-output", "at", "json", "status", "item", "evidence", "gaps", "affected"],
   serve: ["manifest", "host", "port"]
@@ -114,6 +121,20 @@ function targetFor(context, value) {
   return target;
 }
 
+async function loadTarget(context, options) {
+  if (Boolean(options.contract) !== Boolean(options.dependencies)) {
+    throw new ProoflineError("Supply both --contract and --dependencies.");
+  }
+  if (!options.contract) return { contract: null, dependencies: null };
+  const contract = await loadGoalContract(options.contract, "Target goal contract");
+  const dependencies = await loadGoalDependencies(options.dependencies, context, contract, contract);
+  return { contract, dependencies };
+}
+async function observationBinding(context, options, ref) {
+  const { contract, dependencies } = await loadTarget(context, options);
+  return contract ? bindGoal(context.manifest.project, contract, dependencies.evidence.find(item => item.id === ref).dependsOn) : null;
+}
+
 function statusLine(status) {
   return {
     verified: "✓ verified",
@@ -142,6 +163,7 @@ async function initialize(directory) {
   const manifestPath = path.join(root, "proofline.json");
   await mkdir(root, { recursive: true });
   const project = path.basename(root);
+  const inputs = await discoverInputs(root);
   const sample = {
     version: 1,
     project,
@@ -157,7 +179,8 @@ async function initialize(directory) {
             kind: "command",
             label: "Automated test suite",
             freshnessHours: 24,
-            expect: { exitCode: 0 }
+            expect: { exitCode: 0 },
+            ...(inputs.length ? { inputs } : {})
           }
         ]
       },
@@ -189,6 +212,8 @@ async function initialize(directory) {
     throw error;
   }
   process.stdout.write(`Created ${manifestPath}\n`);
+  process.stdout.write(inputs.length ? `Prefilled existing input paths: ${inputs.join(", ")}. Review the scope and criterion association.\n`
+    : "No conventional input paths found. Configure command inputs; doctor reports untracked scopes.\n");
 }
 
 function parsePort(value) {
@@ -317,7 +342,8 @@ export async function runCli(argv = process.argv.slice(2)) {
       }
     }
     const record = await observeCommand(context, target, rest.slice(divider + 1), {
-      environment: options.environment
+      environment: options.environment,
+      goalBinding: await observationBinding(context, options, positionals[0])
     });
     process.stdout.write(`\nRecorded ${positionals[0]} · ${record.receipt}\n`);
     const expected = target.proof.expect?.exitCode ?? 0;
@@ -333,6 +359,25 @@ export async function runCli(argv = process.argv.slice(2)) {
   validateOptions(command, options);
   const context = await loadManifest(options.manifest);
   const clock = options.at ? { now: new Date(parseIsoDate(options.at, "at")) } : {};
+
+  if (command === "doctor") {
+    if (positionals.length) throw new ProoflineError("doctor does not accept positional arguments.");
+    const result = await checkConfiguration(context, options);
+    if (options.json) process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    else {
+      for (const issue of result.issues) process.stdout.write(`${issue.code}${issue.evidenceId ? ` · ${issue.evidenceId}` : ""}: ${issue.message}\n`);
+      process.stdout.write(`${result.issues.length} configuration issues. ${result.associationReview}\n`);
+    }
+    if (result.issues.length) process.exitCode = 1;
+    return;
+  }
+  if (command === "query") {
+    if (positionals.length) throw new ProoflineError("query does not accept positional arguments.");
+    const { contract, dependencies } = await loadTarget(context, options);
+    const result = queryEvidence(await evaluateProject(context, clock), options, contract, dependencies);
+    process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    return;
+  }
 
   if (command === "goal-delta") {
     if (positionals.length !== 0) {
@@ -362,7 +407,8 @@ export async function runCli(argv = process.argv.slice(2)) {
     const record = await observeArtifact(context, target, {
       environment: options.environment,
       note: options.note,
-      observedAt: options["observed-at"]
+      observedAt: options["observed-at"],
+      goalBinding: await observationBinding(context, options, positionals[0])
     });
     process.stdout.write(`Recorded ${positionals[0]} · ${record.receipt}\n`);
     return;

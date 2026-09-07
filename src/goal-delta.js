@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ProoflineError } from "./errors.js";
 import { canonicalJson, STATUS_ORDER } from "./util.js";
+import { inspectGoalBinding } from "./goal-binding.js";
 
 export const GOAL_CONTRACT_SCHEMA = "proofline-goal-contract/1";
 export const GOAL_DEPENDENCIES_SCHEMA = "proofline-goal-dependencies/1";
@@ -324,14 +325,17 @@ export function createGoalDelta({ evaluation, before, after, dependencies, now }
         : null;
       let status = proof.status;
       let reason = proof.reason;
-      if (impacts.length > 0 && (proof.status === "verified" || proof.status === "stale")) {
+      const binding = inspectGoalBinding(proof.record, evaluation.project, after, dependsOn);
+      const bindingMismatch = proof.record?.goalBinding && !binding.compatible;
+      if (((impacts.length > 0 && !binding.compatible) || bindingMismatch) && (proof.status === "verified" || proof.status === "stale")) {
         status = "stale";
+        const explanation = contractImpactReason ?? `${binding.code}: reconsider the declared dependencies for ${after.revision}.`;
         reason = proof.status === "verified"
-          ? contractImpactReason
-          : `${proof.reason} ${contractImpactReason}`;
+          ? explanation
+          : `${proof.reason} ${explanation}`;
       }
-      const removedOnly = impacts.length > 0 && impacts.every((impact) => impact.verdict === "removed");
-      const action = impacts.length === 0
+      const removedOnly = dependsOn.every(id => !after.items.some(item => item.id === id));
+      const action = (impacts.length === 0 && !bindingMismatch) || (binding.compatible && status === "verified")
         ? null
         : removedOnly
           ? {
@@ -351,6 +355,10 @@ export function createGoalDelta({ evaluation, before, after, dependencies, now }
         criterionId: proof.criterionId,
         criterionStatement: proof.criterionStatement,
         dependsOn,
+        goalBinding: binding,
+        inputTracking: proof.inputTracking ?? null,
+        evidence: proof.record ? { eventId: proof.record.eventId ?? null, receipt: proof.record.receipt ?? null,
+          observedAt: proof.record.observedAt ?? null, observed: proof.record.observed } : null,
         baseStatus: proof.status,
         baseReason: proof.reason,
         status,
@@ -398,6 +406,9 @@ export function createGoalDelta({ evaluation, before, after, dependencies, now }
     project: evaluation.project,
     title: `Goal Delta · ${after.title}`,
     generatedAt: generatedAt.toISOString(),
+    context: { kind: "goal-delta", manifestRevision: evaluation.context?.manifestRevision ?? null,
+      baseRevision: before.revision, targetRevision: after.revision,
+      legacyReceiptPolicy: "Unbound receipts are compared under the explicitly supplied prior contract; new receipts can bind their dependencies." },
     sourceRevision: `${before.revision}..${after.revision}`,
     sources: [
       { id: "contract-before", label: before.title, revision: before.revision },

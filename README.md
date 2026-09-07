@@ -53,6 +53,8 @@ The first screen answers three questions without reading a log:
 
 ## The complete loop
 
+Use `proofline doctor --json` to inspect configuration omissions and `proofline query --contract target.json --dependencies dependencies.json --gaps` to read compact evidence rows for a named target. Bind observations with the same two options on `run` or `capture`. See [machine query and configuration semantics](docs/MACHINE_QUERIES.md).
+
 The development candidate adds a read-only machine query:
 
 ```sh

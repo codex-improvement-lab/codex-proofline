@@ -170,6 +170,13 @@ test("requires an explicit dependency entry for every Proofline proof line", () 
   }), /explicitly map every proof line; missing: AC-02\/retry/u);
 });
 
+test("a removed dependency does not retire evidence that also serves a surviving item", () => {
+  const mapping = dependencies();
+  mapping.evidence.find(item => item.id === "AC-03/legacy").dependsOn.push("G-01");
+  const delta = createGoalDelta({ evaluation: evaluation(), before: BEFORE, after: AFTER, dependencies: mapping, now: CLOCK });
+  assert.equal(delta.evidence.find(item => item.id === "AC-03/legacy").action.kind, "rerun");
+});
+
 test("fixed clocks produce identical Goal Delta and Workprint projections", () => {
   const input = {
     evaluation: evaluation(),

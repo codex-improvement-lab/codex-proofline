@@ -2,6 +2,9 @@
 
 ## Unreleased — Proofline mainline candidate
 
+- Add `doctor` configuration checks, input prefill based on existing paths, compact `query` output and explicit goal/acceptance configuration bindings on ordinary run/capture receipts. Reuse matching dependencies across revisions; require a new observation for changed ones.
+- Keep mixed removed/surviving dependencies eligible for review instead of incorrectly suggesting retirement.
+
 - Add complete, read-only `goal-delta --json` queries with explicit base/target revisions, states, reasons and dependency filters. Reject unsupported, duplicate and conflicting options.
 - Keep stdout as one JSON document; queries do not generate HTML or Workprint files. Honor the existing `--at` clock for status/check/report as well as Goal Delta.
 

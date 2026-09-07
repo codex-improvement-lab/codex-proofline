@@ -1,6 +1,7 @@
 import { stat } from "node:fs/promises";
 import path from "node:path";
 import { latestRecords, readLedger } from "./ledger.js";
+import { manifestRevision, proofRevision } from "./goal-binding.js";
 import {
   evidenceRef,
   fingerprintInputs,
@@ -118,6 +119,9 @@ async function evaluateProof(context, criterion, proof, record, now) {
     }
   }
 
+  if (record.proofRevision && record.proofRevision !== proofRevision(criterion, proof)) {
+    return result("stale", "Acceptance statement or proof configuration changed after observation.", record);
+  }
   const freshnessHours = proof.freshnessHours ?? context.manifest.defaultFreshnessHours;
   const ageMilliseconds = now.getTime() - observedAt.getTime();
   if (ageMilliseconds > freshnessHours * 60 * 60_000) {
@@ -157,7 +161,11 @@ export async function evaluateProject(context, { now = new Date() } = {}) {
         latest.get(ref),
         now
       );
-      proofs.push({ ...proof, ref, ...evaluation });
+      proofs.push({ ...proof, ref, ...evaluation,
+        inputTracking: proof.kind === "command" ? { mode: proof.inputs ? "tracked" : "untracked", paths: proof.inputs ?? [],
+          observedDigest: evaluation.record?.inputs?.digest ?? null,
+          limitation: proof.inputs ? "Declared input scope only; business coverage requires review." : "Source changes are not tracked." }
+          : { mode: "artifact", paths: [proof.path] } });
     }
     criteria.push({
       id: criterion.id,
@@ -178,6 +186,8 @@ export async function evaluateProject(context, { now = new Date() } = {}) {
   return {
     schemaVersion: 1,
     project: context.manifest.project,
+    context: { kind: "local-observations", manifestRevision: manifestRevision(context.manifest), targetRevision: null,
+      limitation: "Base states do not establish applicability to a new contract; query with an explicit target contract." },
     manifestPath: path.basename(context.manifestPath),
     ledgerPath: context.manifest.ledger,
     generatedAt: now.toISOString(),
