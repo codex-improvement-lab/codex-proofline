@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { access, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { access, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
@@ -43,8 +43,27 @@ try {
     const actual = await readFile(path.join(output, "profile.json"), "utf8");
     assert.equal(JSON.parse(actual).summary.counts.newlyStaleEvidence, newlyStale);
     assert.equal(actual, await readFile(path.join(root, "goal-delta.workprint.json"), "utf8"));
+    const beforeQuery = await readdir(output);
+    const query = JSON.parse(invoke(["goal-delta", "--manifest", path.join(root, "proofline.json"), "--from", path.join(root, "contracts", "before.json"),
+      "--to", path.join(root, "contracts", "after.json"), "--dependencies", path.join(root, "dependencies.json"), "--json", "--gaps", "--at", "2026-08-30T08:00:00.000Z"]));
+    assert.equal(query.summary.counts.newlyStaleEvidence, newlyStale);
+    assert.ok(query.query.targetRevision);
+    assert.deepEqual(await readdir(output), beforeQuery);
   }
-  process.stdout.write("Installed package smoke passed: CLI loop, five states, three reports, plugin payload, three exact Goal Delta projections.\n");
+  await writeFile(path.join(scratch, "requirements.json"), JSON.stringify({ schemaVersion: "intake-requirements/1", scope: "package", revision: 1, requirements: [
+    { id: "package-R001", revision: 1, confirmation: "user-confirmed", supportDigest: "a".repeat(64), text: "Synthetic package acceptance.", pointer: { sourceId: "USER", locator: "manual" } }
+  ] }));
+  invoke(["import-intake", "--input", "requirements.json", "--output", "contract.json"]);
+  await writeFile(path.join(scratch, "deps.json"), JSON.stringify({ schemaVersion: "proofline-goal-dependencies/1", evidence: [
+    { id: "AC-01/tests", dependsOn: ["package-R001"] }, { id: "AC-02/artifact", dependsOn: ["package-R001"] }
+  ] }));
+  const unbound = JSON.parse(invoke(["query", "--contract", "contract.json", "--dependencies", "deps.json", "--gaps"]));
+  assert.equal(unbound.evidence.length, 2);
+  invoke(["doctor", "--contract", "contract.json", "--dependencies", "deps.json", "--json"], 1);
+  invoke(["run", "AC-01/tests", "--contract", "contract.json", "--dependencies", "deps.json", "--", process.execPath, "-e", "process.exit(0)"]);
+  invoke(["capture", "AC-02/artifact", "--contract", "contract.json", "--dependencies", "deps.json"]);
+  assert.equal(JSON.parse(invoke(["query", "--contract", "contract.json", "--dependencies", "deps.json", "--gaps"])).evidence.length, 0);
+  process.stdout.write("Installed package smoke passed: base CLI/five states/reports/plugin, exact Goal Delta projections and JSON, Intake import, configuration checks, bound run/capture and target query.\n");
 } finally {
   assert.ok(scratch.startsWith(path.join(os.tmpdir(), "proofline-package-smoke-")));
   await rm(scratch, { recursive: true, force: true });

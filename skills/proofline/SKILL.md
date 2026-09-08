@@ -20,6 +20,12 @@ For an explicit installation activation self-check, resolve the plugin root from
 7. Report the five states exactly: `verified`, `missing`, `stale`, `declared-only`, and `failed`.
 8. When the user provides prior and target goal/acceptance revisions, require an explicit dependency mapping for every proof line and run `proofline goal-delta --from <prior> --to <target> --dependencies <mapping>`. Do not infer dependencies from prose. Treat `added`, `removed`, `changed`, and `unchanged` as contract verdicts, not evidence states.
 
+For normal maintenance, inspect `proofline doctor --contract <target> --dependencies <mapping> --json` once when configuring or changing associations. Keep untracked inputs visible; do not infer business failure or sufficient coverage from that configuration warning. Use ordinary `run`/`capture` with the same explicit `--contract` and `--dependencies` pair so observation and input hashes are recorded naturally.
+
+Prefer `proofline query --contract <target> --dependencies <mapping> --gaps` for follow-up work. Use `--item` or `--evidence` for a specific association. Preserve the old observation revision when unchanged dependencies remain compatible. A missing binding or changed requirement cannot be repaired by relabeling an old receipt; observe again against the actual target. Do not rerun unchanged checks without a new concern.
+
+Use `goal-delta ... --json` for a read-only machine comparison; it generates no other artifacts. Its summary covers the full delta even when rows are filtered. Local `status --json` describes base observations and is not the target revision's answer. Import an explicitly reviewed Intake snapshot with `import-intake --input <snapshot> --output <new-contract>` only when that review interchange is useful; do not force an already clear task through the full product loop.
+
 ## Safety and evidence boundaries
 
 - Do not rerun destructive, billable, publishing, deployment, submission, or account-level commands merely to obtain evidence. Ask for authorization when the underlying action requires it.

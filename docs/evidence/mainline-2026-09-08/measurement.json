@@ -1,0 +1,670 @@
+{
+  "schemaVersion": "proofline-mainline-measurement/1",
+  "evidenceKind": "non-blind-controlled-internal-maintenance-replay",
+  "protocol": "docs/MAINLINE_EVALUATION_PROTOCOL.md",
+  "platform": "win32",
+  "node": "v24.19.0",
+  "materials": {
+    "beforeCommit": "88cc6abf548b1b5a3fb8dfd6213c76df923aa3da",
+    "fixedCommit": "fe4002b",
+    "beforeSourceSha256": "07236a92fc553af7f9e1c1e6e11dd405d06d623c380e2f4d741824def1011dfd",
+    "fixedSourceSha256": "bffce42112b577197cb3cf4ac0acde532d1295481ecbf5758776d23f151a1c43",
+    "baselineHelperSha256": "fc9796dab6c2655e1baa014f9537b432c012eb830448c9e7db1ed44418bf06cb",
+    "sharedInitialFiles": [
+      "package.json",
+      "request.txt",
+      "intake.js",
+      "coverage.mjs",
+      "privacy.mjs"
+    ]
+  },
+  "measurementLimits": {
+    "humanTime": "unavailable",
+    "activeAgentInvestigationTime": "unavailable",
+    "modelTokens": "unavailable",
+    "contextTokens": "unavailable",
+    "developmentAndDebuggingCost": "outside replay; not a total development cost comparison",
+    "timingMeaning": "harness/subprocess wall time only; shared host, one ordered pair, no statistical or causal user-saving claim"
+  },
+  "phases": [
+    {
+      "mode": "baseline",
+      "phase": "initial-configuration",
+      "harnessWallMs": 1.8234999999999957,
+      "subprocessWallMs": 0,
+      "operations": 2,
+      "commandInvocations": 0,
+      "configurationOrMaintenanceWrites": 2,
+      "verificationExecutions": 0,
+      "expectedFailedCommands": 0,
+      "unexpectedRetries": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "defect-fix-acceptance",
+      "harnessWallMs": 535.9082000000001,
+      "subprocessWallMs": 534.3205999999999,
+      "operations": 5,
+      "commandInvocations": 4,
+      "configurationOrMaintenanceWrites": 1,
+      "verificationExecutions": 3,
+      "expectedFailedCommands": 1,
+      "unexpectedRetries": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "acceptance-change-maintenance",
+      "harnessWallMs": 431.75430000000006,
+      "subprocessWallMs": 429.8642000000001,
+      "operations": 5,
+      "commandInvocations": 3,
+      "configurationOrMaintenanceWrites": 2,
+      "verificationExecutions": 1,
+      "expectedFailedCommands": 0,
+      "unexpectedRetries": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "later-session-handoff",
+      "harnessWallMs": 151.76040000000012,
+      "subprocessWallMs": 135.39640000000009,
+      "operations": 2,
+      "commandInvocations": 1,
+      "configurationOrMaintenanceWrites": 1,
+      "verificationExecutions": 0,
+      "expectedFailedCommands": 0,
+      "unexpectedRetries": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "harnessWallMs": 438.55500000000006,
+      "subprocessWallMs": 433.72260000000006,
+      "operations": 12,
+      "commandInvocations": 5,
+      "configurationOrMaintenanceWrites": 7,
+      "verificationExecutions": 0,
+      "expectedFailedCommands": 0,
+      "unexpectedRetries": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "defect-fix-acceptance",
+      "harnessWallMs": 664.094,
+      "subprocessWallMs": 663.1242,
+      "operations": 5,
+      "commandInvocations": 4,
+      "configurationOrMaintenanceWrites": 1,
+      "verificationExecutions": 3,
+      "expectedFailedCommands": 1,
+      "unexpectedRetries": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "harnessWallMs": 613.7420999999999,
+      "subprocessWallMs": 611.0083000000004,
+      "operations": 10,
+      "commandInvocations": 6,
+      "configurationOrMaintenanceWrites": 4,
+      "verificationExecutions": 1,
+      "expectedFailedCommands": 0,
+      "unexpectedRetries": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "later-session-handoff",
+      "harnessWallMs": 169.73589999999967,
+      "subprocessWallMs": 154.60969999999998,
+      "operations": 2,
+      "commandInvocations": 1,
+      "configurationOrMaintenanceWrites": 1,
+      "verificationExecutions": 0,
+      "expectedFailedCommands": 0,
+      "unexpectedRetries": 0
+    }
+  ],
+  "correctness": [
+    {
+      "mode": "baseline",
+      "task": "defect-fix-acceptance",
+      "reproducedKnownFailure": true,
+      "finalGaps": [],
+      "falseNegatives": 0,
+      "falsePositives": 0
+    },
+    {
+      "mode": "baseline",
+      "task": "acceptance-change-maintenance",
+      "affected": [
+        "AC-COVERAGE/tests"
+      ],
+      "unaffectedEvidenceReused": true,
+      "finalGaps": [],
+      "falseNegatives": 0,
+      "falsePositives": 0
+    },
+    {
+      "mode": "baseline",
+      "task": "later-session-handoff",
+      "reconstructedFromFiles": true,
+      "repeatedUnchangedChecks": 0,
+      "finalGaps": [],
+      "falseNegatives": 0,
+      "falsePositives": 0
+    },
+    {
+      "mode": "assisted",
+      "task": "defect-fix-acceptance",
+      "reproducedKnownFailure": true,
+      "finalGaps": [],
+      "falseNegatives": 0,
+      "falsePositives": 0
+    },
+    {
+      "mode": "assisted",
+      "task": "acceptance-change-maintenance",
+      "affected": [
+        "AC-COVERAGE/tests"
+      ],
+      "unaffectedEvidenceReused": true,
+      "finalGaps": [],
+      "falseNegatives": 0,
+      "falsePositives": 0
+    },
+    {
+      "mode": "assisted",
+      "task": "later-session-handoff",
+      "reconstructedFromFiles": true,
+      "repeatedUnchangedChecks": 0,
+      "finalGaps": [],
+      "falseNegatives": 0,
+      "falsePositives": 0
+    }
+  ],
+  "operations": [
+    {
+      "mode": "baseline",
+      "phase": "initial-configuration",
+      "kind": "configuration",
+      "label": "baseline-check.mjs",
+      "wallMs": 0.8248000000000104,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "initial-configuration",
+      "kind": "configuration",
+      "label": "baseline-contract.json",
+      "wallMs": 0.8696000000000197,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "defect-fix-acceptance",
+      "kind": "verification",
+      "label": "verify AC-COVERAGE/tests",
+      "wallMs": 151.00519999999997,
+      "command": true,
+      "verification": true,
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "stdoutBytes": 243,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "defect-fix-acceptance",
+      "kind": "known-fix-application",
+      "label": "intake.js",
+      "wallMs": 0.5487999999999715,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "defect-fix-acceptance",
+      "kind": "verification",
+      "label": "verify AC-COVERAGE/tests",
+      "wallMs": 143.14139999999998,
+      "command": true,
+      "verification": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 243,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "defect-fix-acceptance",
+      "kind": "verification",
+      "label": "verify AC-PRIVACY/tests",
+      "wallMs": 144.3388,
+      "command": true,
+      "verification": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 222,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "defect-fix-acceptance",
+      "kind": "query-or-review",
+      "label": "audit saved handoff",
+      "wallMs": 95.83519999999999,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 266,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "acceptance-change-maintenance",
+      "kind": "requirement-maintenance",
+      "label": "baseline-contract.json",
+      "wallMs": 0.6289000000000442,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "acceptance-change-maintenance",
+      "kind": "query-or-review",
+      "label": "audit saved handoff",
+      "wallMs": 136.56309999999996,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 286,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "acceptance-change-maintenance",
+      "kind": "test-maintenance",
+      "label": "coverage.mjs",
+      "wallMs": 0.7572999999999865,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "acceptance-change-maintenance",
+      "kind": "verification",
+      "label": "verify AC-COVERAGE/tests",
+      "wallMs": 199.39300000000003,
+      "command": true,
+      "verification": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 274,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "acceptance-change-maintenance",
+      "kind": "query-or-review",
+      "label": "audit saved handoff",
+      "wallMs": 93.9081000000001,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 266,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "later-session-handoff",
+      "kind": "handoff-copy",
+      "label": "copy saved task files to fresh directory",
+      "wallMs": 15.001399999999876,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "baseline",
+      "phase": "later-session-handoff",
+      "kind": "query-or-review",
+      "label": "audit saved handoff",
+      "wallMs": 135.39640000000009,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 266,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "query-or-review",
+      "label": "prepare requirements",
+      "wallMs": 79.75979999999981,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 1773,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "configuration",
+      "label": "candidates.json",
+      "wallMs": 0.7606000000000677,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "configuration",
+      "label": "review-input.json",
+      "wallMs": 0.58199999999988,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "query-or-review",
+      "label": "confirm requirement",
+      "wallMs": 63.56359999999995,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 1789,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "configuration",
+      "label": "review-input.json",
+      "wallMs": 0.5881999999999152,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "query-or-review",
+      "label": "confirm requirement",
+      "wallMs": 65.67240000000015,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 1805,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "configuration",
+      "label": "reviewed.json",
+      "wallMs": 0.7258999999999105,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "query-or-review",
+      "label": "import confirmed requirements",
+      "wallMs": 97.76009999999997,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 1379,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "configuration",
+      "label": "contract.json",
+      "wallMs": 0.6869999999998981,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "configuration",
+      "label": "dependencies.json",
+      "wallMs": 0.4864000000000033,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "configuration",
+      "label": "proofline.json",
+      "wallMs": 0.42840000000001055,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "initial-configuration",
+      "kind": "query-or-review",
+      "label": "check configuration",
+      "wallMs": 126.96670000000017,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 453,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "defect-fix-acceptance",
+      "kind": "verification",
+      "label": "verify AC-COVERAGE/tests",
+      "wallMs": 196.7931000000001,
+      "command": true,
+      "verification": true,
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "stdoutBytes": 103,
+      "stderrBytes": 662
+    },
+    {
+      "mode": "assisted",
+      "phase": "defect-fix-acceptance",
+      "kind": "known-fix-application",
+      "label": "intake.js",
+      "wallMs": 0.6768999999999323,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "defect-fix-acceptance",
+      "kind": "verification",
+      "label": "verify AC-COVERAGE/tests",
+      "wallMs": 174.35030000000006,
+      "command": true,
+      "verification": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 103,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "defect-fix-acceptance",
+      "kind": "verification",
+      "label": "verify AC-PRIVACY/tests",
+      "wallMs": 183.8969000000002,
+      "command": true,
+      "verification": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 102,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "defect-fix-acceptance",
+      "kind": "query-or-review",
+      "label": "query explicit target",
+      "wallMs": 108.08389999999963,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 3844,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "kind": "query-or-review",
+      "label": "revise acceptance",
+      "wallMs": 62.74440000000004,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 1921,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "kind": "requirement-maintenance",
+      "label": "revised-candidate.json",
+      "wallMs": 0.7600000000002183,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "kind": "query-or-review",
+      "label": "confirm revised acceptance",
+      "wallMs": 60.48900000000003,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 1927,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "kind": "requirement-maintenance",
+      "label": "revised-confirmed.json",
+      "wallMs": 0.5036000000000058,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "kind": "query-or-review",
+      "label": "import revised acceptance",
+      "wallMs": 96.85140000000001,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 1456,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "kind": "requirement-maintenance",
+      "label": "contract.json",
+      "wallMs": 0.5291999999999462,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "kind": "query-or-review",
+      "label": "query explicit target",
+      "wallMs": 106.85750000000007,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 4083,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "kind": "test-maintenance",
+      "label": "coverage.mjs",
+      "wallMs": 0.49860000000035143,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "kind": "verification",
+      "label": "verify AC-COVERAGE/tests",
+      "wallMs": 177.8436999999999,
+      "command": true,
+      "verification": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 103,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "acceptance-change-maintenance",
+      "kind": "query-or-review",
+      "label": "query explicit target",
+      "wallMs": 106.22230000000036,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 3952,
+      "stderrBytes": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "later-session-handoff",
+      "kind": "handoff-copy",
+      "label": "copy saved task files to fresh directory",
+      "wallMs": 14.564900000000307,
+      "command": false,
+      "exitCode": 0
+    },
+    {
+      "mode": "assisted",
+      "phase": "later-session-handoff",
+      "kind": "query-or-review",
+      "label": "query explicit target",
+      "wallMs": 154.60969999999998,
+      "command": true,
+      "verification": false,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "stdoutBytes": 3952,
+      "stderrBytes": 0
+    }
+  ]
+}

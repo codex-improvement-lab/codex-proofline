@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "proofline-mainline-loop/1",
+  "evidenceKind": "synthetic-local-cli-interoperability",
+  "platform": "win32",
+  "node": "v24.19.0",
+  "beforeRevision": "lab-mainline.r3-d9391c3af385",
+  "targetRevision": "lab-mainline.r5-39d9a6fe9ff6",
+  "assertions": {
+    "initialCandidatesUnconfirmed": true,
+    "initialVerified": 2,
+    "changedGap": "AC-COVERAGE/tests",
+    "finalVerified": 2,
+    "unchangedReceiptReused": true,
+    "observationRevisionsSeparate": true,
+    "privateRequirementTextOmittedFromPublicProjection": true,
+    "workprintBuildAndVerify": true
+  },
+  "commands": [
+    {
+      "label": "prepare requirements",
+      "exitCode": 0,
+      "durationMs": 114.382,
+      "stdoutBytes": 1741,
+      "stderrBytes": 0
+    },
+    {
+      "label": "confirm requirement",
+      "exitCode": 0,
+      "durationMs": 71.7207,
+      "stdoutBytes": 1757,
+      "stderrBytes": 0
+    },
+    {
+      "label": "confirm requirement",
+      "exitCode": 0,
+      "durationMs": 71.13070000000002,
+      "stdoutBytes": 1773,
+      "stderrBytes": 0
+    },
+    {
+      "label": "import confirmed requirements",
+      "exitCode": 0,
+      "durationMs": 117.98230000000001,
+      "stdoutBytes": 1456,
+      "stderrBytes": 0
+    },
+    {
+      "label": "check initial configuration",
+      "exitCode": 0,
+      "durationMs": 109.73670000000004,
+      "stdoutBytes": 476,
+      "stderrBytes": 0
+    },
+    {
+      "label": "observe AC-COVERAGE/tests",
+      "exitCode": 0,
+      "durationMs": 205.77830000000006,
+      "stdoutBytes": 103,
+      "stderrBytes": 0
+    },
+    {
+      "label": "observe AC-PRIVACY/tests",
+      "exitCode": 0,
+      "durationMs": 204.53930000000003,
+      "stdoutBytes": 102,
+      "stderrBytes": 0
+    },
+    {
+      "label": "query initial target",
+      "exitCode": 0,
+      "durationMs": 115.62549999999999,
+      "stdoutBytes": 3972,
+      "stderrBytes": 0
+    },
+    {
+      "label": "revise one requirement",
+      "exitCode": 0,
+      "durationMs": 78.87290000000007,
+      "stdoutBytes": 1889,
+      "stderrBytes": 0
+    },
+    {
+      "label": "confirm revised requirement",
+      "exitCode": 0,
+      "durationMs": 70.19709999999986,
+      "stdoutBytes": 1895,
+      "stderrBytes": 0
+    },
+    {
+      "label": "import target requirements",
+      "exitCode": 0,
+      "durationMs": 133.23700000000008,
+      "stdoutBytes": 1533,
+      "stderrBytes": 0
+    },
+    {
+      "label": "query affected gap",
+      "exitCode": 0,
+      "durationMs": 161.07589999999982,
+      "stdoutBytes": 2679,
+      "stderrBytes": 0
+    },
+    {
+      "label": "recheck changed requirement",
+      "exitCode": 0,
+      "durationMs": 310.4927,
+      "stdoutBytes": 103,
+      "stderrBytes": 0
+    },
+    {
+      "label": "query reviewed target",
+      "exitCode": 0,
+      "durationMs": 129.38570000000004,
+      "stdoutBytes": 4080,
+      "stderrBytes": 0
+    },
+    {
+      "label": "export public projection",
+      "exitCode": 0,
+      "durationMs": 184.59199999999987,
+      "stdoutBytes": 248,
+      "stderrBytes": 0
+    },
+    {
+      "label": "build Workprint",
+      "exitCode": 0,
+      "durationMs": 357.84230000000025,
+      "stdoutBytes": 183,
+      "stderrBytes": 0
+    },
+    {
+      "label": "verify Workprint",
+      "exitCode": 0,
+      "durationMs": 330.3104000000003,
+      "stdoutBytes": 47,
+      "stderrBytes": 0
+    }
+  ]
+}

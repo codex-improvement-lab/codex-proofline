@@ -1,5 +1,7 @@
 # Codex Proofline 0.1.0 — first public preview
 
+This file retains the published 0.1.0 notes. The current branch is an **unreleased mainline development candidate**: see [machine queries](docs/MACHINE_QUERIES.md), [Intake interoperability](docs/INTAKE_LINK.md) and [internal replay results](docs/MAINLINE_EVALUATION.md). Historical release checks below do not certify the new candidate; publication remains subject to product review.
+
 Codex Proofline turns an agent's “done” into a reviewer-facing proof graph. Each acceptance criterion connects to observed command, file, or screenshot receipts with environment and timestamp metadata.
 
 ## Highlights
