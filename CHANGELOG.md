@@ -2,6 +2,8 @@
 
 ## Unreleased — Proofline mainline candidate
 
+- Import scoped, explicitly confirmed Intake requirement snapshots with revision and origin dispositions; preserve generic public labels and keep private requirement text out of the Workprint projection.
+
 - Add `doctor` configuration checks, input prefill based on existing paths, compact `query` output and explicit goal/acceptance configuration bindings on ordinary run/capture receipts. Reuse matching dependencies across revisions; require a new observation for changed ones.
 - Keep mixed removed/surviving dependencies eligible for review instead of incorrectly suggesting retirement.
 

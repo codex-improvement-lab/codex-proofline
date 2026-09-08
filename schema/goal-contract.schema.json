@@ -13,6 +13,27 @@
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@+-]*$"
     },
+    "intake": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "scope", "revision", "requirements"],
+      "properties": {
+        "schemaVersion": { "const": "proofline-intake-origin/1" },
+        "scope": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$", "maxLength": 64 },
+        "revision": { "type": "integer", "minimum": 1 },
+        "requirements": { "type": "array", "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "revision", "confirmation", "pointer"],
+          "properties": {
+            "id": { "$ref": "#/$defs/id" },
+            "revision": { "type": "integer", "minimum": 1 },
+            "confirmation": { "enum": ["candidate", "user-confirmed", "needs-review", "withdrawn"] },
+            "pointer": { "$ref": "#/$defs/intakePointer" },
+            "previousPointer": { "$ref": "#/$defs/intakePointer" }
+          }
+        } }
+      }
+    },
     "items": {
       "type": "array",
       "items": {
@@ -28,10 +49,20 @@
     }
   },
   "$defs": {
+    "intakePointer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sourceId", "locator"],
+      "properties": {
+        "sourceId": { "$ref": "#/$defs/id" },
+        "sourceRevision": { "type": "integer", "minimum": 1 },
+        "locator": { "type": "string", "minLength": 1 }
+      },
+      "if": { "properties": { "sourceId": { "const": "USER" } } },
+      "else": { "required": ["sourceRevision"] }
+    },
     "id": {
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
     }
   }
 }
-

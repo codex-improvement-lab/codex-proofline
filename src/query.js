@@ -47,6 +47,7 @@ export function queryEvidence(evaluation, options = {}, contract = null, depende
     return { id: proof.ref, criterionId: proof.criterionId, label: proof.label, kind: proof.kind,
       baseStatus: proof.status, baseReason: proof.reason, status: target.status, reason: target.reason,
       dependsOn, goalBinding: target.binding ?? null, inputTracking: proof.inputTracking,
+      requirements: (contract?.intake?.requirements || []).filter(item => dependsOn.includes(item.id)),
       evidence: proof.record ? { eventId: proof.record.eventId, receipt: proof.record.receipt, observedAt: proof.record.observedAt,
         observed: proof.record.observed, source: proof.record.source } : null };
   });
@@ -59,6 +60,7 @@ export function queryEvidence(evaluation, options = {}, contract = null, depende
     manifestRevision: evaluation.context.manifestRevision,
     query: { kind: contract ? "target-contract" : "local-observations", targetRevision: contract?.revision ?? null,
       contractDigest: contract ? contractDigest(contract) : null, summaryScope: "complete-project",
+      intake: contract?.intake ? { scope: contract.intake.scope, revision: contract.intake.revision } : null,
       filters: { status: options.status ?? null, gaps: Boolean(options.gaps), item: options.item ?? null, evidence: options.evidence ?? null } },
     evidence, unmappedItems,
     summary: { totalEvidence: all.length, returnedEvidence: evidence.length, unmappedItems: unmappedItems.length,

@@ -55,6 +55,8 @@ The first screen answers three questions without reading a log:
 
 Use `proofline doctor --json` to inspect configuration omissions and `proofline query --contract target.json --dependencies dependencies.json --gaps` to read compact evidence rows for a named target. Bind observations with the same two options on `run` or `capture`. See [machine query and configuration semantics](docs/MACHINE_QUERIES.md).
 
+Import explicitly reviewed requirements with `proofline import-intake --input requirements.json --output contract.json`. See the [Intake file contract and complete CLI reproduction](docs/INTAKE_LINK.md).
+
 The development candidate adds a read-only machine query:
 
 ```sh

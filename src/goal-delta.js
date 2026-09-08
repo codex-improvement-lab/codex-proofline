@@ -3,6 +3,7 @@ import path from "node:path";
 import { ProoflineError } from "./errors.js";
 import { canonicalJson, STATUS_ORDER } from "./util.js";
 import { inspectGoalBinding } from "./goal-binding.js";
+import { validateIntakeOrigin } from "./intake-import.js";
 
 export const GOAL_CONTRACT_SCHEMA = "proofline-goal-contract/1";
 export const GOAL_DEPENDENCIES_SCHEMA = "proofline-goal-dependencies/1";
@@ -75,7 +76,7 @@ export function validateGoalContract(value, label = "Goal contract") {
   assertObject(value, label);
   assertKnownKeys(
     value,
-    new Set(["$schema", "schemaVersion", "title", "revision", "items"]),
+    new Set(["$schema", "schemaVersion", "title", "revision", "items", "intake"]),
     label
   );
   if (value.schemaVersion !== GOAL_CONTRACT_SCHEMA) {
@@ -117,7 +118,8 @@ export function validateGoalContract(value, label = "Goal contract") {
     schemaVersion: value.schemaVersion,
     title: value.title,
     revision: value.revision,
-    items: items.sort((left, right) => compareCodePoints(left.id, right.id))
+    items: items.sort((left, right) => compareCodePoints(left.id, right.id)),
+    ...(value.intake ? { intake: validateIntakeOrigin(value.intake, items) } : {})
   };
 }
 
@@ -398,7 +400,7 @@ export function createGoalDelta({ evaluation, before, after, dependencies, now }
   const headline = newlyStaleEvidence.length > 0
     ? `${materialChanges} contract ${materialChanges === 1 ? "change makes" : "changes make"} ${newlyStaleEvidence.length} previously verified proof ${newlyStaleEvidence.length === 1 ? "line" : "lines"} stale.`
     : materialChanges > 0
-      ? `${materialChanges} contract ${materialChanges === 1 ? "change" : "changes"}; no verified proof line was invalidated.`
+      ? `${materialChanges} contract ${materialChanges === 1 ? "change" : "changes"}; ${usableEvidence.length} proof ${usableEvidence.length === 1 ? "line is" : "lines are"} currently usable under the target comparison.`
       : "No material contract change; existing evidence keeps its current Proofline state.";
 
   return {

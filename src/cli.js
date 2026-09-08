@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,6 +15,7 @@ import { renderGoalDeltaHtml } from "./goal-delta-report.js";
 import { queryEvidence, queryGoalDelta } from "./query.js";
 import { checkConfiguration, discoverInputs } from "./doctor.js";
 import { bindGoal } from "./goal-binding.js";
+import { importIntake } from "./intake-import.js";
 import { declareClaim, observeArtifact, observeCommand } from "./observe.js";
 import { renderHtmlReport, renderMarkdownReport } from "./report.js";
 import { serveReport } from "./server.js";
@@ -32,6 +33,7 @@ Usage:
   proofline check [--json]
   proofline doctor [--json] [--contract <target.json> --dependencies <dependencies.json>]
   proofline query [--contract <target.json> --dependencies <dependencies.json>] [--gaps] [--status <state>] [--item <id>] [--evidence <criterion/proof>]
+  proofline import-intake --input <requirements.json> [--output <contract.json|->]
   proofline report [--format markdown|html|json] [--output <path|->]
   proofline goal-delta --from <contract.json> --to <contract.json> --dependencies <dependencies.json> [--output <report.html>] [--profile-output <workprint.json>] [--at <ISO-8601>]
   proofline goal-delta --from <contract.json> --to <contract.json> --dependencies <dependencies.json> --json [--gaps] [--affected] [--status <state>] [--item <id>] [--evidence <criterion/proof>]
@@ -58,7 +60,7 @@ const VALUE_OPTIONS = new Set([
   "to",
   "dependencies",
   "profile-output",
-  "at", "status", "item", "evidence", "contract"
+  "at", "status", "item", "evidence", "contract", "input"
 ]);
 const BOOLEAN_OPTIONS = new Set(["json", "help", "gaps", "affected"]);
 
@@ -71,6 +73,7 @@ const COMMAND_OPTIONS = {
   check: ["manifest", "json", "at"],
   doctor: ["manifest", "json", "contract", "dependencies"],
   query: ["manifest", "json", "contract", "dependencies", "at", "status", "item", "evidence", "gaps"],
+  "import-intake": ["input", "output"],
   report: ["manifest", "format", "output", "at"],
   "goal-delta": ["manifest", "from", "to", "dependencies", "output", "profile-output", "at", "json", "status", "item", "evidence", "gaps", "affected"],
   serve: ["manifest", "host", "port"]
@@ -357,6 +360,17 @@ export async function runCli(argv = process.argv.slice(2)) {
     return;
   }
   validateOptions(command, options);
+  if (command === "import-intake") {
+    if (positionals.length || !options.input) throw new ProoflineError("import-intake requires --input <requirements.json> and no positionals.");
+    const contract = importIntake(JSON.parse((await readFile(path.resolve(options.input), "utf8")).replace(/^\uFEFF/u, "")));
+    const output = `${JSON.stringify(contract, null, 2)}\n`;
+    if (!options.output || options.output === "-") process.stdout.write(output);
+    else {
+      await writeFile(path.resolve(options.output), output, { encoding: "utf8", flag: "wx" });
+      process.stderr.write(`Wrote ${path.resolve(options.output)}\n`);
+    }
+    return;
+  }
   const context = await loadManifest(options.manifest);
   const clock = options.at ? { now: new Date(parseIsoDate(options.at, "at")) } : {};
 
