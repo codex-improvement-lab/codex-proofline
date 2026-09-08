@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "lab-mainline-candidate/1",
+  "product": "codex-proofline",
+  "status": "development-candidate-awaiting-product-review",
+  "date": "2026-09-08",
+  "branch": "dev/proofline-mainline-2026-09-08",
+  "sourceCommit": "0c53e95e28a540dcadc8a1b8191d78b396e054e5",
+  "basePackageVersion": "0.1.0",
+  "host": "Windows / Node v24.19.0",
+  "checks": {
+    "nodeTests": 52,
+    "lint": "passed",
+    "releaseFileGate": 42,
+    "installedTarballCli": "passed",
+    "extractedSourceCli": "passed",
+    "nonMacImplementation": "passed; candidate 5fee1ad561896544; 10 checks",
+    "browser": "1280 and 390; trace/Escape; no overflow/errors/external requests"
+  },
+  "notes": [
+    "Five evidence states preserved; JSON queries are read-only with explicit observation/target context.",
+    "Goal Delta long-text overflow at 390px was reproduced and fixed before this candidate.",
+    "A synthetic fixture source matched the commit secret-pattern gate; runtime construction preserved the exact measured fixture bytes. No hook was bypassed.",
+    "Earlier local packaging attempts are superseded; only the listed artifacts belong to this candidate."
+  ],
+  "evidenceLimits": {
+    "hostedCI": "not-run for this candidate",
+    "physicalMac": "not-run for this candidate; historical evidence not transferred",
+    "freshTaskPluginActivation": "not-run",
+    "externalUserValidation": "not-run",
+    "release": "not published; next release version and publication require product review"
+  },
+  "artifacts": [
+    {
+      "file": "codex-proofline-mainline-20260908-0c53e95.tgz",
+      "sha256": "33c35874303a622ecbad29fc4931cab72584522390b0dc4ea642e9406000b555",
+      "bytes": 838716
+    },
+    {
+      "file": "codex-proofline-mainline-20260908-0c53e95-source.zip",
+      "sha256": "db7075fccffe0b54b1ec5c4b82d6c4d389f4c21ab5b36bfa965bf89fcf0c711f",
+      "bytes": 943162
+    }
+  ]
+}

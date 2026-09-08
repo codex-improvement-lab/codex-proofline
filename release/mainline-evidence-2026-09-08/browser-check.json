@@ -1,0 +1,49 @@
+{
+  "evidenceKind": "synthetic-local-browser",
+  "results": [
+    {
+      "surface": "proofline",
+      "width": 1280,
+      "dimensions": {
+        "viewport": 1280,
+        "scroll": 1280,
+        "overflow": []
+      },
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "surface": "proofline",
+      "width": 390,
+      "dimensions": {
+        "viewport": 390,
+        "scroll": 390,
+        "overflow": []
+      },
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "surface": "workprint",
+      "width": 1280,
+      "dimensions": {
+        "viewport": 1280,
+        "scroll": 1280,
+        "overflow": []
+      },
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "surface": "workprint",
+      "width": 390,
+      "dimensions": {
+        "viewport": 390,
+        "scroll": 390,
+        "overflow": []
+      },
+      "errors": 0,
+      "externalRequests": 0
+    }
+  ]
+}

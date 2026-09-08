@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 2,
+  "product": "codex-proofline",
+  "gateVersion": 2,
+  "evidenceClass": "non-macos-implementation-check",
+  "observedAt": "2026-09-08T00:49:01.612Z",
+  "host": {
+    "platform": "win32",
+    "arch": "x64",
+    "release": "10.0.26200",
+    "node": "v24.19.0",
+    "codex": "0.145.0"
+  },
+  "pathWithSpacesExercised": true,
+  "rawOutputStored": false,
+  "candidate": {
+    "schemaVersion": 1,
+    "scope": "runtime-gate-tests-v1",
+    "id": "codex-proofline-macos-rc-5fee1ad561896544",
+    "contentSha256": "5fee1ad561896544af9a239750b53235b11c295e0ccec63acb9b5f55a4148e58",
+    "contentFiles": 51,
+    "installedVersion": "0.1.0+codex.macos-5fee1ad561896544",
+    "installedContentSha256": "771a76eebb2b8200b379509cb593532e62838576e1c814484f3d965987190321",
+    "installedContentFiles": 33
+  },
+  "checks": [
+    {
+      "id": "candidate-source-identity",
+      "candidateId": "codex-proofline-macos-rc-5fee1ad561896544",
+      "contentSha256": "5fee1ad561896544af9a239750b53235b11c295e0ccec63acb9b5f55a4148e58",
+      "contentFiles": 51,
+      "expectedContentSha256Matched": null,
+      "status": "passed",
+      "durationMs": 0
+    },
+    {
+      "id": "node-20-and-codex-cli",
+      "node": {
+        "exitCode": 0,
+        "stdoutBytes": 10,
+        "stderrBytes": 0,
+        "stdoutSha256": "bc697de995dc791df53d688ef69c08994cdffc8ce30c906b1ffc65b131ccd0eb",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "codex": {
+        "exitCode": 0,
+        "stdoutBytes": 1200,
+        "stderrBytes": 0,
+        "stdoutSha256": "8a9948717913edc2e80e802d2c69a7893461799843f5489096ea3dfb12ce4dae",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "passed",
+      "durationMs": 626
+    },
+    {
+      "id": "node-test-suite",
+      "command": {
+        "exitCode": 0,
+        "stdoutBytes": 4241,
+        "stderrBytes": 0,
+        "stdoutSha256": "d8d96a63bee581e64ab1a92f6a0c5b82fc656a8e5638c9e94704358742a8b20c",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "passed",
+      "durationMs": 6834
+    },
+    {
+      "id": "local-marketplace-with-spaces",
+      "portableSource": "./plugins/codex-proofline",
+      "requiredComponents": 3,
+      "installedVersion": "0.1.0+codex.macos-5fee1ad561896544",
+      "installedContentSha256": "771a76eebb2b8200b379509cb593532e62838576e1c814484f3d965987190321",
+      "status": "passed",
+      "durationMs": 313
+    },
+    {
+      "id": "exact-environment-contract",
+      "command": {
+        "exitCode": 2,
+        "stdoutBytes": 0,
+        "stderrBytes": 113,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "5c9ec6f5674fba81998f4a8b40f63f7678984ae0e8a095b4812e4ec935a059bf"
+      },
+      "status": "passed",
+      "durationMs": 106
+    },
+    {
+      "id": "core-workflow-with-spaced-path",
+      "run": {
+        "exitCode": 0,
+        "stdoutBytes": 138,
+        "stderrBytes": 0,
+        "stdoutSha256": "335dfd388eedd4c6555855b887de2aa7ca9bcf27de8c0f17c01a36c141119d04",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "statusCommand": {
+        "exitCode": 0,
+        "stdoutBytes": 4670,
+        "stderrBytes": 0,
+        "stdoutSha256": "cac2b725a97d64567ad184f56bae70a47a26db922acf1bbca36ae5658aafc433",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "report": {
+        "exitCode": 0,
+        "stdoutBytes": 176,
+        "stderrBytes": 0,
+        "stdoutSha256": "6461d247c7d15839d93b723634e66269b0d04cb423e21c8c32b50964e5f5971b",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "passed",
+      "durationMs": 428
+    },
+    {
+      "id": "plugin-root-stop-hook",
+      "command": {
+        "exitCode": 0,
+        "stdoutBytes": 248,
+        "stderrBytes": 0,
+        "stdoutSha256": "74f897bec498e8f7538c17f81c55d739baa9e854a3d1e656d8d128b6d3d74b80",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "posixShellObserved": false,
+      "status": "passed",
+      "durationMs": 86
+    },
+    {
+      "id": "marketplace-add-and-discovery",
+      "add": {
+        "exitCode": 0,
+        "stdoutBytes": 252,
+        "stderrBytes": 0,
+        "stdoutSha256": "43711bbe61e4fffe8e38f771b2ca596dd98e49a8743cbd5b3a600f2566b7a747",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "list": {
+        "exitCode": 0,
+        "stdoutBytes": 878,
+        "stderrBytes": 0,
+        "stdoutSha256": "8ab4991da62ebdab6dc8ddf041ea9823c97837967817c022c673c567a81417f3",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "passed",
+      "durationMs": 418
+    },
+    {
+      "id": "plugin-install-and-status",
+      "install": {
+        "exitCode": 0,
+        "stdoutBytes": 494,
+        "stderrBytes": 0,
+        "stdoutSha256": "a23f973e7fbb1d306a4330e01f050a086bdf33e34d411fac08013ab4ed51db93",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "list": {
+        "exitCode": 0,
+        "stdoutBytes": 876,
+        "stderrBytes": 0,
+        "stdoutSha256": "bd27d863c94a44d46c66963ac76ea44d1665359ebdbcf02bb08542591c89ba2b",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "passed",
+      "durationMs": 217
+    },
+    {
+      "id": "installed-cache-identity",
+      "cacheLayout": "$CODEX_HOME/plugins/cache/<marketplace>/<plugin>/<reported-slot>",
+      "cacheSlot": "0.1.0+codex.macos-5fee1ad561896544",
+      "identityReadDirectly": true,
+      "installedVersion": "0.1.0+codex.macos-5fee1ad561896544",
+      "installedContentSha256": "771a76eebb2b8200b379509cb593532e62838576e1c814484f3d965987190321",
+      "skillSha256": "29cb05745e2d4f41979bbc7f83393740523a72a3849d1b8a7f503bedff6edad4",
+      "hookConfigSha256": "dfee9ec88545c7f588b7f7834efb1b5e65a9a52f44d6d99c1befa11522cfea75",
+      "versionCommand": {
+        "exitCode": 0,
+        "stdoutBytes": 35,
+        "stderrBytes": 0,
+        "stdoutSha256": "7bec90d610c5c7767bc8d955356c8c93032b58558c51767f024b0c6ed885b962",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "statusCommand": {
+        "exitCode": 0,
+        "stdoutBytes": 4670,
+        "stderrBytes": 0,
+        "stdoutSha256": "10e2075be4ddd026ca27d1b3cc06b0c0c61bd6e1e8773523f78b4cdce03994e3",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "passed",
+      "durationMs": 486
+    },
+    {
+      "id": "fresh-task-skill-and-hook",
+      "status": "not-run",
+      "reason": "Requires an authenticated fresh Codex session on a real Mac."
+    }
+  ],
+  "cleanup": {
+    "pluginRemoved": true,
+    "marketplaceRemoved": true,
+    "installedCacheAbsent": true,
+    "pluginRemoveReceipt": {
+      "exitCode": 0,
+      "stdoutBytes": 141,
+      "stderrBytes": 0,
+      "stdoutSha256": "cc1813bfabf03b46678f75e3fe9d5d635bfc67acfcbaba08108f520a3da43013",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pluginStatusAfterRemoveReceipt": {
+      "exitCode": 0,
+      "stdoutBytes": 41,
+      "stderrBytes": 0,
+      "stdoutSha256": "050e2dee988ae4ba4d1d8220591b660829a9ee3f06f52d548acc87522ee90885",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "marketplaceRemoveReceipt": {
+      "exitCode": 0,
+      "stdoutBytes": 78,
+      "stderrBytes": 0,
+      "stdoutSha256": "1583b168e8c04f84e7c9a3357d39c1ae8e27efe5d7696646c0f1ed17ce93f0c8",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "marketplaceStatusAfterRemoveReceipt": {
+      "exitCode": 0,
+      "stdoutBytes": 99,
+      "stderrBytes": 0,
+      "stdoutSha256": "081785a7aa616dad9bb6fb17aa402d78b51c9cc8438c3f8c7a0bfdbe7a23b6fe",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "overall": "implementation-check-passed",
+  "completedAt": "2026-09-08T00:49:11.354Z"
+}
