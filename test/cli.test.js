@@ -152,6 +152,8 @@ test("target queries require dependency-bound observations, preserve unrelated e
   assert.equal(delta.evidence[0].status, "verified");
   assert.equal(delta.evidence[0].action, null);
   assert.equal(delta.evidence[0].impactedBy.length, 1);
+  assert.match(delta.evidence[0].contractImpactReason, /current receipt binds/);
+  assert.doesNotMatch(delta.evidence[0].contractImpactReason, /must be reconsidered/);
   value.criteria[0].statement = "A revised acceptance statement.";
   await writeJson(path.join(directory, "proofline.json"), value);
   assert.equal((await query("after.json")).evidence[0].baseStatus, "stale");

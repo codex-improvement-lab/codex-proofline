@@ -265,10 +265,11 @@ function rerunCommand(proof) {
   return `proofline capture ${proof.ref}${environment}`;
 }
 
-function contractReason(changes, targetRevision) {
+function contractReason(changes, targetRevision, bound = false) {
   const details = changes.map((change) => `${change.id} ${change.verdict}`).join(", ");
   const codes = [...new Set(changes.map((change) => impactCode(change.verdict)))];
-  return `Contract delta ${details} (${codes.join(", ")}); evidence must be reconsidered for ${targetRevision}.`;
+  return bound ? `Contract delta ${details} (${codes.join(", ")}); the current receipt binds these dependencies for ${targetRevision}.`
+    : `Contract delta ${details} (${codes.join(", ")}); evidence must be reconsidered for ${targetRevision}.`;
 }
 
 function publicText(value) {
@@ -322,12 +323,12 @@ export function createGoalDelta({ evaluation, before, after, dependencies, now }
       const impacts = dependsOn
         .map((itemId) => changesById.get(itemId))
         .filter((change) => change && change.verdict !== "unchanged");
+      const binding = inspectGoalBinding(proof.record, evaluation.project, after, dependsOn);
       const contractImpactReason = impacts.length > 0
-        ? contractReason(impacts, after.revision)
+        ? contractReason(impacts, after.revision, binding.compatible)
         : null;
       let status = proof.status;
       let reason = proof.reason;
-      const binding = inspectGoalBinding(proof.record, evaluation.project, after, dependsOn);
       const bindingMismatch = proof.record?.goalBinding && !binding.compatible;
       if (((impacts.length > 0 && !binding.compatible) || bindingMismatch) && (proof.status === "verified" || proof.status === "stale")) {
         status = "stale";
@@ -410,6 +411,7 @@ export function createGoalDelta({ evaluation, before, after, dependencies, now }
     generatedAt: generatedAt.toISOString(),
     context: { kind: "goal-delta", manifestRevision: evaluation.context?.manifestRevision ?? null,
       baseRevision: before.revision, targetRevision: after.revision,
+      baseStatusMeaning: "Current local observation state, not a historical evaluation of the prior contract.",
       legacyReceiptPolicy: "Unbound receipts are compared under the explicitly supplied prior contract; new receipts can bind their dependencies." },
     sourceRevision: `${before.revision}..${after.revision}`,
     sources: [

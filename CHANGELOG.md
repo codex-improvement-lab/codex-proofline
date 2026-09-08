@@ -2,6 +2,8 @@
 
 ## Unreleased — Proofline mainline candidate
 
+- Keep full imported acceptance text and hashes inside narrow Goal Delta layouts; distinguish a dependency-bound current receipt from a pending contract recheck.
+
 - Import scoped, explicitly confirmed Intake requirement snapshots with revision and origin dispositions; preserve generic public labels and keep private requirement text out of the Workprint projection.
 
 - Add `doctor` configuration checks, input prefill based on existing paths, compact `query` output and explicit goal/acceptance configuration bindings on ordinary run/capture receipts. Reuse matching dependencies across revisions; require a new observation for changed ones.

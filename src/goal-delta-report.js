@@ -61,6 +61,10 @@ function renderEvidence(proof) {
         <small>${proof.impactedBy.length ? "Impact" : "Isolation"}</small>
         <strong>${escapeHtml(impacts || "Unchanged path")}</strong>
         <span>${escapeHtml(proof.baseStatus)} → ${escapeHtml(proof.status)}</span>
+        <small>Observed contract</small>
+        <span>${escapeHtml(proof.goalBinding?.observationRevision ?? "Unbound receipt; prior supplied by caller")}</span>
+        <small>Compared against</small>
+        <span>${escapeHtml(proof.goalBinding?.targetRevision ?? "See target revision")}</span>
       </div>
     </article>`.trim();
 }
@@ -166,8 +170,8 @@ export function renderGoalDeltaHtml(delta) {
     .redline-row { position: relative; display: grid; grid-template-columns: 118px minmax(0, 1fr) 54px minmax(0, 1fr) 112px; min-height: 168px; border-bottom: 1px solid var(--line); transition: opacity 160ms ease, background 160ms ease; }
     .change-stamp { display: grid; align-content: center; gap: 8px; padding: 18px; border-right: 1px solid var(--line); color: var(--muted); font-size: 10px; text-transform: uppercase; }
     .change-stamp span { color: var(--verdict); font-size: 28px; line-height: 1; }
-    .change-stamp code { color: var(--paper); }
-    .contract-side { display: grid; align-content: center; gap: 10px; padding: 22px 28px; }
+    .change-stamp code { color: var(--paper); overflow-wrap: anywhere; }
+    .contract-side { display: grid; min-width: 0; overflow-wrap: anywhere; align-content: center; gap: 10px; padding: 22px 28px; }
     .contract-side small { color: var(--muted); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; }
     .contract-side p, .contract-side del, .contract-side ins { display: grid; gap: 8px; margin: 0; color: inherit; text-decoration-thickness: 1px; text-decoration-color: var(--verdict); }
     .contract-side strong { font-size: 16px; line-height: 1.35; }
@@ -192,15 +196,15 @@ export function renderGoalDeltaHtml(delta) {
     .wave-mark i { position: absolute; width: 22px; height: 22px; border: 1px solid var(--status); border-radius: 50%; opacity: .65; }
     .wave-mark i:nth-child(2) { width: 48px; height: 48px; opacity: .24; }
     .wave-mark span { z-index: 1; color: var(--status); font: 800 17px/1 ui-monospace, monospace; }
-    .evidence-copy { align-self: center; padding: 22px 28px; }
+    .evidence-copy { min-width: 0; overflow-wrap: anywhere; align-self: center; padding: 22px 28px; }
     .evidence-topline { display: flex; gap: 14px; justify-content: space-between; align-items: center; }
     .evidence-topline code { color: var(--muted); font-size: 11px; }
     .status { color: var(--status); font-size: 10px; font-weight: 800; text-transform: uppercase; }
     .evidence-copy h3 { margin: 10px 0 4px; font-size: 18px; }
     .evidence-copy p { margin: 0; color: #a9ae9f; font-size: 13px; line-height: 1.55; }
     .dependency-line { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; margin-top: 14px; color: #737868; font-size: 9px; text-transform: uppercase; }
-    .dependency-line code { padding: 4px 6px; border: 1px solid var(--line); color: #c7cbbe; }
-    .impact-readout { display: grid; align-content: center; gap: 9px; padding: 22px; border-left: 1px solid var(--line); }
+    .dependency-line code { max-width: 100%; overflow-wrap: anywhere; padding: 4px 6px; border: 1px solid var(--line); color: #c7cbbe; }
+    .impact-readout { display: grid; min-width: 0; overflow-wrap: anywhere; align-content: center; gap: 9px; padding: 22px; border-left: 1px solid var(--line); }
     .impact-readout small { color: var(--muted); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
     .impact-readout strong { color: var(--status); font-size: 13px; line-height: 1.4; }
     .impact-readout span { color: #8b9181; font: 11px/1.4 ui-monospace, monospace; }
@@ -281,7 +285,7 @@ export function renderGoalDeltaHtml(delta) {
         </div>
         <aside class="impact-meter" aria-label="Evidence impact summary">
           <div class="meter-head">Verified proof lines before / usable now</div>
-          <div class="meter-shift"><div><small>Before</small><strong>${delta.summary.beforeVerifiedEvidence}</strong></div><i aria-hidden="true"></i><div><small>Now</small><strong>${delta.summary.afterVerifiedEvidence}</strong></div></div>
+          <div class="meter-shift"><div><small>Local base</small><strong>${delta.summary.beforeVerifiedEvidence}</strong></div><i aria-hidden="true"></i><div><small>Target</small><strong>${delta.summary.afterVerifiedEvidence}</strong></div></div>
           <div class="meter-note">${counts.newlyStaleEvidence} newly stale · ${counts.rerunEvidence} rerun · ${counts.retireEvidence} retire</div>
 ${primaryFault ? `          <div class="meter-focus"><small>First fault path</small><strong>${escapeHtml(primaryFault.id)} · ${escapeHtml(primaryFault.verdict)}</strong><span>${escapeHtml(primaryFaultTarget)}</span></div>` : ""}
         </aside>
