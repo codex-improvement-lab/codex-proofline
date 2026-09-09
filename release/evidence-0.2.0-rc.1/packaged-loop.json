@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "proofline-mainline-loop/1",
+  "evidenceKind": "synthetic-local-cli-interoperability",
+  "variant": "atomic-review-direct-input",
+  "platform": "win32",
+  "node": "v24.19.0",
+  "beforeRevision": "lab-mainline.r2-7d7b6b8c75a0",
+  "targetRevision": "lab-mainline.r4-5d67c7ceb9bc",
+  "assertions": {
+    "initialCandidatesUnconfirmed": true,
+    "initialVerified": 2,
+    "changedGap": "AC-COVERAGE/tests",
+    "finalVerified": 2,
+    "unchangedReceiptReused": true,
+    "observationRevisionsSeparate": true,
+    "privateRequirementTextOmittedFromPublicProjection": true,
+    "workprintBuildAndVerify": true
+  },
+  "commands": [
+    {
+      "label": "prepare requirements",
+      "exitCode": 0,
+      "durationMs": 109.8185,
+      "stdoutBytes": 1813,
+      "stderrBytes": 0
+    },
+    {
+      "label": "confirm two selected requirements atomically",
+      "exitCode": 0,
+      "durationMs": 69.40969999999999,
+      "stdoutBytes": 1845,
+      "stderrBytes": 0
+    },
+    {
+      "label": "check initial configuration",
+      "exitCode": 0,
+      "durationMs": 92.80190000000002,
+      "stdoutBytes": 476,
+      "stderrBytes": 0
+    },
+    {
+      "label": "observe AC-COVERAGE/tests",
+      "exitCode": 0,
+      "durationMs": 175.42849999999999,
+      "stdoutBytes": 103,
+      "stderrBytes": 0
+    },
+    {
+      "label": "observe AC-PRIVACY/tests",
+      "exitCode": 0,
+      "durationMs": 665.5683,
+      "stdoutBytes": 102,
+      "stderrBytes": 0
+    },
+    {
+      "label": "query initial target",
+      "exitCode": 0,
+      "durationMs": 410.5600999999999,
+      "stdoutBytes": 3972,
+      "stderrBytes": 0
+    },
+    {
+      "label": "revise one requirement",
+      "exitCode": 0,
+      "durationMs": 111.73890000000006,
+      "stdoutBytes": 1961,
+      "stderrBytes": 0
+    },
+    {
+      "label": "confirm revised requirement",
+      "exitCode": 0,
+      "durationMs": 62.61360000000013,
+      "stdoutBytes": 1967,
+      "stderrBytes": 0
+    },
+    {
+      "label": "query affected gap and bound action",
+      "exitCode": 0,
+      "durationMs": 109.56629999999996,
+      "stdoutBytes": 6375,
+      "stderrBytes": 0
+    },
+    {
+      "label": "execute returned argument-array recheck",
+      "exitCode": 0,
+      "durationMs": 172.92090000000007,
+      "stdoutBytes": 103,
+      "stderrBytes": 0
+    },
+    {
+      "label": "query reviewed target",
+      "exitCode": 0,
+      "durationMs": 102.62329999999974,
+      "stdoutBytes": 4080,
+      "stderrBytes": 0
+    },
+    {
+      "label": "export public projection",
+      "exitCode": 0,
+      "durationMs": 112.95219999999972,
+      "stdoutBytes": 264,
+      "stderrBytes": 0
+    },
+    {
+      "label": "build Workprint",
+      "exitCode": 0,
+      "durationMs": 344.5160000000001,
+      "stdoutBytes": 183,
+      "stderrBytes": 0
+    },
+    {
+      "label": "verify Workprint",
+      "exitCode": 0,
+      "durationMs": 252.52840000000015,
+      "stdoutBytes": 47,
+      "stderrBytes": 0
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "evidenceKind": "synthetic-automated-browser-layout",
+  "illustrativePathsNotExecuted": true,
+  "results": [
+    {
+      "width": 1280,
+      "overflow": false,
+      "traceAndEscape": true,
+      "argumentArrayVisible": true,
+      "pageErrors": 0,
+      "externalRequests": 0
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "traceAndEscape": true,
+      "argumentArrayVisible": true,
+      "pageErrors": 0,
+      "externalRequests": 0
+    }
+  ]
+}

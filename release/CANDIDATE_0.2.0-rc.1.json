@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "lab-release-candidate/1",
+  "product": "codex-proofline",
+  "version": "0.2.0-rc.1",
+  "status": "frozen-local-candidate-for-owner-validation",
+  "commissionDate": "2026-09-09",
+  "completedLocalDate": "2026-09-10",
+  "sourceCommit": "033903f6602b6f490e93df6d9364ec56b5ae35f3",
+  "branch": "dev/proofline-mainline-2026-09-08",
+  "identity": {
+    "pluginManifestVersion": "0.2.0-rc.1",
+    "stagedPluginVersion": "0.2.0-rc.1+codex.macos-97e1840da8cc9ee8",
+    "sourceCandidateId": "codex-proofline-macos-rc-97e1840da8cc9ee8",
+    "sourceContentSha256": "97e1840da8cc9ee838794956b6113e3977b56cf553c416ac31b26794173d2932"
+  },
+  "checks": {
+    "nodeTests": 55,
+    "lint": "passed",
+    "releaseFileGate": 42,
+    "installedPackageAndSourceCli": "passed",
+    "returnedActions": "run and capture executed with nondefault manifest; target drift rejected",
+    "packagedCrossProductLoop": "14 CLI invocations passed",
+    "windowsBinShim": "0.2.0-rc.1",
+    "nonMacImplementationChecks": 10,
+    "browser": "1280/390 explicit argument-array layout, trace/Escape, no page overflow or external requests"
+  },
+  "notes": [
+    "Every contract entry validates complete direct snapshots; optional import is equivalent.",
+    "CI has 9 Windows/macOS/Ubuntu x Node 20/22/24 core/package/install jobs; actual hosted and Linux results remain for owner validation.",
+    "No shell-string command is generated for rechecks; module proposals without context cannot be executed."
+  ],
+  "costEvidence": {
+    "kind": "non-blind-controlled-internal-maintenance-replay",
+    "original": {
+      "baseline": 14,
+      "assisted": 29
+    },
+    "simplified": {
+      "baseline": 14,
+      "assisted": 22
+    },
+    "deletedAssistedOperations": 7,
+    "claim": "Still exceeds the strong baseline; no human-time, agent-investigation-time or model-token benefit established"
+  },
+  "boundaries": {
+    "localHost": "Windows / Node 24.19.0",
+    "hostedCI": "not run by developer; owner to bind source-commit results",
+    "linuxValidation": "not claimed from local Windows",
+    "physicalMac": "not-run for this version",
+    "freshTaskPluginActivation": "not-run",
+    "realUsers": "not-run",
+    "publication": "owner-controlled; no developer push/tag/release/account actions"
+  },
+  "artifacts": [
+    {
+      "file": "codex-proofline-0.2.0-rc.1.tgz",
+      "sha256": "6ad67ba7f11e96132047b891146ae2f4a2036df19173395991b6a59983fa6fec",
+      "bytes": 846859
+    },
+    {
+      "file": "codex-proofline-0.2.0-rc.1-source.zip",
+      "sha256": "bc7320223c39cf6ab1242df6f5cf9197c89ede7c77f59fc70448bdbfbe127d8f",
+      "bytes": 1175860
+    }
+  ]
+}
