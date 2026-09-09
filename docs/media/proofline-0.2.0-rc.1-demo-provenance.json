@@ -1,0 +1,15 @@
+{
+  "evidenceKind": "synthetic-installed-cli-validation",
+  "versions": {
+    "intake": "0.3.0-rc.1",
+    "proofline": "0.2.0-rc.1",
+    "workprint": "0.3.0-rc.3"
+  },
+  "beforeVerified": 2,
+  "changedRequirement": "release-demo-R001",
+  "staleEvidence": "AC-OUTPUT/check",
+  "afterRecheckVerified": 2,
+  "unchangedNoteReceipt": true,
+  "sourceCommit": "033903f6602b6f490e93df6d9364ec56b5ae35f3",
+  "representation": "Editorial vector card of selected, independently checked CLI results; not a screenshot or real-user trial"
+}

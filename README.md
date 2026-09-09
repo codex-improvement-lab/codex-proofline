@@ -2,9 +2,11 @@
 
 **Proof, not promises.** Turn every acceptance criterion into a visible line to the command, file, screenshot, environment, and timestamp that supports it.
 
-**0.2.0-rc.1 candidate:** read-only target queries, normal-observation contract bindings, direct reviewed Intake inputs and context-complete recheck argument arrays. See [candidate release notes](release/RELEASE_NOTES_0.2.0-rc.1.md). The original 14/29-operation screen is preserved; the simplified replay is 14/22 and still does not beat its strong baseline.
+**[0.2.0-rc.1 public preview](https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.2.0-rc.1):** read-only target queries, normal-observation contract bindings, direct reviewed Intake inputs and context-complete recheck argument arrays. See [release notes](release/RELEASE_NOTES_0.2.0-rc.1.md). The original 14/29-operation screen is preserved; the simplified replay is 14/22 and still does not beat its strong baseline.
 
-![Codex Proofline acceptance-to-evidence graph](docs/evidence/proofline-overview.png)
+![Synthetic CLI example: one changed requirement makes its mapped proof stale; a targeted recheck restores it while an unchanged receipt is retained.](docs/media/proofline-0.2.0-rc.1-demo.png)
+
+[Classic acceptance-to-evidence graph](docs/evidence/proofline-overview.png)
 
 > **Signature interaction — Gap Tour.** Choose **Inspect next gap** (or press `G`) to traverse the actual non-verified proof lines and read each stored status and reason. Nothing turns green during inspection. See the [Forensic Oscilloscope design direction](docs/design-system.md).
 
@@ -18,7 +20,7 @@ It is an **Execution-after proof layer**. It does not plan work, schedule agents
 
 Requirements: Node.js 20 or newer. The core has no runtime dependencies.
 
-Use the source ZIP or installable TGZ supplied with the 0.2.0-rc.1 candidate. The source ZIP includes development checks; both archives include offline examples. The earlier [v0.1.0 public preview](https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.1.0) retains its own artifacts and evidence. Candidate publication is handled after product-owner review.
+Use the source ZIP or installable TGZ in the [0.2.0-rc.1 release](https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.2.0-rc.1). The source ZIP includes development checks; both archives include offline examples. The earlier [v0.1.0 public preview](https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.1.0) retains its own artifacts and evidence. [Publication evidence](release/PUBLICATION.md) binds the released artifacts and hosted checks to their source commit.
 
 Install the downloaded TGZ to use `proofline` from any project:
 

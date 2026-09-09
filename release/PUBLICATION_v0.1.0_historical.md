@@ -1,44 +1,4 @@
-# Proofline publication history
-
-## 0.2.0-rc.1 public preview
-
-Published at `2026-09-09T17:10:30Z` (2026-09-10 in Singapore):
-[release and all seven attachments](https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.2.0-rc.1).
-Tag `v0.2.0-rc.1` identifies source `033903f6602b6f490e93df6d9364ec56b5ae35f3`.
-The TGZ, source ZIP, both checksum sidecars, PNG, editable SVG and demo provenance
-were retrieved anonymously; every size and SHA-256 matched the reviewed local plan.
-See the [machine-readable publication receipt](publication-v0.2.0-rc.1.json).
-
-[Source CI](https://github.com/codex-improvement-lab/codex-proofline/actions/runs/34378858610)
-passed all nine Windows/macOS/Ubuntu × Node 20/22/24 jobs, including npm packing and
-installed-package CLI checks. Local developer verification passed 55 tests, lint,
-the 42-file gate, 10 Windows implementation/plugin-identity checks, and 1280/390px
-report checks. The original Mac result is not transferred to this version.
-
-The owner's independent check used the actual distributed Proofline TGZ, extracted
-Intake 0.3.0-rc.1 ZIP and the previously published Workprint 0.3.0-rc.3 TGZ. It passed
-atomic batch failures, stale revision refusal, direct Intake input, a non-default
-manifest from another working directory, returned command/capture argv execution,
-target drift refusal without a ledger write, unchanged receipt/revision retention,
-and public Workprint projection/build/verify. This is synthetic installed-CLI evidence.
-
-| Software artifact | Bytes | SHA-256 |
-| --- | ---: | --- |
-| `codex-proofline-0.2.0-rc.1.tgz` | 846859 | `6ad67ba7f11e96132047b891146ae2f4a2036df19173395991b6a59983fa6fec` |
-| `codex-proofline-0.2.0-rc.1-source.zip` | 1175860 | `bc7320223c39cf6ab1242df6f5cf9197c89ede7c77f59fc70448bdbfbe127d8f` |
-
-The [demonstration](../docs/media/proofline-0.2.0-rc.1-demo.png) renders selected
-results from that owner check. It is an editorial diagram, not a terminal capture
-or real-user trial. The [provenance](../docs/media/proofline-0.2.0-rc.1-demo-provenance.json)
-identifies its scope and versions.
-
-The retained maintenance replay was 14 baseline / 29 assisted operations; the simplified
-path is 14 / 22. Human-time, agent-time and token advantages remain unmeasured. Physical
-Mac, fresh-task plugin activation and external-user validation remain pending for this
-version. Subsequent publication-documentation commits do not replace the frozen tag or
-distributed bytes. [Original v0.1.0 publication text](PUBLICATION_v0.1.0_historical.md).
-
-## Historical v0.1.0 public preview
+# Proofline v0.1.0 public preview
 
 Release date: 2026-09-05.
 

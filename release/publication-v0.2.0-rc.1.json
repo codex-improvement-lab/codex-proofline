@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "lab-publication/1",
+  "product": "codex-proofline",
+  "version": "0.2.0-rc.1",
+  "sourceCommit": "033903f6602b6f490e93df6d9364ec56b5ae35f3",
+  "tag": "v0.2.0-rc.1",
+  "releaseId": 385706203,
+  "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.2.0-rc.1",
+  "publishedAt": "2026-09-09T17:10:30Z",
+  "prerelease": true,
+  "sourceCI": {
+    "id": 34378858610,
+    "source": "033903f6602b6f490e93df6d9364ec56b5ae35f3",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/codex-improvement-lab/codex-proofline/actions/runs/34378858610",
+    "jobs": [
+      {
+        "name": "test (windows-latest, 20)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (ubuntu-latest, 24)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (windows-latest, 24)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (macos-latest, 20)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (macos-latest, 22)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (ubuntu-latest, 22)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (macos-latest, 24)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (windows-latest, 22)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (ubuntu-latest, 20)",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "name": "codex-proofline-0.2.0-rc.1.tgz",
+      "bytes": 846859,
+      "sha256": "6ad67ba7f11e96132047b891146ae2f4a2036df19173395991b6a59983fa6fec",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.2.0-rc.1/codex-proofline-0.2.0-rc.1.tgz"
+    },
+    {
+      "name": "codex-proofline-0.2.0-rc.1.tgz.sha256",
+      "bytes": 97,
+      "sha256": "ba7fb630c7ab1137d86b3c381099b44552366594296f38a920d002af32b45f58",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.2.0-rc.1/codex-proofline-0.2.0-rc.1.tgz.sha256"
+    },
+    {
+      "name": "codex-proofline-0.2.0-rc.1-source.zip",
+      "bytes": 1175860,
+      "sha256": "bc7320223c39cf6ab1242df6f5cf9197c89ede7c77f59fc70448bdbfbe127d8f",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.2.0-rc.1/codex-proofline-0.2.0-rc.1-source.zip"
+    },
+    {
+      "name": "codex-proofline-0.2.0-rc.1-source.zip.sha256",
+      "bytes": 104,
+      "sha256": "be1f22f001bea7944b567b03743bd5ae3015eb83dbe21b7eee5d6d44f8216a98",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.2.0-rc.1/codex-proofline-0.2.0-rc.1-source.zip.sha256"
+    },
+    {
+      "name": "proofline-0.2.0-rc.1-demo.png",
+      "bytes": 184831,
+      "sha256": "ccf3c357d7dcc35186ed988e878dbb1d9808635a61accea5c59f99869e011593",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.2.0-rc.1/proofline-0.2.0-rc.1-demo.png"
+    },
+    {
+      "name": "proofline-0.2.0-rc.1-demo.svg",
+      "bytes": 6213,
+      "sha256": "cbea01045668db60a88621875e6817c645dbc6d493122372f32c37e4188b12bc",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.2.0-rc.1/proofline-0.2.0-rc.1-demo.svg"
+    },
+    {
+      "name": "proofline-0.2.0-rc.1-demo-provenance.json",
+      "bytes": 527,
+      "sha256": "f5620c434f7174fd6ca66a643f4b60dc1dad0001e9afff1dc07044924206183d",
+      "url": "https://github.com/codex-improvement-lab/codex-proofline/releases/download/v0.2.0-rc.1/proofline-0.2.0-rc.1-demo-provenance.json"
+    }
+  ],
+  "ownerValidation": {
+    "kind": "synthetic-installed-cli-validation",
+    "versions": {
+      "intake": "0.3.0-rc.1",
+      "proofline": "0.2.0-rc.1",
+      "workprint": "0.3.0-rc.3"
+    },
+    "assertions": {
+      "atomicInvalidId": true,
+      "staleSnapshotRevisionRejected": true,
+      "explicitBatchConfirmed": true,
+      "nonDefaultManifest": true,
+      "differentCallerDirectory": true,
+      "directIntakeContract": true,
+      "initialVerified": 2,
+      "changedGap": "AC-OUTPUT/check",
+      "finalVerified": 2,
+      "returnedCommandArgvExecuted": true,
+      "returnedCaptureArgvExecuted": true,
+      "staleActionRejectedWithoutLedgerWrite": true,
+      "unchangedReceiptAndObservationRevisionRetained": true,
+      "publicProjectionPrivacy": true,
+      "workprintBuildAndVerify": true
+    },
+    "rawLocalRecordSha256": "3d24eab5a427ba1c4895cb490a63a4ea492b0ec039bec4607a6bc7e033622e56",
+    "rawRecordRetention": "Maintainer-local; public summary omits local paths and command arguments"
+  },
+  "evidenceLimits": {
+    "physicalMac": "not run for this version",
+    "freshTaskPluginActivation": "not run",
+    "realUsers": "not run",
+    "costEvidence": "Controlled internal replay: 14 baseline / 22 assisted operations; original 14/29 retained. No human-time, agent-time or token advantage established."
+  }
+}

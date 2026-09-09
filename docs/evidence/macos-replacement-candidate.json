@@ -3,12 +3,13 @@
   "product": "codex-proofline",
   "gateVersion": 2,
   "scope": "runtime-gate-tests-v1",
-  "id": "codex-proofline-macos-rc-97e1840da8cc9ee8",
-  "contentSha256": "97e1840da8cc9ee838794956b6113e3977b56cf553c416ac31b26794173d2932",
+  "id": "codex-proofline-macos-rc-24fc73aa5cbb10e1",
+  "contentSha256": "24fc73aa5cbb10e1beadd169d46f14ed5dd521f743002116959b88eaee4fede1",
   "contentFiles": 53,
-  "installedVersion": "0.2.0-rc.1+codex.macos-97e1840da8cc9ee8",
+  "installedVersion": "0.2.0-rc.1+codex.macos-24fc73aa5cbb10e1",
   "status": "awaiting-full-real-mac-rerun",
   "previousMacEvidenceImported": false,
   "generatedOn": "2026-09-09",
-  "evidenceClass": "source-derived-candidate-identity-not-macos-execution"
+  "evidenceClass": "source-derived-candidate-identity-not-macos-execution",
+  "documentationUpdate": "Publication README and demo links refreshed; release v0.2.0-rc.1 remains frozen at 033903f6602b6f490e93df6d9364ec56b5ae35f3. No prior physical-Mac result transferred."
 }

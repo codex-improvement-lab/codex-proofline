@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Proofline: your task changed, did the proof?</title>
+<desc id="desc">Synthetic installed CLI demonstration: two verified evidence lines, then one changed requirement makes only the output check stale. Rechecking it returns both to verified while the original note receipt remains unchanged. Intake provides reviewed requirements; Proofline tracks and rechecks evidence; Workprint exports the public result.</desc>
+<rect x="0" y="0" width="1600" height="900" rx="0" fill="#10140F"/>
+<rect x="64" y="52" width="8" height="36" rx="4" fill="#D4FF58"/>
+<text x="91" y="46" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="700" fill="#F2F0DF">proofline</text>
+<text x="1305" y="57" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#D4FF58">0.2 / PREVIEW</text>
+<text x="64" y="133" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="65" font-weight="700" fill="#F2F0DF">Your task changed. Did the proof?</text>
+<text x="67" y="223" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="29" font-weight="400" fill="#AAB39F">See which recorded evidence still matches the requirements.</text>
+<rect x="64" y="310" width="458" height="319" rx="18" fill="#1C2419" stroke="#3A4533" stroke-width="2"/>
+<text x="90" y="340" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#AAB39F">01  BEFORE</text>
+<text x="90" y="384" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="49" font-weight="700" fill="#D4FF58">2 verified</text>
+<rect x="90" y="466" width="406" height="1" rx="0" fill="#43503B"/>
+<rect x="571" y="310" width="458" height="319" rx="18" fill="#1C2419" stroke="#3A4533" stroke-width="2"/>
+<text x="597" y="340" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#AAB39F">02  REQUIREMENT CHANGED</text>
+<text x="597" y="384" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="49" font-weight="700" fill="#FF7963">1 stale</text>
+<rect x="597" y="466" width="406" height="1" rx="0" fill="#43503B"/>
+<rect x="1078" y="310" width="458" height="319" rx="18" fill="#1C2419" stroke="#3A4533" stroke-width="2"/>
+<text x="1104" y="340" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#AAB39F">03  AFFECTED CHECK RERUN</text>
+<text x="1104" y="384" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="49" font-weight="700" fill="#D4FF58">2 verified</text>
+<rect x="1104" y="466" width="406" height="1" rx="0" fill="#43503B"/>
+<text x="90" y="491" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="400" fill="#F2F0DF">Output check</text>
+<text x="597" y="491" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="400" fill="#F2F0DF">Output check</text>
+<text x="1104" y="491" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="400" fill="#F2F0DF">Output check</text>
+<text x="365" y="492" dominant-baseline="text-before-edge" font-family="Consolas, monospace" font-size="21" font-weight="400" fill="#D4FF58">verified</text>
+<text x="889" y="492" dominant-baseline="text-before-edge" font-family="Consolas, monospace" font-size="21" font-weight="400" fill="#FF7963">stale</text>
+<text x="1379" y="492" dominant-baseline="text-before-edge" font-family="Consolas, monospace" font-size="21" font-weight="400" fill="#D4FF58">verified</text>
+<text x="90" y="557" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="400" fill="#F2F0DF">Note capture</text>
+<text x="365" y="558" dominant-baseline="text-before-edge" font-family="Consolas, monospace" font-size="21" font-weight="400" fill="#D4FF58">verified</text>
+<text x="597" y="557" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="400" fill="#F2F0DF">Note capture</text>
+<text x="872" y="558" dominant-baseline="text-before-edge" font-family="Consolas, monospace" font-size="21" font-weight="400" fill="#D4FF58">verified</text>
+<text x="1104" y="557" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="400" fill="#F2F0DF">Note receipt</text>
+<text x="1360" y="558" dominant-baseline="text-before-edge" font-family="Consolas, monospace" font-size="21" font-weight="400" fill="#D4FF58">unchanged</text>
+<text x="535" y="443" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="31" font-weight="400" fill="#AAB39F">→</text>
+<text x="1042" y="443" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="31" font-weight="400" fill="#AAB39F">→</text>
+<text x="65" y="670" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="29" font-weight="700" fill="#F2F0DF">Query gaps. Recheck the affected line. Keep the matching evidence.</text>
+<text x="66" y="721" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="400" fill="#AAB39F">Synthetic CLI demo with explicit dependencies. Verified means current under the configured checks.</text>
+<rect x="64" y="786" width="1472" height="1" rx="0" fill="#43503B"/>
+<text x="66" y="817" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#F2F0DF">Intake review file  →  Proofline evidence  →  Workprint export</text>
+<text x="1232" y="823" dominant-baseline="text-before-edge" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="700" fill="#D4FF58">OPEN SOURCE / LOCAL</text>
+</svg>
