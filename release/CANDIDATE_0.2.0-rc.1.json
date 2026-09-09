@@ -44,8 +44,8 @@
   },
   "boundaries": {
     "localHost": "Windows / Node 24.19.0",
-    "hostedCI": "not run by developer; owner to bind source-commit results",
-    "linuxValidation": "not claimed from local Windows",
+    "hostedCI": "Product owner reports all exact-source jobs succeeded; see ownerReportedCI. Not independently rerun by developer.",
+    "linuxValidation": "Hosted source CI result reported by product owner; local Windows and physical-device evidence remain separate.",
     "physicalMac": "not-run for this version",
     "freshTaskPluginActivation": "not-run",
     "realUsers": "not-run",
@@ -62,5 +62,12 @@
       "sha256": "bc7320223c39cf6ab1242df6f5cf9197c89ede7c77f59fc70448bdbfbe127d8f",
       "bytes": 1175860
     }
-  ]
+  ],
+  "ownerReportedCI": {
+    "sourceCommit": "033903f6602b6f490e93df6d9364ec56b5ae35f3",
+    "jobs": 9,
+    "conclusion": "success",
+    "url": "https://github.com/codex-improvement-lab/codex-proofline/actions/runs/34378858610",
+    "evidenceSource": "Product owner independently read and reported the exact source CI result in task coordination."
+  }
 }
