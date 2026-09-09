@@ -145,6 +145,10 @@ test("propagates only explicit contract dependencies and preserves all five evid
   const byId = new Map(delta.evidence.map((item) => [item.id, item]));
 
   assert.equal(byId.get("AC-01/latency").status, "stale");
+  assert.equal(byId.get("AC-01/latency").action.contextComplete, false);
+  assert.equal(byId.get("AC-01/latency").action.command, null);
+  assert.equal(byId.get("AC-01/latency").action.argv, null);
+  assert.ok(byId.get("AC-01/latency").action.requiredContext.includes("manifestPath"));
   assert.match(byId.get("AC-01/latency").reason, /contract-revision-changed/u);
   assert.equal(byId.get("AC-02/retry").status, "verified");
   assert.equal(byId.get("AC-03/legacy").status, "stale");
@@ -209,6 +213,13 @@ test("Workprint projection keeps the fixed public shell and omits paths and comm
   assert.equal(profile.findings[0].kind, "contract-change");
   assert.doesNotMatch(serialized, /C:\\\\Users/u);
   assert.doesNotMatch(serialized, /node --test|stdout|stderr/u);
+  const contextual = createGoalDelta({ evaluation: evaluation(), before: BEFORE, after: AFTER, dependencies: dependencies(), now: CLOCK,
+    executionContext: { executable: process.execPath, cliPath: BIN, cwd: path.resolve("private-context"), manifestPath: path.resolve("private-context/manifest.json"),
+      contractPath: path.resolve("private-context/target.json"), dependenciesPath: path.resolve("private-context/deps.json") } });
+  const plain = createGoalDelta({ evaluation: evaluation(), before: BEFORE, after: AFTER, dependencies: dependencies(), now: CLOCK });
+  assert.equal(contextual.evidence[0].action.contextComplete, true);
+  assert.deepEqual(createWorkprintProfile(contextual), createWorkprintProfile(plain));
+  assert.doesNotMatch(JSON.stringify(createWorkprintProfile(contextual)), /private-context|argv|cwd|contract-digest/);
 });
 
 test("self-contained HTML renders redline, fault, shockwave, reruns, and trace controls", () => {
@@ -294,7 +305,9 @@ test("CLI writes an HTML report and deterministic Workprint profile from a verif
   const html = await readFile(path.join(directory, "delta.html"), "utf8");
   const profile = JSON.parse(await readFile(path.join(directory, "delta.workprint.json"), "utf8"));
   assert.match(html, /verified → stale/u);
-  assert.match(html, /proofline capture AC-01\/latency/u);
+  assert.match(html, /argv — pass as an argument array/u);
+  assert.match(html, /--manifest/u);
+  assert.match(html, /--contract-digest/u);
   assert.equal(profile.findings[0].verdict, "changed");
   assert.deepEqual(profile.findings[0].affectedEvidenceIds, ["AC-01/latency"]);
   assert.equal(profile.summary.counts.newlyStaleEvidence, 1);

@@ -75,7 +75,9 @@ function renderAction(proof, index) {
   return `
     <li>
       <span>${String(index + 1).padStart(2, "0")}</span>
-      <div><strong>${escapeHtml(action.label)}</strong>${action.command ? `<code>${escapeHtml(action.command)}</code>` : ""}</div>
+      <div><strong>${escapeHtml(action.label)}</strong>${action.argv
+        ? `<small>Executable</small><code>${escapeHtml(action.executable)}</code><small>cwd</small><code>${escapeHtml(action.cwd)}</code><small>argv — pass as an argument array, not a shell string</small><code>${escapeHtml(JSON.stringify(action.argv))}</code>`
+        : action.requiredContext?.length ? `<small>Caller must supply: ${escapeHtml(action.requiredContext.join(", "))}. No executable proposal is available.</small>` : ""}</div>
       <b>${escapeHtml(action.kind)}</b>
     </li>`.trim();
 }

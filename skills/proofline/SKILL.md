@@ -24,7 +24,9 @@ For normal maintenance, inspect `proofline doctor --contract <target> --dependen
 
 Prefer `proofline query --contract <target> --dependencies <mapping> --gaps` for follow-up work. Use `--item` or `--evidence` for a specific association. Preserve the old observation revision when unchanged dependencies remain compatible. A missing binding or changed requirement cannot be repaired by relabeling an old receipt; observe again against the actual target. Do not rerun unchanged checks without a new concern.
 
-Use `goal-delta ... --json` for a read-only machine comparison; it generates no other artifacts. Its summary covers the full delta even when rows are filtered. Local `status --json` describes base observations and is not the target revision's answer. Import an explicitly reviewed Intake snapshot with `import-intake --input <snapshot> --output <new-contract>` only when that review interchange is useful; do not force an already clear task through the full product loop.
+Use `goal-delta ... --json` for a read-only machine comparison; it generates no other artifacts. Its summary covers the full delta even when rows are filtered. Local `status --json` describes base observations and is not the target revision's answer. Pass an explicitly reviewed Intake snapshot directly as any contract file; all entries validate its full structure. `import-intake` remains an optional separate export.
+
+For an authorized recheck, inspect the returned action's `contextComplete`/`requiredContext`, then use its executable, argument array and cwd without constructing a shell command. Keep the manifest, target, dependency and digest arguments intact. Refresh the query if the digest precondition rejects a changed target. Module actions lacking execution context are incomplete proposals, not commands that can close a target gap. Public Workprint export omits this private execution context.
 
 ## Safety and evidence boundaries
 

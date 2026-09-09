@@ -2,6 +2,8 @@
 
 **Proof, not promises.** Turn every acceptance criterion into a visible line to the command, file, screenshot, environment, and timestamp that supports it.
 
+**0.2.0-rc.1 candidate:** read-only target queries, normal-observation contract bindings, direct reviewed Intake inputs and context-complete recheck argument arrays. See [candidate release notes](release/RELEASE_NOTES_0.2.0-rc.1.md). The original 14/29-operation screen is preserved; the simplified replay is 14/22 and still does not beat its strong baseline.
+
 ![Codex Proofline acceptance-to-evidence graph](docs/evidence/proofline-overview.png)
 
 > **Signature interaction — Gap Tour.** Choose **Inspect next gap** (or press `G`) to traverse the actual non-verified proof lines and read each stored status and reason. Nothing turns green during inspection. See the [Forensic Oscilloscope design direction](docs/design-system.md).
@@ -16,12 +18,12 @@ It is an **Execution-after proof layer**. It does not plan work, schedule agents
 
 Requirements: Node.js 20 or newer. The core has no runtime dependencies.
 
-Download the source ZIP or installable TGZ from the [v0.1.0 public preview](https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.1.0). The source ZIP includes the development checks; both archives include the offline example reports. This release is distributed through GitHub Releases.
+Use the source ZIP or installable TGZ supplied with the 0.2.0-rc.1 candidate. The source ZIP includes development checks; both archives include offline examples. The earlier [v0.1.0 public preview](https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.1.0) retains its own artifacts and evidence. Candidate publication is handled after product-owner review.
 
 Install the downloaded TGZ to use `proofline` from any project:
 
 ```sh
-npm install --global ./codex-proofline-0.1.0.tgz
+npm install --global ./codex-proofline-0.2.0-rc.1.tgz
 proofline version
 proofline init
 ```
@@ -55,7 +57,7 @@ The first screen answers three questions without reading a log:
 
 Use `proofline doctor --json` to inspect configuration omissions and `proofline query --contract target.json --dependencies dependencies.json --gaps` to read compact evidence rows for a named target. Bind observations with the same two options on `run` or `capture`. See [machine query and configuration semantics](docs/MACHINE_QUERIES.md).
 
-Import explicitly reviewed requirements with `proofline import-intake --input requirements.json --output contract.json`. See the [Intake file contract and complete CLI reproduction](docs/INTAKE_LINK.md).
+Pass explicitly reviewed requirements directly as `--contract requirements.json` or either Goal Delta side. Optional `proofline import-intake --input requirements.json --output contract.json` creates a separate normalized export. See the [Intake file contract and complete CLI reproduction](docs/INTAKE_LINK.md).
 
 The development candidate adds a read-only machine query:
 

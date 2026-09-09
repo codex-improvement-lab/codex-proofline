@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -14,8 +14,7 @@ import {
 import { renderGoalDeltaHtml } from "./goal-delta-report.js";
 import { queryEvidence, queryGoalDelta } from "./query.js";
 import { checkConfiguration, discoverInputs } from "./doctor.js";
-import { bindGoal } from "./goal-binding.js";
-import { importIntake } from "./intake-import.js";
+import { bindGoal, contractDigest } from "./goal-binding.js";
 import { declareClaim, observeArtifact, observeCommand } from "./observe.js";
 import { renderHtmlReport, renderMarkdownReport } from "./report.js";
 import { serveReport } from "./server.js";
@@ -42,6 +41,8 @@ Usage:
 Common option (all commands except init):
   --manifest <path>   Manifest path (default: ./proofline.json)
   run/capture may bind --contract <target.json> --dependencies <dependencies.json> explicitly.
+  Contract files may be proofline-goal-contract/1 or a selected intake-requirements/1 snapshot.
+  Generated rechecks include --contract-digest <sha256> to refuse target drift.
 
 States:
   verified · missing · stale · declared-only · failed
@@ -60,14 +61,14 @@ const VALUE_OPTIONS = new Set([
   "to",
   "dependencies",
   "profile-output",
-  "at", "status", "item", "evidence", "contract", "input"
+  "at", "status", "item", "evidence", "contract", "input", "contract-digest"
 ]);
 const BOOLEAN_OPTIONS = new Set(["json", "help", "gaps", "affected"]);
 
 const COMMAND_OPTIONS = {
   init: [],
-  run: ["manifest", "environment", "contract", "dependencies"],
-  capture: ["manifest", "environment", "note", "observed-at", "contract", "dependencies"],
+  run: ["manifest", "environment", "contract", "dependencies", "contract-digest"],
+  capture: ["manifest", "environment", "note", "observed-at", "contract", "dependencies", "contract-digest"],
   claim: ["manifest", "note"],
   status: ["manifest", "json", "at"],
   check: ["manifest", "json", "at"],
@@ -135,6 +136,9 @@ async function loadTarget(context, options) {
 }
 async function observationBinding(context, options, ref) {
   const { contract, dependencies } = await loadTarget(context, options);
+  if (options["contract-digest"] && (!contract || options["contract-digest"] !== contractDigest(contract))) {
+    throw new ProoflineError("Target contract changed or is missing; refresh the query before executing its proposed action.");
+  }
   return contract ? bindGoal(context.manifest.project, contract, dependencies.evidence.find(item => item.id === ref).dependsOn) : null;
 }
 
@@ -270,7 +274,12 @@ async function writeGoalDelta(context, options) {
   const dependencies = await loadGoalDependencies(options.dependencies, context, before, after);
   const now = new Date(options.at ? parseIsoDate(options.at, "at") : new Date().toISOString());
   const evaluation = await evaluateProject(context, { now });
-  const delta = createGoalDelta({ evaluation, before, after, dependencies, now });
+  const delta = createGoalDelta({ evaluation, before, after, dependencies, now, executionContext: {
+    executable: process.execPath,
+    cliPath: fileURLToPath(new URL("../bin/proofline.js", import.meta.url)),
+    cwd: context.root, manifestPath: context.manifestPath,
+    contractPath: path.resolve(options.to), dependenciesPath: path.resolve(options.dependencies)
+  } });
   if (options.json) {
     process.stdout.write(`${JSON.stringify(queryGoalDelta(delta, options), null, 2)}\n`);
     return;
@@ -362,7 +371,7 @@ export async function runCli(argv = process.argv.slice(2)) {
   validateOptions(command, options);
   if (command === "import-intake") {
     if (positionals.length || !options.input) throw new ProoflineError("import-intake requires --input <requirements.json> and no positionals.");
-    const contract = importIntake(JSON.parse((await readFile(path.resolve(options.input), "utf8")).replace(/^\uFEFF/u, "")));
+    const contract = await loadGoalContract(options.input, "Intake requirements", { intakeOnly: true });
     const output = `${JSON.stringify(contract, null, 2)}\n`;
     if (!options.output || options.output === "-") process.stdout.write(output);
     else {

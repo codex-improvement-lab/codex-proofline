@@ -1,5 +1,6 @@
 import { ProoflineError } from "./errors.js";
 import { canonicalJson, sha256Text } from "./util.js";
+import { validateRequirements } from "./intake-schema.js";
 
 const TOKEN = /^[A-Za-z0-9][A-Za-z0-9._-]*$/u;
 const STATES = new Set(["candidate", "user-confirmed", "needs-review", "withdrawn"]);
@@ -31,7 +32,7 @@ export function validateIntakeOrigin(value, items) {
 }
 
 export function importIntake(snapshot) {
-  if (!snapshot || snapshot.schemaVersion !== "intake-requirements/1" || !Array.isArray(snapshot.requirements)) fail("Expected an intake-requirements/1 snapshot.");
+  try { validateRequirements(snapshot); } catch (error) { fail(error.message); }
   const items = snapshot.requirements.filter(item => item.confirmation === "user-confirmed").map(item => {
     if (typeof item.text !== "string" || !item.text.trim() || !/^[a-f0-9]{64}$/u.test(item.supportDigest || "")) fail("Confirmed requirement text/support digest is missing.");
     return { id: item.id, goal: `Reviewed requirement ${item.id}`,

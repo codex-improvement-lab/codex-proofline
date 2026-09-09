@@ -10,9 +10,11 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const opts = {};
 for (let i = 2; i < process.argv.length; i += 2) {
   const key = process.argv[i];
-  if (!["--intake-root", "--output"].includes(key) || !process.argv[i + 1] || opts[key]) throw new Error("Use --intake-root <checkout> --output <new .proofline/tmp directory>.");
-  opts[key] = path.resolve(process.argv[i + 1]);
+  if (!["--intake-root", "--output", "--flow"].includes(key) || !process.argv[i + 1] || opts[key]) throw new Error("Use --intake-root <checkout> --output <new .proofline/tmp directory> [--flow legacy|simplified].");
+  opts[key] = key === "--flow" ? process.argv[i + 1] : path.resolve(process.argv[i + 1]);
 }
+const flow = opts["--flow"] ?? "legacy";
+if (!["legacy", "simplified"].includes(flow)) throw new Error("--flow must be legacy or simplified.");
 if (!opts["--intake-root"] || !opts["--output"] || !opts["--output"].startsWith(path.join(root, ".proofline", "tmp") + path.sep)) throw new Error("Explicit Intake checkout and repository-local scratch directory required.");
 const directory = opts["--output"];
 await mkdir(path.dirname(directory), { recursive: true });
@@ -27,6 +29,10 @@ function gitFile(ref) {
 }
 const oldSource = gitFile("88cc6abf548b1b5a3fb8dfd6213c76df923aa3da");
 const fixedSource = gitFile("fe4002b");
+const frozenReportBytes = await readFile(path.join(root, "docs/evidence/mainline-2026-09-08/measurement.json"));
+const frozenReport = JSON.parse(frozenReportBytes);
+assert.equal(hash(oldSource), frozenReport.materials.beforeSourceSha256);
+assert.equal(hash(fixedSource), frozenReport.materials.fixedSourceSha256);
 await writeFile(path.join(directory, "pre-fix-intake.js"), oldSource);
 await writeFile(path.join(directory, "fixed-intake.js"), fixedSource);
 const requirements = ["Must represent seven detected requirements.", "Must mask credentials."];
@@ -61,6 +67,7 @@ if(action==='run'){
 }else throw new Error('Unknown action');
 `;
 const operations = [], phases = [];
+assert.equal(hash(baselineHelper), frozenReport.materials.baselineHelperSha256, "The frozen baseline helper must not change.");
 let mode, phase, cwd;
 async function write(name, body, kind = "configuration") {
   const start = performance.now();
@@ -104,33 +111,42 @@ for (mode of ["baseline", "assisted"]) {
   for (const [name, text] of Object.entries({ "package.json": '{"type":"module"}', "request.txt": requirements.join("\n"),
     "intake.js": oldSource, "coverage.mjs": coverageCheck(7), "privacy.mjs": privacyCheck })) await writeFile(path.join(cwd, name), text);
   let target, initialPrivacy;
+  let contractInput = flow === "simplified" ? "reviewed.json" : "contract.json";
   await timed("initial-configuration", async () => {
     if (mode === "baseline") {
       await write("baseline-check.mjs", baselineHelper);
       await write("baseline-contract.json", baselineDefinitions);
     } else {
       const prepared = run(intake, ["prepare", "--scope", "replay", "request.txt"], "prepare requirements");
+      assert.equal(prepared.requirements.length, 2);
       await write("candidates.json", prepared);
       target = prepared;
-      for (const requirement of prepared.requirements) {
-        await write("review-input.json", target);
-        target = run(intake, ["review", "--input", "review-input.json", "--id", requirement.id, "--decision", "confirm"], "confirm requirement");
+      if (flow === "simplified") {
+        target = run(intake, ["review", "--input", "candidates.json", "--revision", String(prepared.revision),
+          "--id", prepared.requirements[0].id, "--id", prepared.requirements[1].id, "--decision", "confirm"], "confirm two selected requirements atomically");
+      } else {
+        for (const requirement of prepared.requirements) {
+          await write("review-input.json", target);
+          target = run(intake, ["review", "--input", "review-input.json", "--id", requirement.id, "--decision", "confirm"], "confirm requirement");
+        }
       }
       await write("reviewed.json", target);
-      const contract = run(proofline, ["import-intake", "--input", "reviewed.json"], "import confirmed requirements");
-      await write("contract.json", contract);
+      if (flow === "legacy") {
+        const contract = run(proofline, ["import-intake", "--input", "reviewed.json"], "import confirmed requirements");
+        await write("contract.json", contract);
+      }
       await write("dependencies.json", { schemaVersion: "proofline-goal-dependencies/1", evidence: refs.map((id, i) => ({ id, dependsOn: [prepared.requirements[i].id] })) });
       await write("proofline.json", { version: 1, project: "Internal maintenance replay", criteria: refs.map((ref, i) => ({ id: ref.split("/")[0], statement: baselineDefinitions[i].acceptance,
         proof: [{ id: "tests", kind: "command", label: baselineDefinitions[i].check, inputs: baselineDefinitions[i].inputs }] })) });
-      run(proofline, ["doctor", "--contract", "contract.json", "--dependencies", "dependencies.json", "--json"], "check configuration");
+      run(proofline, ["doctor", "--contract", contractInput, "--dependencies", "dependencies.json", "--json"], "check configuration");
     }
   });
   const verify = (index, expected = 0) => mode === "baseline"
     ? run(path.join(cwd, "baseline-check.mjs"), ["run", refs[index]], `verify ${refs[index]}`, expected, true)
-    : run(proofline, ["run", refs[index], "--contract", "contract.json", "--dependencies", "dependencies.json", "--", process.execPath, baselineDefinitions[index].check], `verify ${refs[index]}`, expected, true);
+    : run(proofline, ["run", refs[index], "--contract", contractInput, "--dependencies", "dependencies.json", "--", process.execPath, baselineDefinitions[index].check], `verify ${refs[index]}`, expected, true);
   const audit = () => {
     if (mode === "baseline") return run(path.join(cwd, "baseline-check.mjs"), ["audit"], "audit saved handoff");
-    const queried = run(proofline, ["query", "--contract", "contract.json", "--dependencies", "dependencies.json"], "query explicit target");
+    const queried = run(proofline, ["query", "--contract", contractInput, "--dependencies", "dependencies.json"], "query explicit target");
     return { gaps: queried.evidence.filter(item => item.status !== "verified").map(item => item.id),
       rows: queried.evidence.map(item => ({ id: item.id, current: item.status === "verified", executionId: item.evidence?.eventId ?? null })) };
   };
@@ -151,12 +167,16 @@ for (mode of ["baseline", "assisted"]) {
       await write("baseline-contract.json", changed, "requirement-maintenance");
     } else {
       const revised = run(intake, ["review", "--input", "reviewed.json", "--id", target.requirements[0].id, "--decision", "revise",
+        ...(flow === "simplified" ? ["--revision", String(target.revision)] : []),
         "--text", "Represent thirty detected requirements and preserve every final condition."], "revise acceptance");
       await write("revised-candidate.json", revised, "requirement-maintenance");
-      const confirmed = run(intake, ["review", "--input", "revised-candidate.json", "--id", target.requirements[0].id, "--decision", "confirm"], "confirm revised acceptance");
+      const confirmed = run(intake, ["review", "--input", "revised-candidate.json", "--id", target.requirements[0].id,
+        ...(flow === "simplified" ? ["--revision", String(revised.revision)] : []), "--decision", "confirm"], "confirm revised acceptance");
       await write("revised-confirmed.json", confirmed, "requirement-maintenance");
-      const contract = run(proofline, ["import-intake", "--input", "revised-confirmed.json"], "import revised acceptance");
-      await write("contract.json", contract, "requirement-maintenance");
+      if (flow === "legacy") {
+        const contract = run(proofline, ["import-intake", "--input", "revised-confirmed.json"], "import revised acceptance");
+        await write("contract.json", contract, "requirement-maintenance");
+      } else contractInput = "revised-confirmed.json";
     }
     // The same oracle is used before editing/running the changed test.
     const affected = audit();
@@ -183,7 +203,8 @@ for (mode of ["baseline", "assisted"]) {
   });
 }
 const report = { schemaVersion: "proofline-mainline-measurement/1", evidenceKind: "non-blind-controlled-internal-maintenance-replay",
-  protocol: "docs/MAINLINE_EVALUATION_PROTOCOL.md", platform: process.platform, node: process.version,
+  variant: flow, protocol: flow === "simplified" ? "docs/SIMPLIFICATION_EVALUATION_PROTOCOL_2026-09-09.md" : "docs/MAINLINE_EVALUATION_PROTOCOL.md", platform: process.platform, node: process.version,
+  frozenReference: { file: "docs/evidence/mainline-2026-09-08/measurement.json", sha256: hash(frozenReportBytes), baselineHelperUnchanged: true, maintenanceSourceBytesUnchanged: true },
   materials: { beforeCommit: "88cc6abf548b1b5a3fb8dfd6213c76df923aa3da", fixedCommit: "fe4002b",
     beforeSourceSha256: hash(oldSource), fixedSourceSha256: hash(fixedSource), baselineHelperSha256: hash(baselineHelper),
     sharedInitialFiles: ["package.json", "request.txt", "intake.js", "coverage.mjs", "privacy.mjs"] },

@@ -1,12 +1,17 @@
 {
   "name": "codex-proofline",
-  "version": "0.1.0",
+  "version": "0.2.0-rc.1",
   "description": "Connect acceptance criteria to command, file, screenshot, environment, and timestamp evidence.",
   "author": {
     "name": "Codex Proofline contributors"
   },
   "license": "MIT",
-  "keywords": ["acceptance", "evidence", "release", "verification"],
+  "keywords": [
+    "acceptance",
+    "evidence",
+    "release",
+    "verification"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Codex Proofline",
@@ -14,9 +19,14 @@
     "longDescription": "Map each acceptance criterion to fresh, observed command, file, screenshot, environment, and timestamp evidence; surface gaps before a PR or release.",
     "developerName": "Codex Proofline contributors",
     "category": "Productivity",
-    "capabilities": ["Read", "Write"],
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
     "brandColor": "#B7F34A",
-    "screenshots": ["./assets/screenshot-1.png"],
+    "screenshots": [
+      "./assets/screenshot-1.png"
+    ],
     "defaultPrompt": [
       "Build a Proofline graph for this project's acceptance criteria.",
       "Check whether this release is actually supported by fresh evidence.",

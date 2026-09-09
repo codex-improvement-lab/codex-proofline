@@ -2,8 +2,8 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ProoflineError } from "./errors.js";
 import { canonicalJson, STATUS_ORDER } from "./util.js";
-import { inspectGoalBinding } from "./goal-binding.js";
-import { validateIntakeOrigin } from "./intake-import.js";
+import { contractDigest, inspectGoalBinding } from "./goal-binding.js";
+import { importIntake, validateIntakeOrigin } from "./intake-import.js";
 
 export const GOAL_CONTRACT_SCHEMA = "proofline-goal-contract/1";
 export const GOAL_DEPENDENCIES_SCHEMA = "proofline-goal-dependencies/1";
@@ -64,9 +64,9 @@ async function readJson(filePath, label) {
     throw error;
   }
   try {
-    return JSON.parse(raw);
-  } catch (error) {
-    throw new ProoflineError(`${label} is not valid JSON: ${error.message}`, {
+    return JSON.parse(raw.replace(/^\uFEFF/u, ""));
+  } catch {
+    throw new ProoflineError(`${label} is not valid JSON.`, {
       code: "INVALID_GOAL_DELTA"
     });
   }
@@ -123,8 +123,12 @@ export function validateGoalContract(value, label = "Goal contract") {
   };
 }
 
-export async function loadGoalContract(filePath, label) {
-  return validateGoalContract(await readJson(filePath, label), label);
+export function normalizeGoalContract(value, label = "Goal contract", { intakeOnly = false } = {}) {
+  return validateGoalContract(intakeOnly || value?.schemaVersion === "intake-requirements/1" ? importIntake(value) : value, label);
+}
+
+export async function loadGoalContract(filePath, label = "Goal contract", options = {}) {
+  return normalizeGoalContract(await readJson(filePath, label), label, options);
 }
 
 export function validateGoalDependencies(
@@ -247,22 +251,24 @@ function impactCode(verdict) {
   }[verdict];
 }
 
-function quoteArgument(value) {
-  const text = String(value);
-  return /^[A-Za-z0-9_./:=+@-]+$/u.test(text) ? text : JSON.stringify(text);
-}
-
-function rerunCommand(proof) {
-  const environment = proof.environment
-    ? ` --environment ${quoteArgument(proof.environment)}`
-    : "";
-  if (proof.kind === "command") {
-    const command = proof.record?.command?.length
-      ? proof.record.command.map(quoteArgument).join(" ")
-      : "<command>";
-    return `proofline run ${proof.ref}${environment} -- ${command}`;
+function recheckExecution(proof, target, context) {
+  const requiredContext = ["executable", "cliPath", "cwd", "manifestPath", "contractPath", "dependenciesPath"]
+    .filter(key => typeof context?.[key] !== "string" || !path.isAbsolute(context[key]));
+  const command = proof.record?.command;
+  if (proof.kind === "command" && (!Array.isArray(command) || !command.length || command.some(token => typeof token !== "string") || !command[0])) {
+    requiredContext.push("command");
   }
-  return `proofline capture ${proof.ref}${environment}`;
+  const digest = contractDigest(target);
+  if (requiredContext.length) return { command: null, executable: null, argv: null, cwd: null,
+    contextComplete: false, requiredContext, targetRevision: target.revision, contractDigest: digest };
+  const argv = [context.cliPath, proof.kind === "command" ? "run" : "capture", proof.ref,
+    "--manifest", context.manifestPath, "--contract", context.contractPath, "--dependencies", context.dependenciesPath,
+    "--contract-digest", digest];
+  const environment = proof.environment ?? proof.record?.environment?.label;
+  if (environment) argv.push("--environment", environment);
+  if (proof.kind === "command") argv.push("--", ...command);
+  return { command: null, executable: context.executable, argv, cwd: context.cwd,
+    contextComplete: true, requiredContext: [], targetRevision: target.revision, contractDigest: digest };
 }
 
 function contractReason(changes, targetRevision, bound = false) {
@@ -293,7 +299,7 @@ function changeCounts(changes) {
   ]));
 }
 
-export function createGoalDelta({ evaluation, before, after, dependencies, now }) {
+export function createGoalDelta({ evaluation, before, after, dependencies, now, executionContext = null }) {
   const generatedAt = new Date(now ?? evaluation.generatedAt);
   if (Number.isNaN(generatedAt.getTime())) {
     throw new ProoflineError("Goal Delta clock must be a valid ISO-8601 timestamp.", {
@@ -349,7 +355,7 @@ export function createGoalDelta({ evaluation, before, after, dependencies, now }
           : {
               kind: proof.record?.observed ? "rerun" : "observe",
               label: `${proof.record?.observed ? "Re-run" : "Observe"} ${proof.ref} against ${after.revision}.`,
-              command: rerunCommand(proof)
+              ...recheckExecution(proof, after, executionContext)
             };
       return {
         id: proof.ref,

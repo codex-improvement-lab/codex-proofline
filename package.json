@@ -1,6 +1,6 @@
 {
   "name": "codex-proofline",
-  "version": "0.1.0",
+  "version": "0.2.0-rc.1",
   "description": "Acceptance-to-evidence proof graphs for agent-built software.",
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
     "README.md",
     "RELEASE_NOTES.md",
     "release/PUBLICATION.md",
+    "release/RELEASE_NOTES_0.2.0-rc.1.md",
     "SECURITY.md"
   ],
   "scripts": {

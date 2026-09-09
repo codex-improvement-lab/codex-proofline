@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0-rc.1 — prerelease candidate
+
+- Normalize selected Intake snapshots consistently at every contract-file entry; validate the full source/requirement structure before admitting confirmed items. Keep explicit mappings and optional imports.
+- Return recheck executable/argv/cwd with manifest, target, dependencies and target-digest precondition; refuse target drift and mark module proposals incomplete when context is absent.
+- Reduce the synthetic loop from 17 to 14 CLI calls and the controlled assisted maintenance replay from 29 to 22 operations. Preserve the original 14/29 result and unchanged strong baseline; no user-time/token saving is established.
+- Match package/lock/plugin versions and use actual pack output/version metadata in CI and installed-package verification.
+
 ## Unreleased — Proofline mainline candidate
 
 - Keep full imported acceptance text and hashes inside narrow Goal Delta layouts; distinguish a dependency-bound current receipt from a pending contract recheck.

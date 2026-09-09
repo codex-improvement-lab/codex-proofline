@@ -87,7 +87,8 @@ test("derives a stable replacement-candidate identity from runtime, gate, and te
   assert.deepEqual(first, second);
   assert.match(first.id, /^codex-proofline-macos-rc-[a-f0-9]{16}$/u);
   assert.match(first.contentSha256, /^[a-f0-9]{64}$/u);
-  assert.equal(first.installedVersion, `0.1.0+codex.macos-${first.contentSha256.slice(0, 16)}`);
+  const packageJson = JSON.parse(await readFile(path.join(ROOT, "package.json"), "utf8"));
+  assert.equal(first.installedVersion, `${packageJson.version.split("+")[0]}+codex.macos-${first.contentSha256.slice(0, 16)}`);
   assert.ok(first.contentFiles > 30);
 });
 

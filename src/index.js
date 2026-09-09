@@ -8,6 +8,7 @@ export {
   createGoalDelta,
   createWorkprintProfile,
   loadGoalContract,
+  normalizeGoalContract,
   loadGoalDependencies,
   validateGoalContract,
   validateGoalDependencies

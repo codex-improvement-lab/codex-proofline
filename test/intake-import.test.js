@@ -5,16 +5,18 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 import { importIntake } from "../src/intake-import.js";
-import { compareGoalContracts, createWorkprintProfile, createGoalDelta, validateGoalContract } from "../src/goal-delta.js";
+import { compareGoalContracts, createWorkprintProfile, createGoalDelta, loadGoalContract, normalizeGoalContract, validateGoalContract } from "../src/goal-delta.js";
 import { createTestDirectory, removeTestDirectory, writeJson } from "../test-support/helpers.js";
 
 const BIN = fileURLToPath(new URL("../bin/proofline.js", import.meta.url));
 function snapshot() {
-  return { schemaVersion: "intake-requirements/1", scope: "maintenance", revision: 2, requirements: [
-    { id: "maintenance-R001", revision: 1, confirmation: "user-confirmed", supportDigest: "a".repeat(64),
+  return { schemaVersion: "intake-requirements/1", scope: "maintenance", revision: 2, nextId: 3, nextSourceId: 2,
+    sources: [{ id: "S01", revision: 1, name: "request.txt", kind: "text", lineCount: 3, digest: "a".repeat(64), digestAlgorithm: "sha256" }], sourceHistory: [], requirements: [
+    { id: "maintenance-R001", revision: 1, confirmation: "user-confirmed", supportDigest: "a".repeat(64), identityKey: "b".repeat(64), authorship: "rule-derived",
       text: "Private acceptance wording stays in the local contract.", pointer: { sourceId: "S01", sourceRevision: 1, locator: "L2", excerpt: "private source excerpt" } },
-    { id: "maintenance-R002", revision: 1, confirmation: "candidate", pointer: { sourceId: "S01", sourceRevision: 1, locator: "L3" } }
-  ], rawContent: "must not propagate", command: "private command" };
+    { id: "maintenance-R002", revision: 1, confirmation: "candidate", text: "Another requirement.", supportDigest: "c".repeat(64), identityKey: "d".repeat(64), authorship: "rule-derived",
+      pointer: { sourceId: "S01", sourceRevision: 1, locator: "L3" } }
+  ] };
 }
 test("imports only confirmed scoped requirements and preserves explicit source dispositions", async (t) => {
   const directory = await createTestDirectory("intake-import");
@@ -46,6 +48,8 @@ test("rejects foreign scope, duplicate or fabricated confirmed item associations
 test("source-only revisions leave unchanged acceptance stable and public projections omit private requirement text", () => {
   const before = importIntake(snapshot());
   const sourceChanged = snapshot(); sourceChanged.revision = 3;
+  sourceChanged.sourceHistory = structuredClone(sourceChanged.sources);
+  sourceChanged.sources[0].revision = 2;
   sourceChanged.requirements[0].pointer.sourceRevision = 2;
   const after = importIntake(sourceChanged);
   assert.equal(compareGoalContracts(before, after)[0].verdict, "unchanged");
@@ -58,4 +62,22 @@ test("source-only revisions leave unchanged acceptance stable and public project
   const profile = JSON.stringify(createWorkprintProfile(delta));
   assert.doesNotMatch(profile, /private acceptance|Private acceptance|supportDigest|sourceRevision":2|source excerpt/);
   assert.match(profile, /maintenance-R001/);
+});
+
+test("direct snapshots and optional imports share strict complete-input normalization", async (t) => {
+  const directory = await createTestDirectory("intake-normalize");
+  t.after(() => removeTestDirectory(directory));
+  const input = snapshot();
+  await writeJson(path.join(directory, "snapshot.json"), input);
+  assert.deepEqual(await loadGoalContract(path.join(directory, "snapshot.json")), normalizeGoalContract(importIntake(input)));
+  const badInputs = [];
+  const extra = snapshot(); extra.rawContent = "PRIVATE-EXTENSION"; badInputs.push(extra);
+  const malformedCandidate = snapshot(); delete malformedCandidate.requirements[1].identityKey; badInputs.push(malformedCandidate);
+  const wrongPointer = snapshot(); wrongPointer.requirements[0].pointer.sourceRevision = 9; badInputs.push(wrongPointer);
+  const staleConfirmed = snapshot(); staleConfirmed.sourceHistory = structuredClone(staleConfirmed.sources); staleConfirmed.sources[0].revision = 2; badInputs.push(staleConfirmed);
+  const duplicateSource = snapshot(); duplicateSource.sources.push(duplicateSource.sources[0]); badInputs.push(duplicateSource);
+  for (const value of badInputs) {
+    assert.throws(() => importIntake(value));
+    assert.throws(() => normalizeGoalContract(value));
+  }
 });

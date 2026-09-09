@@ -16,7 +16,11 @@ function invoke(args, expected = 0) {
 }
 
 try {
-  assert.match(invoke(["version"]), /0\.1\.0/u);
+  const expectedPackage = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+  const installedPackage = JSON.parse(await readFile(path.join(packageRoot, "package.json"), "utf8"));
+  assert.equal(installedPackage.name, expectedPackage.name);
+  assert.equal(installedPackage.version, expectedPackage.version);
+  assert.equal(invoke(["version"]).trim(), expectedPackage.version);
   const example = path.join(packageRoot, "examples", "release-readiness", "proofline.json");
   const status = JSON.parse(invoke(["status", "--json", "--manifest", example, "--at", clock]));
   assert.deepEqual(status.criteria.map((item) => item.status), ["verified", "verified", "stale", "declared-only", "failed", "missing"]);
@@ -50,8 +54,8 @@ try {
     assert.ok(query.query.targetRevision);
     assert.deepEqual(await readdir(output), beforeQuery);
   }
-  await writeFile(path.join(scratch, "requirements.json"), JSON.stringify({ schemaVersion: "intake-requirements/1", scope: "package", revision: 1, requirements: [
-    { id: "package-R001", revision: 1, confirmation: "user-confirmed", supportDigest: "a".repeat(64), text: "Synthetic package acceptance.", pointer: { sourceId: "USER", locator: "manual" } }
+  await writeFile(path.join(scratch, "requirements.json"), JSON.stringify({ schemaVersion: "intake-requirements/1", scope: "package", revision: 1, nextId: 2, nextSourceId: 1, sources: [], sourceHistory: [], requirements: [
+    { id: "package-R001", revision: 1, confirmation: "user-confirmed", identityKey: "b".repeat(64), supportDigest: "a".repeat(64), authorship: "user-authored", text: "Synthetic package acceptance.", pointer: { sourceId: "USER", locator: "manual" } }
   ] }));
   invoke(["import-intake", "--input", "requirements.json", "--output", "contract.json"]);
   await writeFile(path.join(scratch, "deps.json"), JSON.stringify({ schemaVersion: "proofline-goal-dependencies/1", evidence: [
@@ -63,6 +67,24 @@ try {
   invoke(["run", "AC-01/tests", "--contract", "contract.json", "--dependencies", "deps.json", "--", process.execPath, "-e", "process.exit(0)"]);
   invoke(["capture", "AC-02/artifact", "--contract", "contract.json", "--dependencies", "deps.json"]);
   assert.equal(JSON.parse(invoke(["query", "--contract", "contract.json", "--dependencies", "deps.json", "--gaps"])).evidence.length, 0);
+  assert.equal(JSON.parse(invoke(["query", "--contract", "requirements.json", "--dependencies", "deps.json", "--gaps"])).evidence.length, 0);
+  const next = JSON.parse(await readFile(path.join(scratch, "requirements.json"), "utf8"));
+  next.revision += 1;
+  next.requirements[0].revision += 1;
+  next.requirements[0].text = "Revised synthetic package acceptance.";
+  await writeFile(path.join(scratch, "requirements-next.json"), JSON.stringify(next));
+  const selectedManifest = path.join(scratch, "selected manifest.json");
+  await writeFile(selectedManifest, await readFile(manifestPath));
+  const delta = JSON.parse(invoke(["goal-delta", "--manifest", selectedManifest, "--from", "requirements.json", "--to", "requirements-next.json", "--dependencies", "deps.json", "--json", "--gaps"]));
+  assert.equal(delta.evidence.length, 2);
+  for (const item of delta.evidence) {
+    assert.equal(item.action.contextComplete, true);
+    assert.equal(item.action.cwd, scratch);
+    assert.equal(item.action.argv[item.action.argv.indexOf("--manifest") + 1], selectedManifest);
+    const run = spawnSync(item.action.executable, item.action.argv, { cwd: item.action.cwd, encoding: "utf8", shell: false });
+    assert.equal(run.status, 0, run.stderr);
+  }
+  assert.equal(JSON.parse(invoke(["query", "--manifest", selectedManifest, "--contract", "requirements-next.json", "--dependencies", "deps.json", "--gaps"])).evidence.length, 0);
   process.stdout.write("Installed package smoke passed: base CLI/five states/reports/plugin, exact Goal Delta projections and JSON, Intake import, configuration checks, bound run/capture and target query.\n");
 } finally {
   assert.ok(scratch.startsWith(path.join(os.tmpdir(), "proofline-package-smoke-")));

@@ -3,12 +3,12 @@
   "product": "codex-proofline",
   "gateVersion": 2,
   "scope": "runtime-gate-tests-v1",
-  "id": "codex-proofline-macos-rc-5fee1ad561896544",
-  "contentSha256": "5fee1ad561896544af9a239750b53235b11c295e0ccec63acb9b5f55a4148e58",
-  "contentFiles": 51,
-  "installedVersion": "0.1.0+codex.macos-5fee1ad561896544",
+  "id": "codex-proofline-macos-rc-97e1840da8cc9ee8",
+  "contentSha256": "97e1840da8cc9ee838794956b6113e3977b56cf553c416ac31b26794173d2932",
+  "contentFiles": 53,
+  "installedVersion": "0.2.0-rc.1+codex.macos-97e1840da8cc9ee8",
   "status": "awaiting-full-real-mac-rerun",
   "previousMacEvidenceImported": false,
-  "generatedOn": "2026-09-08",
+  "generatedOn": "2026-09-09",
   "evidenceClass": "source-derived-candidate-identity-not-macos-execution"
 }

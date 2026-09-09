@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest]
         node: [20, 22, 24]
     runs-on: ${{ matrix.os }}
     steps:
@@ -32,6 +32,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p .proofline/tmp/package
-          npm pack --pack-destination .proofline/tmp/package
-          npm install --ignore-scripts --no-audit --no-fund --prefix .proofline/tmp/installed ./.proofline/tmp/package/codex-proofline-0.1.0.tgz
+          npm pack --json --pack-destination .proofline/tmp/package > .proofline/tmp/package/pack-result.json
+          PACKED_FILE=$(node -e 'const fs = require("node:fs"), path = require("node:path"); const [result] = JSON.parse(fs.readFileSync(".proofline/tmp/package/pack-result.json", "utf8")); if (!result?.filename || path.basename(result.filename) !== result.filename) throw new Error("Invalid pack result"); process.stdout.write(result.filename);')
+          npm install --ignore-scripts --no-audit --no-fund --prefix .proofline/tmp/installed "./.proofline/tmp/package/$PACKED_FILE"
           node scripts/package-smoke.mjs .proofline/tmp/installed/node_modules/codex-proofline
