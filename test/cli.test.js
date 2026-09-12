@@ -75,9 +75,54 @@ test("init creates a manifest and refuses to overwrite it", async (t) => {
   const first = await invoke(["init"], directory);
   assert.equal(first.exitCode, 0);
   assert.match(first.stdout, /Created/u);
+  const initial = JSON.parse(await readFile(path.join(directory, "proofline.json"), "utf8"));
+  assert.deepEqual(initial.criteria.flatMap(item => item.proof.map(proof => proof.kind)), ["command", "screenshot"]);
   const second = await invoke(["init"], directory);
   assert.equal(second.exitCode, 2);
   assert.match(second.stderr, /Refusing to overwrite/u);
+});
+
+test("command-only init completes a headless evidence loop and keeps source invalidation", async (t) => {
+  const directory = await createTestDirectory("cli-command-only");
+  t.after(() => removeTestDirectory(directory));
+  const project = path.join(directory, "headless project");
+  await mkdir(path.join(project, "src"), { recursive: true });
+  const input = path.join(project, "src", "result.txt");
+  await writeFile(input, "ready", "utf8");
+  const initialized = await invoke(["init", project, "--command-only"], directory);
+  assert.equal(initialized.exitCode, 0, initialized.stderr);
+  const original = await readFile(path.join(project, "proofline.json"), "utf8");
+  const initial = JSON.parse(original);
+  assert.equal(initial.criteria.length, 1);
+  assert.deepEqual(initial.criteria[0].proof[0].inputs, ["src"]);
+  assert.equal((await invoke(["check", "--json"], project)).exitCode, 1);
+  const runArgs = ["run", "AC-01/tests", "--", process.execPath, "-e",
+    "require('node:assert/strict').equal(require('node:fs').readFileSync('src/result.txt', 'utf8'), 'ready')"];
+  const observed = await invoke(runArgs, project);
+  assert.equal(observed.exitCode, 0, observed.stderr);
+  const ready = await invoke(["check", "--json"], project);
+  assert.equal(ready.exitCode, 0, ready.stderr);
+  assert.equal(JSON.parse(ready.stdout).summary.verifiedProofs, 1);
+  await writeFile(input, "changed", "utf8");
+  const stale = await invoke(["check", "--json"], project);
+  assert.equal(stale.exitCode, 1);
+  assert.equal(JSON.parse(stale.stdout).criteria[0].proofs[0].status, "stale");
+  assert.equal((await invoke(runArgs, project)).exitCode, 1);
+  const failed = await invoke(["check", "--json"], project);
+  assert.equal(failed.exitCode, 1);
+  assert.equal(JSON.parse(failed.stdout).criteria[0].proofs[0].status, "failed");
+  assert.equal((await invoke(["init", "--command-only"], project)).exitCode, 2);
+  assert.equal(await readFile(path.join(project, "proofline.json"), "utf8"), original);
+});
+
+test("command-only is explicit, scoped to init and rejects duplicates without writing", async (t) => {
+  const directory = await createTestDirectory("cli-command-only-options");
+  t.after(() => removeTestDirectory(directory));
+  for (const args of [["init", "--command-only", "--command-only"], ["status", "--command-only"],
+    ["init", "--command-only", "--output", "unexpected.json"]]) {
+    assert.equal((await invoke(args, directory)).exitCode, 2);
+    assert.deepEqual(await readdir(directory), []);
+  }
 });
 
 test("init prefills only present conventional inputs; doctor exposes configuration omissions", async (t) => {

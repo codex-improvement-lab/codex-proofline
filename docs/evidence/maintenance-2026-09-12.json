@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "proofline-maintenance-observation/1",
+  "date": "2026-09-12",
+  "evidenceClass": "actual-internal-maintenance-observation",
+  "project": "codex-improvement-lab/codex-workprint",
+  "prooflineVersion": "0.2.0-rc.1",
+  "prooflineRelease": "https://github.com/codex-improvement-lab/codex-proofline/releases/tag/v0.2.0-rc.1",
+  "observationEnvironment": "Windows / GitHub API readback",
+  "records": [
+    {
+      "evidenceId": "C-CHECKOUT/ci",
+      "head": "db68cfb0d320ffb00d72edec1a0120b7ce40892f",
+      "ci": "https://github.com/codex-improvement-lab/codex-workprint/actions/runs/34678558827",
+      "successfulJobs": 4,
+      "receipt": "sha256:702ba7cf6c6ff95af8735240c2bcf974ce2ac2425b2c0d54274398f535cafb5b"
+    },
+    {
+      "evidenceId": "C-NODE/ci",
+      "head": "bd80dc70b8420dcf31d8b2e1f1fee47363641a4c",
+      "ci": "https://github.com/codex-improvement-lab/codex-workprint/actions/runs/34678715695",
+      "successfulJobs": 4,
+      "receipt": "sha256:4ff887e5c64ffa25cf08ba40788adf49ab04f6ce0c644b2bcb486017f75ad4fd"
+    },
+    {
+      "evidenceId": "C-MAIN/ci",
+      "head": "eeec646c6663fad59805d5ac5e235107f6dd264d",
+      "ci": "https://github.com/codex-improvement-lab/codex-workprint/actions/runs/34678840844",
+      "successfulJobs": 4,
+      "receipt": "sha256:9264700d7bad3f688a15c5b0585f705107056e73ede25d7df923a714b4cddf9b"
+    }
+  ],
+  "finalQuery": {
+    "verified": 3,
+    "missing": 0,
+    "stale": 0,
+    "declaredOnly": 0,
+    "failed": 0,
+    "returnedGaps": 0
+  },
+  "observedCliInvocations": {
+    "version": 1,
+    "init": 1,
+    "run": 3,
+    "check": 1,
+    "query": 1,
+    "report": 1,
+    "total": 8,
+    "definition": "Product-path calls only; additional checker authoring, manifest and target writes are not included. Not comparable to the earlier full-operation replay metric."
+  },
+  "limits": {
+    "externalUser": false,
+    "repeatUseMeasured": false,
+    "comparisonArm": null,
+    "completeTaskTime": null,
+    "modelUsage": null,
+    "goalDeltaExercise": false,
+    "physicalDeviceObservation": false,
+    "netBenefit": "unmeasured",
+    "receiptBoundary": "Hashes associate private local records with this summary; hashes alone do not prove record authenticity or task correctness."
+  }
+}

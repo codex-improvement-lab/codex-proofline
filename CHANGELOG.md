@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased — after 0.2.0-rc.1
+
+- Add explicit `init --command-only` scaffolding for CLI and CI maintenance. Start with one command criterion; retain input discovery, evidence states and overwrite refusal. The default scaffold continues to include a visual criterion.
+
 ## 0.2.0-rc.1 — prerelease candidate
 
 - Normalize selected Intake snapshots consistently at every contract-file entry; validate the full source/requirement structure before admitting confirmed items. Keep explicit mappings and optional imports.
