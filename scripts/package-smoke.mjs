@@ -28,6 +28,15 @@ try {
   await access(path.join(packageRoot, ".codex-plugin", "plugin.json"));
   await access(path.join(packageRoot, "skills", "proofline", "SKILL.md"));
   await access(path.join(packageRoot, "hooks", "hooks.json"));
+  const headless = path.join(scratch, "headless project");
+  const headlessManifest = path.join(headless, "proofline.json");
+  invoke(["init", headless, "--command-only"]);
+  invoke(["check", "--manifest", headlessManifest, "--json"], 1);
+  invoke(["run", "AC-01/tests", "--manifest", headlessManifest, "--", process.execPath, "-e",
+    "require('node:assert/strict').equal(require('node:path').basename(process.cwd()), 'headless project')"]);
+  const headlessStatus = JSON.parse(invoke(["check", "--manifest", headlessManifest, "--json"]));
+  assert.equal(headlessStatus.ready, true);
+  assert.equal(headlessStatus.summary.totalProofs, 1);
   invoke(["init"]);
   const manifestPath = path.join(scratch, "proofline.json");
   const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
@@ -85,7 +94,7 @@ try {
     assert.equal(run.status, 0, run.stderr);
   }
   assert.equal(JSON.parse(invoke(["query", "--manifest", selectedManifest, "--contract", "requirements-next.json", "--dependencies", "deps.json", "--gaps"])).evidence.length, 0);
-  process.stdout.write("Installed package smoke passed: base CLI/five states/reports/plugin, exact Goal Delta projections and JSON, Intake import, configuration checks, bound run/capture and target query.\n");
+  process.stdout.write("Installed package smoke passed: headless init loop, base CLI/five states/reports/plugin, exact Goal Delta projections and JSON, Intake import, configuration checks, bound run/capture and target query.\n");
 } finally {
   assert.ok(scratch.startsWith(path.join(os.tmpdir(), "proofline-package-smoke-")));
   await rm(scratch, { recursive: true, force: true });

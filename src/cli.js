@@ -24,7 +24,7 @@ const HELP = `
 Codex Proofline — proof, not promises
 
 Usage:
-  proofline init [directory]
+  proofline init [directory] [--command-only]
   proofline run <criterion/proof> [--environment <label>] -- <command> [...args]
   proofline capture <criterion/proof> [--environment <label>] [--note <text>]
   proofline claim <criterion/proof> --note <text>
@@ -43,6 +43,7 @@ Common option (all commands except init):
   run/capture may bind --contract <target.json> --dependencies <dependencies.json> explicitly.
   Contract files may be proofline-goal-contract/1 or a selected intake-requirements/1 snapshot.
   Generated rechecks include --contract-digest <sha256> to refuse target drift.
+  init --command-only scaffolds one command criterion for headless workflows.
 
 States:
   verified · missing · stale · declared-only · failed
@@ -63,10 +64,10 @@ const VALUE_OPTIONS = new Set([
   "profile-output",
   "at", "status", "item", "evidence", "contract", "input", "contract-digest"
 ]);
-const BOOLEAN_OPTIONS = new Set(["json", "help", "gaps", "affected"]);
+const BOOLEAN_OPTIONS = new Set(["json", "help", "gaps", "affected", "command-only"]);
 
 const COMMAND_OPTIONS = {
-  init: [],
+  init: ["command-only"],
   run: ["manifest", "environment", "contract", "dependencies", "contract-digest"],
   capture: ["manifest", "environment", "note", "observed-at", "contract", "dependencies", "contract-digest"],
   claim: ["manifest", "note"],
@@ -165,7 +166,7 @@ function printStatus(result) {
   process.stdout.write(`\n${result.ready ? "READY" : "EVIDENCE GAPS"}\n`);
 }
 
-async function initialize(directory) {
+async function initialize(directory, { commandOnly = false } = {}) {
   const root = path.resolve(directory || ".");
   const manifestPath = path.join(root, "proofline.json");
   await mkdir(root, { recursive: true });
@@ -191,7 +192,7 @@ async function initialize(directory) {
           }
         ]
       },
-      {
+      ...(commandOnly ? [] : [{
         id: "AC-02",
         statement: "The user-visible result has current visual evidence.",
         proof: [
@@ -204,7 +205,7 @@ async function initialize(directory) {
             freshnessHours: 168
           }
         ]
-      }
+      }])
     ]
   };
   try {
@@ -322,7 +323,7 @@ export async function runCli(argv = process.argv.slice(2)) {
     if (options.help) return process.stdout.write(`${HELP}\n`);
     validateOptions(command, options);
     if (positionals.length > 1) throw new ProoflineError("init accepts at most one directory.");
-    await initialize(positionals[0]);
+    await initialize(positionals[0], { commandOnly: Boolean(options["command-only"]) });
     return;
   }
 

@@ -75,6 +75,13 @@ Initialize a graph:
 proofline init
 ```
 
+For headless maintenance, the **unreleased source checkout** also supports
+`node ./bin/proofline.js init /path/to/project --command-only`. It creates one
+command criterion, so a CLI-only task can complete without removing an unrelated
+screenshot criterion. Review the generated acceptance text and discovered input
+paths before recording checks. The published `0.2.0-rc.1` archives keep their
+original interface; see the [first-use maintenance case](docs/MAINTENANCE_CASE_2026-09-12.md).
+
 Describe acceptance criteria in `proofline.json`:
 
 ```json
