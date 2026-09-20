@@ -3,13 +3,13 @@
   "product": "codex-proofline",
   "gateVersion": 2,
   "scope": "runtime-gate-tests-v1",
-  "id": "codex-proofline-macos-rc-ec04ead371789c89",
-  "contentSha256": "ec04ead371789c89607f4e8ab063342fee7e2ea9fed3ac579479e44db66c573b",
-  "contentFiles": 53,
-  "installedVersion": "0.2.0-rc.1+codex.macos-ec04ead371789c89",
+  "id": "codex-proofline-macos-rc-b220e89283de1b7d",
+  "contentSha256": "b220e89283de1b7dfb842e4b49f32ac8ce30ad05728ed587762cefe306cbfea1",
+  "contentFiles": 54,
+  "installedVersion": "0.2.0-rc.1+codex.macos-b220e89283de1b7d",
   "status": "awaiting-full-real-mac-rerun",
   "previousMacEvidenceImported": false,
-  "generatedOn": "2026-09-12",
+  "generatedOn": "2026-09-21",
   "evidenceClass": "source-derived-candidate-identity-not-macos-execution",
-  "documentationUpdate": "Unreleased command-only init and regression/package coverage. Release v0.2.0-rc.1 stays frozen; physical Mac and fresh-task activation remain pending."
+  "documentationUpdate": "Unreleased external-source count probe and sidecar regression coverage. Frozen release artifacts are unchanged; current physical-Mac and fresh-task activation evidence remain pending."
 }

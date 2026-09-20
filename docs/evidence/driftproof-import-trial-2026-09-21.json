@@ -1,0 +1,125 @@
+{
+  "evidenceClass": "maintainer-executed-public-source-reproduction",
+  "date": "2026-09-20T19:40:10.978Z",
+  "platform": "win32",
+  "node": "v24.19.0",
+  "upstreamRevision": "871c8c6a82b57934e42a8e4f4b1bcec5f49e08f8",
+  "upstreamTrackedFilesUnchanged": true,
+  "prooflineVersion": "0.2.0-rc.1",
+  "direct": {
+    "schemaVersion": "lab-import-count-probe/1",
+    "check": "all",
+    "passed": false,
+    "source": {
+      "packageVersion": "0.11.1",
+      "importerSha256": "7b78b0d1787eab80ee7b111657109014b76c6e70b7aac5ef8283c0cbe28e1297"
+    },
+    "observations": {
+      "sourceJudgeSampleCountSupplied": false,
+      "agentSkillsEvalJudgeSamples": 1,
+      "skillgradeJudgeSamples": 2,
+      "skillgradeTrialRewards": [
+        1,
+        0
+      ],
+      "verificationLevels": [
+        "DECLARED",
+        "DECLARED"
+      ]
+    },
+    "assertions": [
+      {
+        "id": "imports-stay-declared",
+        "passed": true
+      },
+      {
+        "id": "imports-stay-external",
+        "passed": true
+      },
+      {
+        "id": "absent-agent-skills-judge-count-stays-unknown",
+        "passed": false
+      },
+      {
+        "id": "trial-count-is-not-judge-samples",
+        "passed": false
+      },
+      {
+        "id": "observed-trial-rewards-are-preserved",
+        "passed": true
+      }
+    ],
+    "boundary": "Authored inputs against a selected upstream importer; not a live eval, full upstream gate or agent-benefit trial."
+  },
+  "finalCounts": {
+    "verified": 1,
+    "missing": 0,
+    "stale": 0,
+    "declared-only": 0,
+    "failed": 1
+  },
+  "receipts": [
+    {
+      "receipt": "sha256:41cf4dca7ad8f11d66dad93884a6b068676b91893e3b31bb91f1a7f2579e9fcc",
+      "kind": "command",
+      "exitCode": 0
+    },
+    {
+      "receipt": "sha256:66ed91d3e5b5bdcee1d5459dc0d28b970027ba3ecf8886ea5e750142a59db441",
+      "kind": "command",
+      "exitCode": 1
+    }
+  ],
+  "commands": [
+    {
+      "label": "installed runtime version",
+      "expectedExit": 0,
+      "observedExit": 0,
+      "subprocessMs": 291.865
+    },
+    {
+      "label": "standalone probe",
+      "expectedExit": 1,
+      "observedExit": 1,
+      "subprocessMs": 95.964
+    },
+    {
+      "label": "prepare optional sidecar",
+      "expectedExit": 0,
+      "observedExit": 0,
+      "subprocessMs": 72.932
+    },
+    {
+      "label": "observe declared",
+      "expectedExit": 0,
+      "observedExit": 0,
+      "subprocessMs": 240.514
+    },
+    {
+      "label": "observe counts",
+      "expectedExit": 1,
+      "observedExit": 1,
+      "subprocessMs": 250.53
+    },
+    {
+      "label": "query gaps",
+      "expectedExit": 0,
+      "observedExit": 0,
+      "subprocessMs": 142.158
+    }
+  ],
+  "limits": {
+    "externalUser": false,
+    "fullUpstreamGate": false,
+    "liveProviderRun": false,
+    "completeTaskCost": null,
+    "modelUsage": null,
+    "repeatUse": null,
+    "netBenefit": "unmeasured"
+  },
+  "publicSource": "https://github.com/driftproofhq/driftproof/tree/871c8c6a82b57934e42a8e4f4b1bcec5f49e08f8",
+  "discussion": "https://github.com/agentskills/agentskills/discussions/544#discussioncomment-18409986",
+  "probeSha256": "7ef56c721b9ff6bf45c6e075575fd34a23dd56275d22005b7dd7982153051a70",
+  "timingMeaning": "One maintainer-run demonstration on a shared Windows host. Subprocess milliseconds exclude research, cloning, probe authoring, setup review, human time and model usage; they are not a whole-task benefit comparison.",
+  "receiptBoundary": "Receipt hashes associate private local command records with these observations; they do not independently prove authenticity, adequacy or adoption."
+}

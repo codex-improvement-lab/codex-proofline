@@ -55,6 +55,15 @@ The first screen answers three questions without reading a log:
 2. Which exact proof line blocks readiness?
 3. What environment and receipt produced the evidence?
 
+## Try a reported problem in external code
+
+The [Driftproof import-count trial](examples/external/driftproof-import-counts/README.md)
+uses a maintainer-discussed issue and a pinned public source revision. Run a small
+offline probe first, then optionally record its passing control and failing count
+checks with Proofline. No model API or dependency installation is needed for these
+paths. The maintainer-run reproduction is complete; independent trial and repeat
+use remain unobserved. The sidecar is available from this source checkout.
+
 ## The complete loop
 
 Use `proofline doctor --json` to inspect configuration omissions and `proofline query --contract target.json --dependencies dependencies.json --gaps` to read compact evidence rows for a named target. Bind observations with the same two options on `run` or `capture`. See [machine query and configuration semantics](docs/MACHINE_QUERIES.md).
