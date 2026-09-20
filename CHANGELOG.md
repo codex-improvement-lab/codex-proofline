@@ -2,6 +2,7 @@
 
 ## Unreleased — after 0.2.0-rc.1
 
+- Add a pinned, offline external-source trial for Driftproof's discussed import-count semantics, with a standalone probe and optional non-overwriting Proofline sidecar. Keep maintainer execution separate from independent adoption and the upstream full gate.
 - Add explicit `init --command-only` scaffolding for CLI and CI maintenance. Start with one command criterion; retain input discovery, evidence states and overwrite refusal. The default scaffold continues to include a visual criterion.
 
 ## 0.2.0-rc.1 — prerelease candidate
